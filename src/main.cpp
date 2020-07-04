@@ -1,6 +1,6 @@
 //Using SDL2 and standard IO
 #include <SDL.h>
-#include <SDL_image.h>
+//#include <SDL_image.h>
 #include <stdio.h>  // printf is more thread-safe than iostream
 #include <common.h>
 #include <constants.h>

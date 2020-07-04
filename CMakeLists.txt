@@ -19,10 +19,17 @@ include_directories(include)
 # Search for the SDL2 library on the system
 find_path(SDL2_INCLUDE_DIR
   NAMES "SDL.h" "SDL_assert.h" "SDL_error.h"
-  PAATHS "${CMAKE_FRAMEWORK_PATH}/include"
-  PATH_SUFFIXES "SDL2")
+  PATHS "${CMAKE_FRAMEWORK_PATH}/include" "${CMAKE_SYSTEM_INCLUDE_PATH}"
+  PATH_SUFFIXES "SDL2" "include")
 find_library(SDL2_LIBRARY
   NAMES "SDL2")
+
+#find_path(SDL2_IMAGE_INCLUDE_DIR
+#  NAMES "SDL_image.h"
+#  PAATHS "${CMAKE_FRAMEWORK_PATH}/include"
+#  PATH_SUFFIXES "SDL2")
+#find_library(SDL2_IMAGE_LIBRARY
+#  NAMES "SDL2")
 
 # Check to see if SDL2 was found
 # TODO: Have a proper backup plan for if SDL2 is not found
