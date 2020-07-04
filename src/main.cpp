@@ -1,4 +1,4 @@
-//Using SDL and standard IO
+//Using SDL2 and standard IO
 #include <SDL.h>
 #include <SDL_image.h>
 #include <stdio.h>  // printf is more thread-safe than iostream
@@ -6,6 +6,7 @@
 #include <constants.h>
 
 
+int gameLoop(int, char**);
 bool init();
 bool loadImg();
 void close();
@@ -14,25 +15,50 @@ SDL_Window* gWindow = nullptr;
 SDL_Surface* gScreenSurface = nullptr;
 SDL_Surface* gSplashScreen = nullptr;
 
-int WinMain( int argc, char* args[] ) {
-    if (!init()) {
-        DIE("Initalization failed");
+
+// Need to change the entry point name for window
+int WinMain(int argc, char* argv[]) {
+  return gameLoop(argc, argv);
+}
+int main(int argc, char* argv[]) {
+  return gameLoop(argc, argv);
+}
+
+// Main game loop
+int gameLoop(int argc, char* argv[]) {
+  printf("Starting\n");
+
+  if (!init()) {
+    DIE("Initalization failed");
+  }
+  if (!loadImg()) {
+    DIE("Image loading failed");
+  }
+
+  bool quit = false;
+  SDL_Event event;
+  while (!quit) {
+
+    // Handle events
+    while (SDL_PollEvent(&event) != 0) {
+
+      // Exit event
+      if (event.type == SDL_QUIT) {
+        quit = true;
+      }
     }
-    if (!loadImg()) {
-        DIE("Image loading failed");
-    }
 
-    //Apply the image
-    SDL_BlitSurface(gSplashScreen, nullptr, gScreenSurface, nullptr);
-    //Update the surface
-    SDL_UpdateWindowSurface(gWindow);
+  //Apply the image
+  SDL_BlitSurface(gSplashScreen, nullptr, gScreenSurface, nullptr);
+  //Update the surface
+  SDL_UpdateWindowSurface(gWindow);
+  }
 
-    //Wait two seconds
-    SDL_Delay(5000);
+  close();
 
-    close();
+  printf("Exiting\n");
 
-    return 0;
+  return 0;
 }
 
 
