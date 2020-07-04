@@ -4,6 +4,7 @@
 #include <stdio.h>  // printf is more thread-safe than iostream
 #include <common.h>
 #include <constants.h>
+#include <JobPool.h>
 
 
 int gameLoop(int, char**);
