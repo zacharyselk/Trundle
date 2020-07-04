@@ -15,7 +15,7 @@ $ mkdir build && cd build
 $ cmake ..
 $ make
 ```
-However if that does not work then it is probably the fault of SDL2 and adding the libraries and headers to the system path should resolve that issue.
+However if that does not work then it is probably the fault of SDL2 not being found. Adding the SDL2 libraries and headers files to the system path _should_ resolve that issue.
 
 ## Running
 Once built an exacutable named Trundle (or Trundle.exe) will be created and simply needs to be executed to run.
