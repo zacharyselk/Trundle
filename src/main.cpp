@@ -5,11 +5,15 @@
 #include <common.h>
 #include <constants.h>
 #include <JobPool.h>
+#include <future>
+#include <chrono>
+#include <cassert>
+#include <threading.h>
 
 
 int gameLoop(int, char**);
 bool init();
-bool loadImg();
+bool loadImg(std::string path);
 void close();
 
 SDL_Window* gWindow = nullptr;
@@ -32,8 +36,10 @@ int gameLoop(int argc, char* argv[]) {
   if (!init()) {
     DIE("Initalization failed");
   }
-  if (!loadImg()) {
-    DIE("Image loading failed");
+  if (!loadImg(std::string("img/disco_dave.bmp"))) {
+    if (!loadImg(std::string("../img/disco_dave.bmp"))) {
+      DIE("Image loading failed");
+    }
   }
 
   bool quit = false;
@@ -49,10 +55,12 @@ int gameLoop(int argc, char* argv[]) {
       }
     }
 
-  //Apply the image
-  SDL_BlitSurface(gSplashScreen, nullptr, gScreenSurface, nullptr);
-  //Update the surface
-  SDL_UpdateWindowSurface(gWindow);
+    if (test::verifyThreads()) {
+      printf("Yes\n");
+    } else {
+      printf("No\n");
+    }
+    break;
   }
 
   close();
@@ -77,8 +85,8 @@ bool init() {
     return true;
 }
 
-bool loadImg() {
-    gSplashScreen = SDL_LoadBMP("../img/disco_dave.bmp");
+bool loadImg(std::string path) {
+    gSplashScreen = SDL_LoadBMP(path.c_str());
     if (!gSplashScreen) {
         return false;
     }

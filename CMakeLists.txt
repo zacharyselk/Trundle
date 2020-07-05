@@ -13,8 +13,9 @@ include(CTest)
 enable_testing()
 
 # Point to local paths for source code and header files
-add_executable(Trundle src/main.cpp)
-include_directories(include)
+file(GLOB sourceFiles src/*.cpp)
+add_executable(Trundle ${sourceFiles})
+include_directories(include test)
 
 # Search for the SDL2 library on the system
 find_path(SDL2_INCLUDE_DIR
@@ -48,12 +49,6 @@ endif()
 # Point to the SDL2 headers and library
 target_include_directories(Trundle PUBLIC ${SDL2_INCLUDE_DIR})
 target_link_libraries(Trundle ${SDL2_LIBRARY}) 
-
-# TODO: Encapsolate these paths into a varable that can be defined during the build
-#include_directories(Trundle D:/lib/SDL2-2.0.12/x86_64-w64-mingw32/include)
-#include_directories(Trundle D:/lib/SDL2_image-2.0.5/x86_64-w64-mingw32/include)
-#target_link_libraries(Trundle D:/lib/SDL2-2.0.12/x86_64-w64-mingw32/lib/libSDL2.dll.a)
-#target_link_libraries(Trundle D:/lib/SDL2_image-2.0.5/x86_64-w64-mingw32/lib/libSDL2_image.dll.a)
 
 # Set name and veersion of the project
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})

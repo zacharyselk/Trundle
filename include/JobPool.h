@@ -7,6 +7,7 @@
 #include <functional>
 #include <deque>
 #include <array>
+#include <vector>
 
 
 // Primative queue that maintains jobs that can be accessed from multiple
@@ -17,25 +18,33 @@ class JobQueue {
   ~JobQueue() { }
 
   bool pop(std::function<void()>& func) {
-    mutex.lock();
+    std::unique_lock<std::mutex> lock{mutex};
+    while (queue.empty() && !_done) {
+      ready.wait(lock);
+    }
     if (queue.empty()) {
       return false;
     }
     func = std::move(queue.front());
-    mutex.unlock();
+    queue.pop_front();
     return true;
   }
 
   template<typename T>
   void push(T&& func) {
-    mutex.lock();
-    queue.emplace_back(std::forward<T>(func));
-    mutex.unlock();
+    {
+      std::unique_lock<std::mutex>{mutex};
+      queue.emplace_back(std::forward<T>(func));
+    }
+    ready.notify_one();
   }
 
   void done() {
-    std::unique_lock<std::mutex> lock{mutex};
-    _done = true;
+    {
+      std::unique_lock lock{mutex};
+      _done = true;
+    } // Unlock mutex
+
     ready.notify_all();
   }
 
@@ -50,13 +59,21 @@ class JobQueue {
 // Simple multi-queued structure that runs threads to complete the tasked jobs
 class JobPool {
  public:
-  JobPool() { }
-  ~JobPool() {
-    for (auto& thread : threads) {
-      thread.join();
+  JobPool() {
+    for (unsigned int i = 0; i < threadCount; ++i) {
+      threads.emplace_back([&, i]{
+        run(i);
+      });
     }
+  }
+
+  ~JobPool() {
     for (auto& queue : jobQueues) {
       queue.done();
+    }
+
+    for (auto& thread : threads) {
+      thread.join();
     }
   }
 
@@ -64,6 +81,8 @@ class JobPool {
   void async(T&& func) {
     jobQueues[index++ % threadCount].push(std::forward<T>(func));
   }
+
+  bool done() { return finishedThreads == threadCount; }
 
  private:
   void run(unsigned int i) {
@@ -74,11 +93,14 @@ class JobPool {
       }
       func();
     }
+
+    ++finishedThreads;
   }
 
-  static constexpr unsigned int threadCount{4};
-  std::array<std::thread, threadCount> threads;
-  std::array<JobQueue, threadCount> jobQueues;
+  const unsigned int threadCount{std::thread::hardware_concurrency()};
+  std::vector<std::thread> threads;
+  std::vector<JobQueue> jobQueues{threadCount};
   std::mutex mutex;
   std::atomic<unsigned int> index{0};
+  std::atomic<unsigned int> finishedThreads{0};
 };
