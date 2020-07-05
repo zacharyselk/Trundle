@@ -13,9 +13,9 @@ This project uses CMake as its build software, so ideally you would simply need 
 ```
 $ mkdir build && cd build
 $ cmake ..
-$ make .
+$ make
 ```
-However currently the SDL2 library paths are hard-coded into the CMakeLists.txt file and need to changed to point to your own SDL2 libraries before those commands will work.
+However if that does not work then it is probably the fault of SDL2 not being found. Adding the SDL2 libraries and headers files to the system path _should_ resolve that issue.
 
 ## Running
 Once built an exacutable named Trundle (or Trundle.exe) will be created and simply needs to be executed to run.
