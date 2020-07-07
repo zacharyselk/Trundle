@@ -47,6 +47,9 @@ bool verifyThreads() {
             printf("Queuing tests %i-%i...\n", i, i+999);
         }
         tests.emplace_back(TestThread(i));
+    }
+
+    for (int i = 0; i < N; ++i) {
         jobs.async(tests[i].getFunc());
     }
     } // Let jobs deallocate and finish running
