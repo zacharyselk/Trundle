@@ -55,17 +55,11 @@ int gameLoop(int argc, char* argv[]) {
       }
     }
 
-    if (test::verifyThreads()) {
-      printf("Yes\n");
-    } else {
-      printf("No\n");
-    }
+    test::verifyThreads();
     break;
   }
 
   close();
-
-  printf("Exiting\n");
 
   return 0;
 }

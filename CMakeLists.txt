@@ -8,6 +8,15 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # Debug
 #set(CMAKE_VERBOSE_MAKEFILE true)
 
+# Add some compiler flags based off of what build is being done
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
+endif()
+
+set(CMAKE_CXX_FLAGS "-Wall -Wextra")
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+
 # ???
 include(CTest)
 enable_testing()

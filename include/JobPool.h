@@ -46,7 +46,7 @@ class JobQueue {
   void push(T&& func) {
     {
       // Lock the queue then push an item onto it
-      std::unique_lock<std::mutex>{mutex};
+      std::unique_lock<std::mutex> lock{mutex};
       queue.emplace_back(std::forward<T>(func));
     } // Unlock the queue
 
@@ -54,12 +54,43 @@ class JobQueue {
     ready.notify_one();
   }
 
+  // Attempt to pop the next item off of the queue, returning false if the pop failed
+  bool tryPop(std::function<void()> &func) {
+    // Attempt to lock the queue
+    std::unique_lock<std::mutex> lock{mutex, std::try_to_lock};
+    if (!lock || queue.empty()) {
+      return false;
+    }
+
+    // Grab and remove the next job in the queue
+    func = std::move(queue.front());
+    queue.pop_front();
+    return true;
+
+  }
+
+  template<typename T>
+  bool tryPush(T&& func) {
+    {
+      // Attempt to lock the queue
+      std::unique_lock<std::mutex> lock{mutex, std::try_to_lock};
+      if (!lock) {
+        return false;
+      }
+      queue.emplace_back(std::forward<T>(func));
+    } // Unlock the queue
+    
+    // Notify one of the threads waiting for the queue
+    ready.notify_one();
+    return true;
+  }
+
   // Mark the queue as closed so that threads can be released when the queue
   // is emptied
   void done() {
     {
       // Lock the queue
-      std::unique_lock lock{mutex};
+      std::unique_lock<std::mutex> lock{mutex};
       _done = true;
     } // Unlock the queue
 
@@ -105,6 +136,16 @@ class JobPool {
   // Pushes a job onto one of the queues in a round-robin approach
   template<typename T>
   void async(T&& func) {
+    auto n = index++;
+
+    // Try to steal a job from someone else
+    for (unsigned int i = 0; i != threadCount * K; ++i) {
+      if (jobQueues[(i + n) % threadCount].tryPush(std::forward<T>(func))) {
+        return;
+      }
+    }
+
+    // Otherwise just wait for a job
     jobQueues[index++ % threadCount].push(std::forward<T>(func));
   }
 
@@ -118,13 +159,21 @@ class JobPool {
     while (true) {
       std::function<void()> func;
 
-      // Grabs the next job in the queue. If the queue is empty it will wait
-      // for an item to be add, putting the current thread to sleep in the
-      // meantime. False will be returned when the queue is empty and the
-      // JobPool is being destroyed
-      if (!jobQueues[i].pop(func)) {
+      // Quickly try to take any available job from any queue
+      for (unsigned int n = 0; n != threadCount; ++n) {
+        if (jobQueues[(i + n) % threadCount].tryPop(func)) {
+          break;
+        }
+      }
+
+      // Grabs the next job in any queue. If the queue is empty and no other
+      // job can be found it will wait for an item to be added, putting the 
+      // current thread to sleep in the meantime. False will be returned when 
+      // the queue is empty and the JobPool is being destroyed
+      if (!func && !jobQueues[i].pop(func)) {
         break;
       }
+
       // Run the job
       func();
     }
@@ -136,6 +185,7 @@ class JobPool {
 
   // Checks for the number of threads on the system
   const unsigned int threadCount{std::thread::hardware_concurrency()};
+  const unsigned int K = 5;
   std::vector<std::thread> threads;
   std::vector<JobQueue> jobQueues{threadCount};
   std::mutex mutex;
