@@ -108,9 +108,9 @@ class JobQueue {
 
 
 // Simple multi-queued structure that runs threads to complete the tasked jobs
-class JobPool {
+class ThreadPool {
  public:
-  JobPool() {
+  ThreadPool() {
     // Spin up a number of threads equal to the amount of cores on the computer
     for (unsigned int i = 0; i < threadCount; ++i) {
       // Each thread is assigned to run the run() function
@@ -121,7 +121,7 @@ class JobPool {
   }
 
   // Closes the queues and waits for the threads to finish before destroying
-  ~JobPool() {
+  ~ThreadPool() {
     // Close queues
     for (auto& queue : jobQueues) {
       queue.done();

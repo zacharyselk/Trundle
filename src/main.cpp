@@ -2,13 +2,14 @@
 #include <SDL.h>
 //#include <SDL_image.h>
 #include <stdio.h>  // printf is more thread-safe than iostream
-#include <common.h>
-#include <constants.h>
-#include <JobPool.h>
+#include <Trundle/Util/common.h>
+#include <Trundle/Util/constants.h>
+#include <Trundle/Core/threadPool.h>
+#include <Trundle/test/threading.h>
 #include <future>
 #include <chrono>
 #include <cassert>
-#include <threading.h>
+
 
 
 int gameLoop(int, char**);

@@ -22,7 +22,7 @@ include(CTest)
 enable_testing()
 
 # Point to local paths for source code and header files
-file(GLOB sourceFiles src/*.cpp)
+file(GLOB sourceFiles src/*.cpp src/Math/*.cpp)
 add_executable(Trundle ${sourceFiles})
 include_directories(include test)
 

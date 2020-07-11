@@ -1,6 +1,7 @@
 #pragma once
 
-#include <JobPool.h>
+#include <Trundle/Core/threadPool.h>
+#include <Trundle/Math/general.h>
 
 
 namespace test {
@@ -12,14 +13,7 @@ class TestThread {
 
     // Calculate the fibonacci sequence as proof of work
     void run() {
-        int a = 0;
-        int b = 1;
-
-        for (int i = 0; i < index; ++i) {
-            result = a + b;
-            b = a;
-            a = result;
-        }
+        result = Trundle::math::fibonacci_linear(index);
     }
 
     int getResult() { return result; }
@@ -41,7 +35,7 @@ bool verifyThreads() {
     std::array<std::function<void(void)>, N> functions;
 
     {
-    JobPool jobs;
+    ThreadPool jobs;
     for (int i = 0; i < N; ++i) {
         if (i % 1000 == 0) {
             printf("Queuing tests %i-%i...\n", i, i+999);
@@ -54,18 +48,13 @@ bool verifyThreads() {
     }
     } // Let jobs deallocate and finish running
 
-    int a = 0;
-    int b = 1;
-    int result = 0;
     for (int i = 0; i < N; ++i) {
+        int result = Trundle::math::fibonacci_linear(i);
+
         if (tests[i].getResult() != result) {
             printf("Error: incorrect result, thread calcualted fib(%i) = %i and not %i\n", i, tests[i].getResult(), result);
             return false;
         }
-
-        result = a + b;
-        b = a;
-        a = result;
     }
 
     printf("Finished with no problems\n");
