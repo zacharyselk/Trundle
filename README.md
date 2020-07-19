@@ -1,5 +1,5 @@
 # Trundle
-This is a simple 2D game engine built with c++17 and SDL2, created to learn about different aspects of games engines, because what better way to learn than by doing.
+This is a simple 2D game engine built with c++17, created to learn about different aspects of games engines, because what better way to learn than by doing.
 
 ## Dependancies
 This project is going to be created around a series of submodules that will be created as the core components of the engine. Each of these components will be designed under a modular approach so that they may be used seperately from the engine but will also be designed around the engine.
@@ -17,7 +17,6 @@ $ mkdir build && cd build
 $ cmake ..
 $ make
 ```
-However if that does not work then it is probably the fault of SDL2 not being found. Adding the SDL2 libraries and headers files to the system path _should_ resolve that issue.
 
 ## Running
 Once built an exacutable named Trundle (or Trundle.exe) will be created and simply needs to be executed to run.
