@@ -2,11 +2,13 @@
 This is a simple 2D game engine built with c++17 and SDL2, created to learn about different aspects of games engines, because what better way to learn than by doing.
 
 ## Dependancies
-This project has, and will only ever have, four dependancies:
-* A c++17 capable compiler (g++, clang++, MSVC, etc)
+This project is going to be created around a series of submodules that will be created as the core components of the engine. Each of these components will be designed under a modular approach so that they may be used seperately from the engine but will also be designed around the engine.
+There will however be some third party dependancies that will be used, and those are:
 * CMake
-* SDL2
-* SDL2_Image
+* The c++17 or higher STL (generally from g++, clang++, MSVC, etc)
+* One of Vulkan, DirectX12, and Metal
+* One of OpenCL and Cuda
+* TODO: Find something that can handle networking and something that can handle audio
 
 ## Building
 This project uses CMake as its build software, so ideally you would simply need to run the following commands to build the project
