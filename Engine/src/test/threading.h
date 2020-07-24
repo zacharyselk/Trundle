@@ -58,6 +58,16 @@ bool verifyThreads() {
     }
 
     printf("Finished with no problems\n");
+
+
+    for (int i = 0; i < 100; ++i) {
+        if (Trundle::math::fibonacci_linear(i) != Trundle::math::fibonacci(i)) {
+            int lin = Trundle::math::fibonacci_linear(i);
+            int one = Trundle::math::fibonacci(i);
+            printf("Filed at %i. %i vs %i\n", i, lin, one);
+        }
+    }
+    printf("Done\n");
     return true;
 }
 

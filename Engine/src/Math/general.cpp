@@ -1,8 +1,10 @@
-#include <Trundle/Math/general.h>
+#include <Math/general.h>
+#include <cmath>
 
 
 uint64_t Trundle::math::fibonacci(uint64_t n) {
-    return -1;
+    double phi = (1.0 + sqrt(5)) / 2.0; 
+    return round(pow(phi, n) / sqrt(5)); 
 }
 
 // Slow linear time algorithm. Used for testing purposes only
