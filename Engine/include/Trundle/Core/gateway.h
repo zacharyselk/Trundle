@@ -20,11 +20,11 @@ int main(int argc, char** argv) {
 extern Trundle::Application* Trundle::CreateApplication();
 
 int main(int argc, char** argv) {
-  Trundle::Log::Debug("Starting Engine\n");
+  Trundle::Log::Debug("Starting the Engine");
   Trundle::Application* app = Trundle::CreateApplication();
   app->Run();
   delete app;
-  Trundle::Log::Debug("Application Closed\n");
+  Trundle::Log::Debug("Application Closed");
 }
 
 #endif

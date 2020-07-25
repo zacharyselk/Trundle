@@ -1,4 +1,6 @@
 #include <Trundle/Core/application.h>
+#include <Trundle/Core/log.h>
+#include <Trundle/Events/keyEvent.h>
 
 namespace Trundle {
 
@@ -6,6 +8,8 @@ namespace Trundle {
     Application::~Application()  { }
 
     void Application::Run() {
-        while(1);
+      KeyPressEvent e(40, false);
+      Log::Trace(e.toString());
+      while(1);
     }
 }
