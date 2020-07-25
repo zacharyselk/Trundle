@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <memory>
-#include "core.h"
+#include <Trundle/Core/core.h>
 
 #if !defined(TRUNDLE_LEVEL)
 #define TRUNDLE_LEVEL 1

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "log.h"
-#include "application.h"
+#include <Trundle/Core/log.h>
+#include <Trundle/Core/application.h>
 
 #if defined(_WIN32)
 

@@ -1,3 +1,3 @@
 #pragma once
 
-#include "src/Trundle/gateway.h"
+#include <Trundle/Core/gateway.h>

@@ -20,7 +20,22 @@ endif()
 # Make the executable be placed in /build/
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
-# TODO: make engine build as a dynamic library
+set(BUILD_SHARED_LIBS true)
+
+# Build engine as a dynamic library
 add_library(engine)
 add_subdirectory(Engine)
+set_target_properties(engine PROPERTIES VERSION 1.0.0 SOVERSION 1)
+install(TARGETS engine EXPORT engineConfig
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(DIRECTORY ./ DESTINATION
+        ${CMAKE_INSTALL_INCLUDEDIR}/engine)
+install(EXPORT engineConfig DESTINATION share/engine/cmake)
+export(TARGETS engine FILE engineConfig.cmake)
+
+find_package(engine REQUIRED
+    PATHS ${CMAKE_INSTALL_BINDIR})
 add_subdirectory(Driver)
+#target_link_libraries(driver engine)
