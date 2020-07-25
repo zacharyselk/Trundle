@@ -10,19 +10,32 @@ cd $(dirname $0)
 mkdir -p ../build
 cd ../build
 
-echo ""
-echo "-----------------------------Building the Engine--------------------------------"
-cmake .. -DBUILD_LIB=ON
-cmake --build .
-echo "--------------------------------------------------------------------------------"
 
-echo -e "\n"
-echo "-----------------------------Building the Driver--------------------------------"
-cmake .. -DBUILD_LIB=OFF
-cmake --build .
-echo "--------------------------------------------------------------------------------"
+# TODO: Add help argument
+if [ "$1" = "clean" ]
+then
+    cd ..
+    echo "Removing $(pwd)/bin/*"
+    rm -rf bin/*
+    echo "Removing $(pwd)/lib/*"
+    rm -rf lib/*
+    echo "Removing $(pwd)/build"
+else
+    echo ""
+    echo "-----------------------------Building the Engine--------------------------------"
+    cmake .. -DBUILD_LIB=ON
+    cmake --build .
+    echo "--------------------------------------------------------------------------------"
+
+    echo -e "\n"
+    echo "-----------------------------Building the Driver--------------------------------"
+    cmake .. -DBUILD_LIB=OFF
+    cmake --build .
+    echo "--------------------------------------------------------------------------------"
+    echo ""
+fi
 
 # Return to original directory
 cd $OLD_DIR
 
-echo -e "\n\nFinished"
+echo -e "\nFinished"
