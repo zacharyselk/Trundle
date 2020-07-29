@@ -4,12 +4,15 @@
 
 namespace Trundle {
 
-    Application::Application()  { }
+    Application::Application() {
+      window = std::unique_ptr<Window>(Window::create());
+    }
+
     Application::~Application()  { }
 
     void Application::Run() {
-      KeyPressEvent e(40, false);
-      Log::Trace(e.toString());
-      while(1);
+      while(1) {
+        window->onUpdate();
+      }
     }
 }

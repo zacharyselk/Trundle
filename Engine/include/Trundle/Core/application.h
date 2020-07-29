@@ -1,15 +1,22 @@
 #pragma once
 
-#include "core.h"
+#include <memory>
+
+#include <Trundle/Core/core.h>
+//#include <Trundle/Platform/MacOSWindow.h>
+#include <Trundle/Core/window.h>
 
 namespace Trundle {
 
     class TRUNDLE_API Application {
-        public:
+    public:
         Application();
         ~Application();
 
         void Run();
+
+    private:
+        std::unique_ptr<Window> window;
     };
 
     // Defined by the client code

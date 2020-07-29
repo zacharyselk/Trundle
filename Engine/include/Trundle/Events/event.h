@@ -3,6 +3,8 @@
 #include <string>
 #include <functional>
 
+#include <Trundle/Core/core.h>
+
 namespace Trundle {
 
   enum class EventType {
@@ -55,8 +57,8 @@ namespace Trundle {
   };
 
 
-  // Loggin function
-  std::ostream& operator<<(std::ostream &os, Event &e) {
+  // Logging function
+  inline std::ostream& operator<<(std::ostream &os, Event &e) {
     return os << e.toString();
   }
 

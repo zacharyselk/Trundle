@@ -21,6 +21,7 @@ endif()
 
 find_package(engine REQUIRED
   PATHS ${PROJECT_SOURCE_DIR}/../lib)
-
 add_subdirectory(src)
 target_link_libraries(driver engine)
+find_package(glfw3 3.3 REQUIRED)
+target_link_libraries(driver glfw)
