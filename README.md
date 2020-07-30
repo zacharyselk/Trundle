@@ -1,3 +1,5 @@
+[![Build Status](https://cloud.drone.io/api/badges/zacharyselk/Trundle/status.svg)](https://cloud.drone.io/zacharyselk/Trundle)
+
 # Trundle
 This is a simple 2D game engine built with c++17, created to learn about different aspects of games engines, because what better way to learn than by doing.
 
