@@ -1,0 +1,58 @@
+language: cpp
+os: linux
+compiler: clang
+
+cache:
+- directories:
+  - $HOME/.cache
+
+addons:
+  apt:
+    packages: lcov
+
+install:
+  # (fake) install dependencies (usually involves wget, configure, make, ...)
+  # install into cache folder (build binaries+headers only, no sources and do NOT build there)
+  - mkdir -p $HOME/.cache
+
+  # Download CMake 3.18 binaries
+  - mkdir -p $HOME/.cache/cmake3.18
+  - wget -qO- https://github.com/Kitware/CMake/releases/download/v3.18.1/cmake-3.18.1-Linux-x86_64.tar.gz | tar xpoz -C $HOME/.cache/cmake3.18 --strip-components 1
+  - export PATH=$HOME/.cache/cmake3.18/bin:$PATH
+
+  # GLFW Dependancies
+  - sudo apt-get install -y libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev
+
+  # OpenGL Dependancies
+  - sudo apt-get install -y libgl1-mesa-dev
+
+  - export CODECOV_TOKEN="55c385c2-a6b7-44ae-a868-d1377ef5e11f"
+
+
+before_script:
+  - mkdir build
+  - cd build
+  - cmake ..
+
+script:
+  - cmake --build .
+
+after_success:
+  - lcov --directory . --capture --output-file coverage.info
+  - lcov --remove coverage.info '/usr/*' "${HOME}"'/.cache/*' --output-file coverage.info
+  - lcov --list coverage.info
+  - bash <(curl -s https://codecov.io/bash) -f coverage.info || echo "Codecov did not collect coverage reports"
+
+  # Clang-Tidy
+  - export PROJECT_TOKEN="YOUR-TOKEN"
+  - export COMMIT="COMMIT-UUID"
+
+  # 1. Run Clang-Tidy
+  # 2. Convert the Clang-Tidy output to a format that the Codacy API accepts
+  # 3. Send the results to Codacy
+  #- clang-tidy "<clang-tidy-configs>" | ./codacy-clang-tidy-"<version>" | curl -XPOST -L -H "project-token: $PROJECT_TOKEN" -H "Content-type: application/json" -d @- "https://api.codacy.com/2.0/commit/$COMMIT/issuesRemoteResults"
+
+  # 4. Signal that Codacy can use the sent results and start a new analysis
+  #- curl -XPOST -L -H "project-token: $PROJECT_TOKEN" -H "Content-type: application/json" "https://api.codacy.com/2.0/commit/$COMMIT/resultsFinal"
+
+  - echo "Finished"
