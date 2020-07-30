@@ -1,0 +1,22 @@
+def linux():
+  return {
+    "kind": "pipline",
+    "name": "linux",
+    "steps": [
+      {
+        "name": "build"
+        "image": "ubuntu",
+        "commands": [
+          "apt-get update && apt-get install -y ninja-build",
+          "git clone https://github.com/zacharyselk/Trundle",
+          "mkdir build && cd build",
+          "cmake .. -G Ninja",
+          "ninja",
+          "ctest --output-on-jailure -j24"
+        ]
+      }
+    ]
+  }
+
+  def main(ctx):
+    return [linux()]
