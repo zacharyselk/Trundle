@@ -13,10 +13,12 @@ namespace Trundle {
         Application();
         ~Application();
 
-        void Run();
+        void run();
+        void onEvent(Event &event);
 
     private:
         std::unique_ptr<Window> window;
+        bool running{true};
     };
 
     // Defined by the client code

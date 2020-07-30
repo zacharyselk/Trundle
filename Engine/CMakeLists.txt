@@ -30,6 +30,10 @@ add_library(engine SHARED)
 find_package(glfw3 3.3 REQUIRED)
 target_link_libraries(engine glfw)
 
+if (APPLE)
+  target_link_libraries(engine "-framework OpenGL")
+endif()
+
 set_target_properties(engine PROPERTIES VERSION 1.0.0 SOVERSION 1)
 install(TARGETS engine EXPORT engineConfig
   ARCHIVE DESTINATION ${TRUNDLE_LIBDIR}

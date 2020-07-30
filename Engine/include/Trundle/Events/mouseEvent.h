@@ -1,23 +1,33 @@
 #pragma once
 
-#include <Trundle/Events/event.h>
 #include <tuple>
+
+#include <Trundle/Events/event.h>
+#include <Trundle/Util/boilerplate.h>
 
 namespace Trundle {
 
-  class TRUNDLE_API MouseMovedEvent : Event {
+  class TRUNDLE_API MouseMoveEvent : public Event {
   public:
-    MouseEvent(float x, float y)
+    EVENT_BOILERPLATE(MouseMove);
+    MouseMoveEvent(double x, double y)
       : x(x), y(y)  { }
 
-    int getPos() const  { return {x, y}; }
+    std::tuple<int, int> getPos() const  { return {x, y}; }
+
+    std::string toString() const override final {
+      std::stringstream ss;
+      ss << "Recieved MouseMoveEvent at position (" << x
+         << ", " << y << ")";
+      return ss.str();
+    }
 
   private:
-    float x = 0;
-    flaot y = 0;
+    double x = 0;
+    double y = 0;
   };
 
-  class TRUNDLE_API MouseButtonEvent : Event {
+  class TRUNDLE_API MouseButtonEvent : public Event {
   public:
     int getMouseCode() const  { return mouseCode; }
 
@@ -25,10 +35,33 @@ namespace Trundle {
     MouseButtonEvent(int mouseCode)
       : mouseCode(mouseCode)  { }
 
-    int mouseCode = -1;
+    int mouseCode{-1};
   };
 
-  class TRUNDLE_API MouseDownEvent : MouseButtonEvent {};
-  class TRUNDLE_API MouseUpEvent: MouseButtonEvent {};
+  class TRUNDLE_API MousePressEvent : public MouseButtonEvent {
+  public:
+    EVENT_BOILERPLATE(MousePress);
+    MousePressEvent(int mouseCode)
+      : MouseButtonEvent(mouseCode)  { }
+
+    std::string toString() const override final {
+      std::stringstream ss;
+      ss << "Recieved MousePressEvent with mouseCode " << mouseCode;
+      return ss.str();
+    }
+  };
+
+  class TRUNDLE_API MouseReleaseEvent: public MouseButtonEvent {
+  public:
+    EVENT_BOILERPLATE(MouseRelease);
+    MouseReleaseEvent(int mouseCode)
+      : MouseButtonEvent(mouseCode)  { }
+
+    std::string toString() const override final {
+      std::stringstream ss;
+      ss << "Recieved MouseReleaseEvent with mouseCode " << mouseCode;
+      return ss.str();
+    }
+  };
 
 }

@@ -10,7 +10,7 @@ namespace Trundle {
   enum class EventType {
     None=0,
     KeyPress, KeyRelease,
-    MousePress, MouseRelease
+    MousePress, MouseRelease, MouseMove
   };
 
   enum class EventCategory {
@@ -21,6 +21,8 @@ namespace Trundle {
 
   class TRUNDLE_API Event {
   public:
+    virtual ~Event() = default;
+
     // Reflection
     virtual const char* getName() const = 0;
     virtual std::string getString() const { return getName(); }

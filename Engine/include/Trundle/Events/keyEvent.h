@@ -39,7 +39,7 @@ namespace Trundle {
   };
 
 
-  class TRUNDLE_API KeyReleaseEvent: KeyEvent {
+  class TRUNDLE_API KeyReleaseEvent: public KeyEvent {
   public:
     EVENT_BOILERPLATE(KeyRelease);
     KeyReleaseEvent(int keyCode)
