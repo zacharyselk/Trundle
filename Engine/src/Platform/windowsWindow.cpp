@@ -1,8 +1,9 @@
-#if defined(TRUNDLE_OS_MACOS)
+#if defined(TRUNDLE_OS_WINDOWS)
 
 #include <sstream>
+#include <cassert>
 
-#include <Trundle/Platform/macOSWindow.h>
+#include <Trundle/Platform/windowsWindow.h>
 #include <Trundle/Core/log.h>
 #include <Trundle/Events/keyEvent.h>
 #include <Trundle/Events/mouseEvent.h>
@@ -12,18 +13,18 @@ namespace Trundle {
   static bool GLFWInitalized{false};
 
   Window* Window::create(const WindowProperties &properties) {
-    return new MacOSWindow(properties);
+    return new WindowsWindow(properties);
   }
 
-  MacOSWindow::MacOSWindow(const WindowProperties &properties) {
+  WindowsWindow::WindowsWindow(const WindowProperties &properties) {
     init(properties);
   }
 
-  MacOSWindow::~MacOSWindow() {
+  WindowsWindow::~WindowsWindow() {
     shutdown();
   }
 
-  void MacOSWindow::init(const WindowProperties &properties) {
+  void WindowsWindow::init(const WindowProperties &properties) {
     data.title = properties.title;
     data.width = properties.width;
     data.height = properties.height;
@@ -115,16 +116,16 @@ namespace Trundle {
         });
   }
 
-  void MacOSWindow::shutdown() {
+  void WindowsWindow::shutdown() {
     glfwDestroyWindow(window);
   }
 
-  void MacOSWindow::onUpdate() {
+  void WindowsWindow::onUpdate() {
     glfwPollEvents();
     glfwSwapBuffers(window);
   }
 
-  void MacOSWindow::setVSync(bool enable) {
+  void WindowsWindow::setVSync(bool enable) {
     if (enable) {
       glfwSwapInterval(1);
     } else {
@@ -133,7 +134,7 @@ namespace Trundle {
     data.vSync = enable;
   }
 
-  bool MacOSWindow::isVSync() const {
+  bool WindowsWindow::isVSync() const {
     return data.vSync;
   }
 

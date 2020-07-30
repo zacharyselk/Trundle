@@ -6,32 +6,44 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 set(TRUNDLE_LIBDIR ${PROJECT_SOURCE_DIR}/../lib)
-set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/../lib)
+#set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/../lib)
 
-# Debug
-#set(CMAKE_VERBOSE_MAKEFILE true)
-
-# Add some compiler flags based off of what build is being done
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Release)
+# Platform specific flags
+if(WIN32)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_GLAGS} -DTRUNDLE_OS_WINDOWS -DTRUNDLE_BUILD_LIB")
+elseif(APPLE)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_GLAGS} -DTRUNDLE_OS_MACOS")
+elseif(UNIX)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_GLAGS} -DTRUNDLE_OS_LINUX")
+else()
+  message(FATAL_ERROR "Error: Unknown platform, aborting.")
 endif()
 
-
-#set(CMAKE_CXX_FLAGS "-Wall -Wextra")
-#set(CMAKE_CXX_FLAGS_DEBUG "-g")
-#set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 set(GLFW_CXX_FLAGS "")
 set(GLFW_LINKER_FLAGS "")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GLFW_CXX_FLAGS}")
 
+# TODO: Cleanup
+#       Add hardcoded paths like this for the engine lib
+set(GLFW_INCLUDE_DIR "${TRUNDLE_LIBDIR}/include/")
+set(GLFW_LIBRARY_DIR "${TRUNDLE_LIBDIR}/lib/")
+#find_library(GLFW_LIB_D  glfw3_d ${GLFW_LIBRARY_DIR})
+find_library(GLFW_LIB    glfw3   ${GLFW_LIBRARY_DIR})
+include_directories(${GLFW_INCLUDE_DIR})
 
 # Build engine as a dynamic library
 add_library(engine SHARED)
-find_package(glfw3 3.3 REQUIRED)
-target_link_libraries(engine glfw)
+#find_package(glfw3 3.3 REQUIRED)
+#target_link_libraries(engine glfw)
+target_link_libraries(engine ${GLFW_LIB})
 
-if (APPLE)
+if(WIN32)
+    find_package(OpenGL REQUIRED)
+    target_link_libraries(engine ${OPENGL_LIBRARIES})
+elseif(APPLE)
   target_link_libraries(engine "-framework OpenGL")
+else()
+    message(FATAL_ERROR "TODO: Linux")
 endif()
 
 set_target_properties(engine PROPERTIES VERSION 1.0.0 SOVERSION 1)
@@ -40,16 +52,26 @@ install(TARGETS engine EXPORT engineConfig
   LIBRARY DESTINATION ${TRUNDLE_LIBDIR}
   RUNTIME DESTINATION ${TRUNDLE_LIBDIR})
 
-#add_subdirectory(include)
 add_subdirectory(src)
 
 
 target_include_directories(engine PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
-    )
+)
 
 #install(DIRECTORY ./ DESTINATION
 #  ${CMAKE_INSTALL_INCLUDEDIR}/engine/include)
-install(EXPORT engineConfig DESTINATION share/engine/cmake)
+#install(EXPORT engineConfig DESTINATION share/engine/cmake)
+#install(EXPORT engineConfig DESTINATION ${TRUNDLE_LIBDIR}/)
+
+# TODO: Cleanup the path names
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/include
+    DESTINATION ${TRUNDLE_LIBDIR})
+install(EXPORT engineConfig DESTINATION ${TRUNDLE_LIBDIR})
 export(TARGETS engine FILE ${TRUNDLE_LIBDIR}/engineConfig.cmake)
+
+# Because Windows is dumb
+if(WIN32)
+    install(TARGETS engine DESTINATION ${PROJECT_SOURCE_DIR}/../bin/)
+endif()

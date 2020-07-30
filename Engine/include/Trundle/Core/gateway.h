@@ -10,7 +10,7 @@ extern Trundle::Application* Trundle::CreateApplication();
 int main(int argc, char** argv) {
     Trundle::Log::Debug("Starting Engine\n");
     Trundle::Application* app = Trundle::CreateApplication();
-    app->Run();
+    app->run();
     delete app;
     Trundle::Log::Debug("Application Closed\n");
 }
