@@ -11,12 +11,14 @@ There will however be some third party dependancies that will be used, and those
 * TODO: Find something that can handle networking and something that can handle audio
 
 ## Building
-This project uses CMake as its build software, so ideally you would simply need to run the following commands to build the project
+This project uses CMake as its build software, so simply need to run the following commands to build the project
 ```
 $ mkdir build && cd build
 $ cmake ..
-$ make
+$ cmake --build .
 ```
+
+Note: On Windows some generators do not work properly, the one that is tested and currently supported is MinGW Makefiles. To use this generator generate the cmake files with `$ cmake .. -G "MinGW Makefiles"`
 
 ## Running
 Once built an exacutable named Trundle (or Trundle.exe) will be created and simply needs to be executed to run.
