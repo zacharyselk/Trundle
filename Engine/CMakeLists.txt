@@ -49,7 +49,7 @@ target_include_directories(engine PUBLIC
     $<INSTALL_INTERFACE:include>
     )
 
-install(DIRECTORY ./ DESTINATION
-  ${CMAKE_INSTALL_INCLUDEDIR}/engine/include)
+#install(DIRECTORY ./ DESTINATION
+#  ${CMAKE_INSTALL_INCLUDEDIR}/engine/include)
 install(EXPORT engineConfig DESTINATION share/engine/cmake)
 export(TARGETS engine FILE ${TRUNDLE_LIBDIR}/engineConfig.cmake)

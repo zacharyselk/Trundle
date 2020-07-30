@@ -17,23 +17,4 @@ endif()
 #set(CMAKE_CXX_FLAGS_DEBUG "-g")
 #set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
-option(BUILD_LIB "Build dynamic library" ON)
-
-if(BUILD_LIB)
-  add_subdirectory(Engine)
-else()
-  add_subdirectory(Driver)
-endif()
-
-
-# # Make the executable be placed in /build/
-# set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-
-# set(BUILD_SHARED_LIBS true)
-
-# #include(ExternalProject)
-# #include(External_engine)
-# #find_package(Engine REQUIRED
-# #    PATHS ${CMAKE_BINARY_DIR})
-# add_subdirectory(Driver)
-# target_link_libraries(driver Engine)
+include(CMakeLists-Library.txt)

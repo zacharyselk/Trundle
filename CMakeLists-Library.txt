@@ -1,0 +1,17 @@
+include(ExternalProject)
+
+ExternalProject_Add(engine
+  PREFIX Engine
+  SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Engine"
+  CMAKE_CACHE_ARGS
+        -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_SOURCE_DIR}/lib
+)
+
+ExternalProject_Add(driver
+  PREFIX Driver
+  SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Driver"
+  CMAKE_CACHE_ARGS
+        -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_SOURCE_DIR}/lib
+  INSTALL_COMMAND cmake -E echo "Skipping install step."
+  DEPENDS engine
+)
