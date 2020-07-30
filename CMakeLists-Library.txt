@@ -16,7 +16,7 @@ ExternalProject_Add(glfw
 ExternalProject_Add(engine
   PREFIX Engine
   SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Engine"
-  CMAKE_CACHE_ARGS
+  CMAKE_CACHE_AGS
         -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_SOURCE_DIR}/lib
   DEPENDS glfw
 )
