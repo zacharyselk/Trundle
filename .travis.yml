@@ -14,7 +14,12 @@ install:
   # (fake) install dependencies (usually involves wget, configure, make, ...)
   # install into cache folder (build binaries+headers only, no sources and do NOT build there)
   - mkdir -p $HOME/.cache
-  - touch $HOME/.cache/mydependency.so
+
+  # Download CMake 3.18 binaries
+  - wget -qO- https://github.com/Kitware/CMake/releases/download/v3.18.1/cmake-3.18.1-Linux-x86_64.tar.gz | tar xzvpo - -C $HOME/.cache/cmake3.18
+  - ls $HOME/.cache/cmake3.18
+  - export PATH=$HEOM/.cache/cmake3.18/bin:$PATH
+  #- export PATH=$HOME/.cache/cmake-3.18.1-Linux-x86_64/bin:$PATH
 
 
 before_script:
