@@ -26,7 +26,7 @@ install:
   # OpenGL Dependancies
   - sudo apt-get install -y libgl1-mesa-dev
 
-  - source CODECOV_TOKEN="55c385c2-a6b7-44ae-a868-d1377ef5e11f"
+  - export CODECOV_TOKEN="55c385c2-a6b7-44ae-a868-d1377ef5e11f"
 
 
 before_script:
