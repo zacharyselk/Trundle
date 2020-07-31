@@ -13,7 +13,7 @@ namespace Trundle {
     MouseMoveEvent(double x, double y)
       : x(x), y(y)  { }
 
-    std::tuple<int, int> getPos() const  { return {x, y}; }
+    std::tuple<int, int> getPos() const  { return std::make_tuple(x, y); }
 
     std::string toString() const override final {
       std::stringstream ss;
