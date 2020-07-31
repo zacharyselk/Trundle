@@ -1,5 +1,3 @@
-[![Build Status](https://cloud.drone.io/api/badges/zacharyselk/Trundle/status.svg)](https://cloud.drone.io/zacharyselk/Trundle)
-
 # Trundle
 This is a simple 2D game engine built with c++17, created to learn about different aspects of games engines, because what better way to learn than by doing.
 
@@ -23,15 +21,22 @@ $ cmake --build .
 Note: On Windows some generators do not work properly, the one that is tested and currently supported is MinGW Makefiles. To use this generator generate the cmake files with `$ cmake .. -G "MinGW Makefiles"`
 
 ## Running
-Once built an exacutable named Trundle (or Trundle.exe) will be created and simply needs to be executed to run.
+Once built an exacutable named bin/driver (or bin\driver.exe) will be created and simply needs to be executed to run.
+
+## Status
+| Platform | Build |
+| --- | --- |
+| Windows | TODO |
+| MacOS | TODO |
+| Linux | [![Build Status](https://cloud.drone.io/api/badges/zacharyselk/Trundle/status.svg)](https://cloud.drone.io/zacharyselk/Trundle) |
 
 ## Progress
 ### Done
-* Nothing
+* Thread pool
+* Events
 
 ### Working on
-* Reflection system
-* Thread pool
+* Event handling
 
 ### Backlog
 * Serializer/Deserializer
@@ -43,4 +48,5 @@ Once built an exacutable named Trundle (or Trundle.exe) will be created and simp
 * Character objects
 * Animation objects
 * UI/UX
+* Reflection system
 * and much more...
