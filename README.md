@@ -29,7 +29,7 @@ Once built an exacutable named bin/driver (or bin\driver.exe) will be created an
 | --- | --- |
 | Windows | TODO |
 | MacOS | TODO |
-| Linux | [![Build Status](https://cloud.drone.io/api/badges/zacharyselk/Trundle/status.svg)](https://cloud.drone.io/zacharyselk/Trundle) |
+| Linux | [![Build Status](https://travis-ci.com/zacharyselk/Trundle.svg?branch=master) |
 
 ## Progress
 ### Done
