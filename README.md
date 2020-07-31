@@ -5,7 +5,7 @@ This is a simple 2D game engine built with c++17, created to learn about differe
 This project is going to be created around a series of submodules that will be created as the core components of the engine. Each of these components will be designed under a modular approach so that they may be used seperately from the engine but will also be designed around the engine.
 There will however be some third party dependancies that will be used, and those are:
 * CMake 3.18 or higher
-* The c++17 or higher STL (gcc >= 8.0, clang >= 5.0)
+* The c++17 STL (gcc >= 8.0, clang >= 5.0)
 * OpenGL
 <!--* One of Vulkan, DirectX12, and Metal
 * One of OpenCL and Cuda
