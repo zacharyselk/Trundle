@@ -26,6 +26,8 @@ install:
   # OpenGL Dependancies
   - sudo apt-get install -y libgl1-mesa-dev
 
+  source CODECOV_TOKEN="55c385c2-a6b7-44ae-a868-d1377ef5e11f"
+
 
 before_script:
   - mkdir build
@@ -40,3 +42,4 @@ after_success:
   #- lcov --remove coverage.info '/usr/*' "${HOME}"'/.cache/*' --output-file coverage.info
   - lcov --list coverage.info
   - bash <(curl -s https://codecov.io/bash) -f coverage.info || echo "Codecov did not collect coverage reports"
+  - echo "Finished"
