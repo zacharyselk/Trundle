@@ -7,9 +7,9 @@ There will however be some third party dependancies that will be used, and those
 * CMake 3.18 or higher
 * The c++17 or higher STL (gcc >= 8.0, clang >= 5.0)
 * OpenGL
-* One of Vulkan, DirectX12, and Metal
+<!--* One of Vulkan, DirectX12, and Metal
 * One of OpenCL and Cuda
-* TODO: Find something that can handle networking and something that can handle audio
+* TODO: Find something that can handle networking and something that can handle audio-->
 
 ## Building
 This project uses CMake as its build software, so simply need to run the following commands to build the project
