@@ -1,6 +1,7 @@
 #if defined(TRUNDLE_OS_LINUX)
 
 #include <sstream>
+#include <cassert>
 
 #include <Trundle/Platform/linuxWindow.h>
 #include <Trundle/Core/log.h>
