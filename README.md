@@ -27,6 +27,7 @@ Once built an exacutable named bin/driver (or bin\driver.exe) will be created an
 | -------- | ------------------------------------------------------------------------------------------------------------------------- |
 | Windows  | TODO                                                                                                                      |
 | MacOS    | TODO                                                                                                                      |
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c1f4810974d4455680dd2a861df375d0)](https://app.codacy.com/manual/zacharyselk/Trundle?utm_source=github.com&utm_medium=referral&utm_content=zacharyselk/Trundle&utm_campaign=Badge_Grade_Dashboard)
 | Linux    | [![Build Status](https://travis-ci.com/zacharyselk/Trundle.svg?branch=master)](https://travis-ci.com/zacharyselk/Trundle) |
 
 ## Progress
