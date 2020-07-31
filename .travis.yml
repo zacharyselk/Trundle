@@ -1,6 +1,6 @@
 language: cpp
 os: linux
-compiler: gcc
+compiler: clang
 
 cache:
 - directories:
