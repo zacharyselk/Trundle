@@ -1,28 +1,40 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c1f4810974d4455680dd2a861df375d0)](https://app.codacy.com/manual/zacharyselk/Trundle?utm_source=github.com&utm_medium=referral&utm_content=zacharyselk/Trundle&utm_campaign=Badge_Grade_Dashboard)
 
 # Trundle
-This is a simple 2D game engine built with c++17, created to learn about different aspects of games engines, because what better way to learn than by doing.
+This is a simple game engine built with c++17, created to learn about different aspects of games engines, because what better way to learn than by doing.
 
 ## Dependancies
-This project is going to be created around a series of submodules that will be created as the core components of the engine. Each of these components will be designed under a modular approach so that they may be used seperately from the engine but will also be designed around the engine.
-There will however be some third party dependancies that will be used, and those are:
-  * CMake 3.18 or higher
-  * The c++17 STL (gcc >= 8.0, clang >= 5.0)
-  * OpenGL
+This project attempts to keep the dependancies down to a minimum and creating submodules whenever possible to automate dependancy building. Currently the only dependancies are:
+* CMake 3.18 or higher
+* A c++17 supported compiler (gcc >= 8.0, clang >= 5.0)
+* OpenGL
 
+### Installing Dependancies
+Go to [cmake](https://cmake.org/download/) to download and install the latest version of CMake.
+
+For the rest of the dependancies.
+
+On Ubuntu:
+```sh
+# apt-get install -y libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libgl1-mesa-dev
+```
 
 ## Building
-This project uses CMake as its build software, so simply need to run the following commands to build the project
+This project uses CMake as its build software, so simply need to run the following commands to build the project.
+Firstly clone the repository
+```sh
+$ git clone --recursive https://github.com/zacharyselk/Trundle.git
+```
+Then use CMake to compile the project
 ```sh
 $ mkdir build && cd build
 $ cmake ..
 $ cmake --build .
 ```
-
-Note: On Windows some generators do not work properly, the one that is tested and currently supported is MinGW Makefiles. To use this generator generate the cmake files with `$ cmake .. -G "MinGW Makefiles"`
+This will build the sample `Driver` in `build/bin/` by default. To change the build location use `$ cmake .. --DCMAKE_INSTALL_PREFIX=<path>`
 
 ## Running
-Once built an exacutable named bin/driver (or bin\driver.exe) will be created and simply needs to be executed to run.
+Once built an exacutable named `bin/driver` (or `bin\driver.exe`) will be created and simply needs to be executed to run.
 
 ## Status
 | Platform | Build                                                                                                                     |
@@ -32,22 +44,27 @@ Once built an exacutable named bin/driver (or bin\driver.exe) will be created an
 | Linux    | [![Build Status](https://travis-ci.com/zacharyselk/Trundle.svg?branch=master)](https://travis-ci.com/zacharyselk/Trundle) |
 
 ## Progress
-### Done
-  * Thread pool
-  * Events
+### Done (draft version)
+* Thread pool
+* Events
+* Layer stack
+* UI system (using ImGui)
 
 ### Working on
-  * Event handling
+* Event handling
 
-### Backlog
-  * Serializer/Deserializer
-  * Physics libraries
-  * Math libraries
-  * Sprite handlers
-  * Audio engine
-  * Coliders
-  * Character objects
-  * Animation objects
-  * UI/UX
-  * Reflection system
-  * and much more...
+### TODO
+#### Easy
+* Add Windows and MacOs to Travis
+* Add lit tests (using googletest)
+* Add elements to the UI
+* Add functionallity to the logger (formatting, coloring, etc.)
+* Make CMake build `/Engine` normally and use ExternalProject_Add on `/Driver`
+
+#### Medium
+* Add profiling system
+* Add a reflection system
+
+#### Hard
+* Add a Rendering system (Big job)
+* Add a different graphics api (DirectX, Metal, Vulkan, etc)
