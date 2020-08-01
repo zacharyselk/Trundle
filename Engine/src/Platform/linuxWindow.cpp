@@ -7,6 +7,8 @@
 #include <Trundle/Core/log.h>
 #include <Trundle/Events/keyEvent.h>
 #include <Trundle/Events/mouseEvent.h>
+#include <Trundle/Events/windowEvent.h>
+
 
 namespace Trundle {
 
@@ -111,6 +113,31 @@ namespace Trundle {
             assert(0 && "Unreachable");
           };
 
+          data->callback(*event);
+          delete event;
+        });
+
+    glfwSetWindowSizeCallback(window,
+        [](GLFWwindow* window, int width, int height) {
+          void* userPointer = glfwGetWindowUserPointer(window);
+          WindowData* data = (WindowData *)userPointer;
+
+          data->width = width;
+          data->height = height;
+
+          Event* event = new WindowResizeEvent(width, height);
+          data->callback(*event);
+          delete event;
+        });
+
+    glfwSetWindowCloseCallback(window,
+        [](GLFWwindow* window) {
+          void* userPointer = glfwGetWindowUserPointer(window);
+          WindowData* data = (WindowData *)userPointer;
+
+          //window->shutdown();
+
+          Event* event = new WindowCloseEvent();
           data->callback(*event);
           delete event;
         });

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <tuple>
+#include <sstream>
 
 #include <Trundle/Events/event.h>
 #include <Trundle/Util/boilerplate.h>

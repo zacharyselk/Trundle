@@ -23,8 +23,13 @@ namespace Trundle {
       }
     }
 
+    bool Application::onWindowClose(WindowCloseEvent &) {
+      running = false;
+      return true;
+    }
+
   void Application::onEvent(Event &event) {
-    Log::Debug("Hello");
-    Log::Debug(event.toString());
+    EventDispatch dispatcher(event);
+    dispatcher.dispatch<WindowCloseEvent>(std::bind(&Application::onWindowClose, this, std::placeholders::_1));
   }
 }

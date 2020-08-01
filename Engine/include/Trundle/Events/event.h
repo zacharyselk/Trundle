@@ -10,7 +10,8 @@ namespace Trundle {
   enum class EventType {
     None=0,
     KeyPress, KeyRelease,
-    MousePress, MouseRelease, MouseMove
+    MousePress, MouseRelease, MouseMove,
+    WindowClose, WindowResize
   };
 
   enum class EventCategory {
@@ -45,7 +46,7 @@ namespace Trundle {
       : event(e)  { }
 
     template<typename T>
-    bool dispatch(eventFunction<T>& func) {
+    bool dispatch(eventFunction<T> func) {
       if (event.getEventType() == T::getStaticType()) {
         event.handled = func(*(T*) &event);
         return true;

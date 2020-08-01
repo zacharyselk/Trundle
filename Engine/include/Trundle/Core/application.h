@@ -3,8 +3,8 @@
 #include <memory>
 
 #include <Trundle/Core/core.h>
-//#include <Trundle/Platform/MacOSWindow.h>
 #include <Trundle/Core/window.h>
+#include <Trundle/Events/windowEvent.h>
 
 namespace Trundle {
 
@@ -15,6 +15,7 @@ namespace Trundle {
 
         void run();
         void onEvent(Event &event);
+        bool onWindowClose(WindowCloseEvent &);
 
     private:
         std::unique_ptr<Window> window;

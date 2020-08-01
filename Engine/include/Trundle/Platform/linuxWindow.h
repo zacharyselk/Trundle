@@ -20,7 +20,7 @@ namespace Trundle {
       data.callback = callback;
     }
     void setVSync(bool enable) override final;
-		bool isVSync() const override final;
+	bool isVSync() const override final;
 
     //virtual Window getWindow() const  { return window; }
 
