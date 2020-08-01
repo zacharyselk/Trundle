@@ -5,7 +5,12 @@ project(Trundle_Driver C CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/../bin)
+set(TRUNDLE_BUILD_DIR "${CMAKE_INSTALL_PREFIX}")
+set(TRUNDLE_LIB_DIR "${TRUNDLE_BUILD_DIR}/lib")
+set(TRUNDLE_BIN_DIR "${TRUNDLE_BUILD_DIR}/bin")
+set(TRUNDLE_INCLUDE_DIR "${TRUNDLE_BUILD_DIR}/include")
+
+set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${TRUNDLE_BIN_DIR})
 
 # Platform specific flags
 if(WIN32)
@@ -18,16 +23,25 @@ else()
   message(FATAL_ERROR "Error: Unknown platform, aborting.")
 endif()
 
-#set(CMAKE_CXX_FLAGS "-Wall -Wextra")
-#set(CMAKE_CXX_FLAGS_DEBUG "-g")
-#set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+# Set compile flags
+if(UNIX)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0")
+  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
+endif()
 
-find_package(engine REQUIRED
-  PATHS ${PROJECT_SOURCE_DIR}/../lib)
 add_subdirectory(src)
-target_link_libraries(driver engine)
-find_package(glfw3 3.3 REQUIRED)
-target_link_libraries(driver glfw)
 
-message("Installing stuff to ${PROJECT_SOURCE_DIR}/../bin")
-#install (TARGETS driver DESTINATION ${PROJECT_SOURCE_DIR}/../bin)
+# Find and link the engine library and include files
+find_library(ENGINE_LIB engine ${TRUNDLE_LIB_DIR} REQUIRED)
+target_link_libraries(driver ${ENGINE_LIB})
+target_include_directories(driver PRIVATE ${TRUNDLE_INCLUDE_DIR})
+
+# Deal with Visual Studio putting the exe in stupid places
+if(MSVC)
+  set_target_properties(driver PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${TRUNDLE_BIN_DIR})
+  set_target_properties(driver PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ${TRUNDLE_BIN_DIR})
+  set_target_properties(driver PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${TRUNDLE_BIN_DIR})
+endif(MSVC)
+
+install (TARGETS driver DESTINATION ${TRUNDLE_BIN_DIR})
