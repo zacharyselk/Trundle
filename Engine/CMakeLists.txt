@@ -1,6 +1,36 @@
 cmake_minimum_required(VERSION 3.18.0)
 project(Trundle_Engine C CXX)
 
+set(CMAKE_BINARY_DIR "${CMAKE_INSTALL_PREFIX}")
+# Download and unpack googletest at configure time
+configure_file(CMakeLists.txt.in ${CMAKE_INSTALL_PREFIX}/googletest-download/CMakeLists.txt)
+execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
+  WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/googletest-download"
+  )
+execute_process(COMMAND "${CMAKE_COMMAND}" --build .
+  WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/googletest-download"
+  )
+
+# Prevent GoogleTest from overriding our compiler/linker options
+# when building with Visual Studio
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
+# Add googletest directly to our build. This adds the following targets:
+# gtest, gtest_main, gmock and gmock_main
+add_subdirectory("${CMAKE_BINARY_DIR}/googletest-src"
+  "${CMAKE_BINARY_DIR}/googletest-build"
+  )
+
+# The gtest/gmock targets carry header search path dependencies
+# automatically when using CMake 2.8.11 or later. Otherwise we
+# have to add them here ourselves.
+if(CMAKE_VERSION VERSION_LESS 2.8.11)
+  include_directories("${gtest_SOURCE_DIR}/include"
+    "${gmock_SOURCE_DIR}/include"
+    )
+endif()
+
+
 # Set C++ configs
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -9,6 +39,9 @@ set(TRUNDLE_BUILD_DIR "${CMAKE_INSTALL_PREFIX}")
 set(TRUNDLE_LIB_DIR "${TRUNDLE_BUILD_DIR}/lib")
 set(TRUNDLE_BIN_DIR "${TRUNDLE_BUILD_DIR}/bin")
 set(TRUNDLE_INCLUDE_DIR "${TRUNDLE_BUILD_DIR}/include")
+
+# Hack
+set(TRUNDLE_THIRD_PARTY_DIR "${CMAKE_INSTALL_PREFIX}/../Third-Party")
 
 # Platform specific flags
 if(WIN32)
@@ -34,6 +67,16 @@ add_library(engine SHARED)
 set_target_properties(engine PROPERTIES VERSION 1.0.0 SOVERSION 1)
 
 add_subdirectory(src)
+
+file(GLOB IMGUI_SRC
+  "${TRUNDLE_THIRD_PARTY_DIR}/ImGui/*.h"
+  "${TRUNDLE_THIRD_PARTY_DIR}/ImGui/*.cpp"
+)
+
+target_sources(engine PRIVATE ${IMGUI_SRC})
+
+# Note: Removed for now, not working
+#add_subdirectory(test)
 
 # GLFW should be built to the build directory
 find_library(GLFW_LIB glfw3 ${TRUNDLE_LIB_DIR} REQUIRED)

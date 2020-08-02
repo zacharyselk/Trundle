@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.18.0)
 project(Trundle C CXX)
 
+
 # Set C++ configs
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -43,14 +44,37 @@ ExternalProject_Add(glfw
   SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Third-Party/GLFW"
   CMAKE_CACHE_ARGS
       -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}
-  )
+)
+
+ExternalProject_Add(imgui
+  GIT_REPOSITORY "https://github.com/ocornut/imgui"
+  GIT_TAG "v1.77"
+  SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Third-Party/ImGui"
+  CONFIGURE_COMMAND ""
+  BUILD_COMMAND ""
+  INSTALL_COMMAND ""
+  TEST_COMMAND ""
+)
+
+# ExternalProject_Add(gtest
+#   GIT_REPOSITORY "https://github.com/google/googletest.git"
+#   GIT_TAG "master"
+#   SOURCE_DIR "${CMAKE_INSTALL_PREFIX}/googletest/src"
+#   BINARY_DIR "${CMAKE_INSTALL_PREFIX}/googletest/bin"
+#   CONFIGURE_COMMAND ""
+#   BUILD_COMMAND ""
+#   INSTALL_COMMAND ""
+#   TEST_COMMAND ""i
+#   #CMAKE_CACHE_ARGS
+#   #-DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}
+# )
 
 ExternalProject_Add(engine
   PREFIX Engine
   SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Engine"
   CMAKE_CACHE_ARGS
         -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}
-  DEPENDS glfw
+  DEPENDS glfw imgui
 )
 
 ExternalProject_Add(driver
@@ -61,3 +85,10 @@ ExternalProject_Add(driver
   INSTALL_COMMAND cmake -E echo "Skipping install step."
   DEPENDS engine
 )
+
+# ExternalProject_Add(testing
+#   PREFIX Testing
+#   SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Engine/test"
+#   CMAKE_CACHE_ARGS
+#       -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}
+# )
