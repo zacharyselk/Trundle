@@ -46,6 +46,16 @@ ExternalProject_Add(glfw
       -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}
 )
 
+ExternalProject_Add(gl3w
+  GIT_REPOSITORY "https://github.com/skaslev/gl3w"
+  GIT_TAG "master"
+  #SOURCE_DIR "${CMAKE_INSTALL_PREFIX}/gl3w/src"
+  #BINARY_DIR "${CMAKE_INSTALL_PREFIX}/gl3w/bin"
+  #SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Third-Party/gl3w"
+  CMAKE_CACHE_ARGS
+  -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}
+)
+
 ExternalProject_Add(imgui
   GIT_REPOSITORY "https://github.com/ocornut/imgui"
   GIT_TAG "v1.77"
@@ -74,7 +84,7 @@ ExternalProject_Add(engine
   SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Engine"
   CMAKE_CACHE_ARGS
         -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}
-  DEPENDS glfw imgui
+  DEPENDS glfw imgui gl3w
 )
 
 ExternalProject_Add(driver

@@ -39,6 +39,7 @@ set(TRUNDLE_BUILD_DIR "${CMAKE_INSTALL_PREFIX}")
 set(TRUNDLE_LIB_DIR "${TRUNDLE_BUILD_DIR}/lib")
 set(TRUNDLE_BIN_DIR "${TRUNDLE_BUILD_DIR}/bin")
 set(TRUNDLE_INCLUDE_DIR "${TRUNDLE_BUILD_DIR}/include")
+set(TRUNDLE_SHARE_DIR "${TRUNDLE_BUILD_DIR}/share")
 
 # Hack
 set(TRUNDLE_THIRD_PARTY_DIR "${CMAKE_INSTALL_PREFIX}/../Third-Party")
@@ -61,6 +62,11 @@ if(UNIX)
   set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
 endif()
 
+# Add some compiler flags based off of what build is being done
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Debug)
+endif()
+
 
 # Build engine as a dynamic library
 add_library(engine SHARED)
@@ -69,11 +75,19 @@ set_target_properties(engine PROPERTIES VERSION 1.0.0 SOVERSION 1)
 add_subdirectory(src)
 
 file(GLOB IMGUI_SRC
-  "${TRUNDLE_THIRD_PARTY_DIR}/ImGui/*.h"
   "${TRUNDLE_THIRD_PARTY_DIR}/ImGui/*.cpp"
 )
+file(GLOB IMGUI_INCLUDE
+  "${TRUNDLE_THIRD_PARTY_DIR}/ImGui/*.h"
+)
 
+# Hack: Hardcoded pathing for ImGui
 target_sources(engine PRIVATE ${IMGUI_SRC})
+target_include_directories(engine PRIVATE "${TRUNDLE_THIRD_PARTY_DIR}/ImGui")
+# Bigger Hack: Adding specific helper code
+target_sources(engine PRIVATE "${TRUNDLE_THIRD_PARTY_DIR}/ImGui/Examples/imgui_impl_glfw.cpp")
+target_sources(engine PRIVATE "${TRUNDLE_THIRD_PARTY_DIR}/ImGui/Examples/imgui_impl_opengl3.cpp")
+#target_include_directories(engine PRIVATE "${TRUNDLE_THIRD_PARTY_DIR}/ImGui/Examples")
 
 # Note: Removed for now, not working
 #add_subdirectory(test)
@@ -83,6 +97,11 @@ find_library(GLFW_LIB glfw3 ${TRUNDLE_LIB_DIR} REQUIRED)
 target_include_directories(engine PRIVATE ${TRUNDLE_INCLUDE_DIR})
 target_link_libraries(engine ${GLFW_LIB})
 
+# gl3w
+target_include_directories(engine PRIVATE "${TRUNDLE_INCLUDE_DIR}/gl3w")
+# Hack: Hard coded path
+target_sources(engine PRIVATE "${TRUNDLE_SHARE_DIR}/gl3w/gl3w.c")
+
 # Link OpenGL
 if(WIN32)
   find_package(OpenGL REQUIRED)
@@ -91,6 +110,7 @@ elseif(APPLE)
   target_link_libraries(engine "-framework OpenGL")
   target_link_libraries(engine "-framework Cocoa")
   target_link_libraries(engine "-framework IOKit")
+  target_link_libraries(engine "-framework CoreVideo")
 else()
   find_package(OpenGL REQUIRED)
   target_link_libraries(engine ${OPENGL_LIBRARIES})

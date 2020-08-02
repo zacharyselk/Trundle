@@ -13,6 +13,13 @@ namespace Trundle {
 
   static bool GLFWInitalized{false};
 
+  static void GLFWErrorCallback(int error, const char* description)
+	{
+    std::stringstream ss;
+    ss << "GLFW Error " << error << ": " << description;
+    Log::Error(ss.str());
+	}
+
   Window* Window::create(const WindowProperties &properties) {
     return new MacOSWindow(properties);
   }
@@ -39,14 +46,24 @@ namespace Trundle {
     if (!GLFWInitalized) {
       int success = glfwInit();
       assert(success && "GLFW could not initalize a window");
+      glfwSetErrorCallback(GLFWErrorCallback);
       GLFWInitalized = true;
     }
+
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     window = glfwCreateWindow(data.width, data.height, data.title.c_str(),
                               nullptr, nullptr);
     glfwMakeContextCurrent(window);
     glfwSetWindowUserPointer(window, &data);
     setVSync(true);
+
+    if (gl3wInit()) {
+      printf("failed to initialize OpenGL\n");
+      exit(1);
+    }
 
     // Set callbacks from glfw
     // TODO: Convert raw pointers to smart pointers
@@ -162,6 +179,10 @@ namespace Trundle {
 
   bool MacOSWindow::isVSync() const {
     return data.vSync;
+  }
+
+  void* MacOSWindow::getNativeWindow() const {
+    return (void*)window;
   }
 
 }

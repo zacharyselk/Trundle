@@ -2,6 +2,7 @@
 
 #include <Trundle/Core/window.h>
 
+#include <GL/gl3w.h>
 #include <GLFW/glfw3.h>
 
 namespace Trundle {
@@ -21,6 +22,8 @@ namespace Trundle {
     }
     void setVSync(bool enable) override final;
 		bool isVSync() const override final;
+
+    void* getNativeWindow() const override final;
 
     //virtual Window getWindow() const  { return window; }
 

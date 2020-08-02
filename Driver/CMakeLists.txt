@@ -23,6 +23,10 @@ else()
   message(FATAL_ERROR "Error: Unknown platform, aborting.")
 endif()
 
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Debug)
+endif()
+
 # Set compile flags
 if(UNIX)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")

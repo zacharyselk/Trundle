@@ -31,8 +31,9 @@ namespace Trundle {
     virtual EventType getEventType() const = 0;
     virtual std::string toString() const = 0;
 
+    bool handled{false};
+
   protected:
-    bool handled = false;
 
     friend class EventDispatch;
   };
