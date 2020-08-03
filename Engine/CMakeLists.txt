@@ -35,11 +35,34 @@ endif()
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-set(TRUNDLE_BUILD_DIR "${CMAKE_INSTALL_PREFIX}")
+# Setting common directories
+set(TRUNDLE_BUILD_DIR CACHE PATH "The build directory for the Trundle superbuild")
+if (NOT TRUNDLE_BUILD_DIR)
+  set(TRUNDLE_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}")
+  message(FATAL_ERROR "Build dir defaults to: ${TRUNDLE_BUILD_DIR}\nSupport not added yet, aborting")
+endif()
 set(TRUNDLE_LIB_DIR "${TRUNDLE_BUILD_DIR}/lib")
 set(TRUNDLE_BIN_DIR "${TRUNDLE_BUILD_DIR}/bin")
 set(TRUNDLE_INCLUDE_DIR "${TRUNDLE_BUILD_DIR}/include")
 set(TRUNDLE_SHARE_DIR "${TRUNDLE_BUILD_DIR}/share")
+
+# GL3W path
+set(TRUNDLE_GL3W_DIR CACHE PATH "Path to GL3W source directory")
+if (NOT TRUNDLE_GL3W_DIR)
+  # TODO: Check if default path exists
+  set(TRUNDLE_GL3W_DIR "${TRUNDLE_BUILD_DIR}/GL3W")
+  message(WARNING "TRUNDLE_GL3W_DIR not set, defaulting to ${TRUNDLE_GL3W_DIR}")
+endif()
+
+# ImGui path
+set(TRUNDLE_IMGUI_DIR CACHE PATH "Path to ImGui source directory")
+if (NOT TRUNDLE_IMGUI_DIR)
+  # TODO: Check if default path exists
+  set(TRUNDLE_IMGUI_DIR "${TRUNDLE_BUILD_DIR}/ImGui")
+  message(WARNING "TRUNDLE_IMGUI_DIR not set, defaulting to ${TRUNDLE_IMGUI_DIR}")
+endif()
+
+
 
 # Hack
 set(TRUNDLE_THIRD_PARTY_DIR "${CMAKE_INSTALL_PREFIX}/../Third-Party")
@@ -73,21 +96,23 @@ add_library(engine SHARED)
 set_target_properties(engine PROPERTIES VERSION 1.0.0 SOVERSION 1)
 
 add_subdirectory(src)
+add_subdirectory(include)
 
+# ImGui
 file(GLOB IMGUI_SRC
-  "${TRUNDLE_THIRD_PARTY_DIR}/ImGui/*.cpp"
+  "${TRUNDLE_IMGUI_DIR}/*.c"
+  "${TRUNDLE_IMGUI_DIR}/*.cpp"
+  "${TRUNDLE_IMGUI_DIR}/*.cc"
 )
 file(GLOB IMGUI_INCLUDE
-  "${TRUNDLE_THIRD_PARTY_DIR}/ImGui/*.h"
+  "${TRUNDL_IMGUI_DIR}/*.h"
+  "${TRUNDL_IMGUI_DIR}/*.hpp"
 )
-
-# Hack: Hardcoded pathing for ImGui
 target_sources(engine PRIVATE ${IMGUI_SRC})
-target_include_directories(engine PRIVATE "${TRUNDLE_THIRD_PARTY_DIR}/ImGui")
-# Bigger Hack: Adding specific helper code
-target_sources(engine PRIVATE "${TRUNDLE_THIRD_PARTY_DIR}/ImGui/Examples/imgui_impl_glfw.cpp")
-target_sources(engine PRIVATE "${TRUNDLE_THIRD_PARTY_DIR}/ImGui/Examples/imgui_impl_opengl3.cpp")
-#target_include_directories(engine PRIVATE "${TRUNDLE_THIRD_PARTY_DIR}/ImGui/Examples")
+target_include_directories(engine PRIVATE "${TRUNDLE_IMGUI_DIR}")
+# TODO: Remove
+target_sources(engine PRIVATE "${TRUNDLE_IMGUI_DIR}/examples/imgui_impl_glfw.cpp")
+target_sources(engine PRIVATE "${TRUNDLE_IMGUI_DIR}/examples/imgui_impl_opengl3.cpp")
 
 # Note: Removed for now, not working
 #add_subdirectory(test)
@@ -97,10 +122,14 @@ find_library(GLFW_LIB glfw3 ${TRUNDLE_LIB_DIR} REQUIRED)
 target_include_directories(engine PRIVATE ${TRUNDLE_INCLUDE_DIR})
 target_link_libraries(engine ${GLFW_LIB})
 
-# gl3w
-target_include_directories(engine PRIVATE "${TRUNDLE_INCLUDE_DIR}/gl3w")
-# Hack: Hard coded path
-target_sources(engine PRIVATE "${TRUNDLE_SHARE_DIR}/gl3w/gl3w.c")
+# GL3W
+file(GLOB GL3W_SRC
+  "${TRUNDLE_GL3W_DIR}/src/*.c"
+  "${TRUNDLE_GL3W_DIR}/src/*.cpp"
+  "${TRUNDLE_GL3W_DIR}/src/*.cc"
+)
+target_include_directories(engine PRIVATE "${TRUNDLE_GL3W_DIR}/include")
+target_sources(engine PRIVATE "${GL3W_SRC}")
 
 # Link OpenGL
 if(WIN32)

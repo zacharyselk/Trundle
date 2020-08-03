@@ -5,3 +5,5 @@ set(core_include_files
   log.h
   threadPool.h
 )
+
+target_sources(engine PRIVATE ${core_include_files})
