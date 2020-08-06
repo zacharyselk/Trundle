@@ -4,6 +4,7 @@
 #include <cassert>
 
 #include <Trundle/Platform/windowsWindow.h>
+#include <Trundle/Platform/OpenGL/openGLContext.h>
 #include <Trundle/Core/log.h>
 #include <Trundle/Events/keyEvent.h>
 #include <Trundle/Events/mouseEvent.h>
@@ -56,14 +57,12 @@ namespace Trundle {
 
     window = glfwCreateWindow(data.width, data.height, data.title.c_str(),
                               nullptr, nullptr);
-    glfwMakeContextCurrent(window);
+
+    context = new OpenGLContext(window);
+    context->init();
+
     glfwSetWindowUserPointer(window, &data);
     setVSync(true);
-
-    if (gl3wInit()) {
-      printf("failed to initialize OpenGL\n");
-      exit(1);
-    }
 
     // Set callbacks from glfw
     // TODO: Convert raw pointers to smart pointers
@@ -165,7 +164,7 @@ namespace Trundle {
 
   void WindowsWindow::onUpdate() {
     glfwPollEvents();
-    glfwSwapBuffers(window);
+    context->swapBuffers();
   }
 
   void WindowsWindow::setVSync(bool enable) {

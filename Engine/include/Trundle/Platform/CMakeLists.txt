@@ -1,3 +1,5 @@
+add_subdirectory(OpenGL)
+
 set(platform_include_files
   linuxWindow.h
   macOSWindow.h

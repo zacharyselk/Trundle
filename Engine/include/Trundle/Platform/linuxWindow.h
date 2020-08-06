@@ -1,8 +1,8 @@
 #pragma once
 
 #include <Trundle/Core/window.h>
+#include <Trundle/Render/renderingContext.h>
 
-#include <GL/gl3w.h>
 #include <GLFW/glfw3.h>
 
 namespace Trundle {
@@ -40,6 +40,7 @@ namespace Trundle {
     };
 
     WindowData data;
+    RenderingContext* context;
     GLFWwindow* window;
   };
 

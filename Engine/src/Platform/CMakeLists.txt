@@ -1,3 +1,5 @@
+add_subdirectory(OpenGL)
+
 set(platform_source_files
   macOSWindow.cpp
   windowsWindow.cpp
