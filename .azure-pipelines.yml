@@ -1,0 +1,14 @@
+trigger:
+  - master
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Debug'
+
+steps:
+  - task: CMake@1
+    #cmakeArgs:
+

@@ -1,5 +1,8 @@
 language: cpp
-os: linux
+os: 
+  - linux
+  - osx
+
 compiler: clang
 
 cache:
@@ -11,23 +14,29 @@ addons:
     packages: lcov
 
 install:
+  # Update brew
+  #- if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew update; fi
+  #- if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew install tree wget; fi
+
   # (fake) install dependencies (usually involves wget, configure, make, ...)
   # install into cache folder (build binaries+headers only, no sources and do NOT build there)
   - mkdir -p $HOME/.cache
 
   # Download CMake 3.18 binaries
   - mkdir -p $HOME/.cache/cmake3.18
-  - wget -qO- https://github.com/Kitware/CMake/releases/download/v3.18.1/cmake-3.18.1-Linux-x86_64.tar.gz | tar xpoz -C $HOME/.cache/cmake3.18 --strip-components 1
-  - export PATH=$HOME/.cache/cmake3.18/bin:$PATH
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then wget -qO- https://github.com/Kitware/CMake/releases/download/v3.18.1/cmake-3.18.1-Linux-x86_64.tar.gz | tar xpoz -C $HOME/.cache/cmake3.18 --strip-components 1; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then export PATH=$HOME/.cache/cmake3.18/bin:$PATH; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then curl -L https://github.com/Kitware/CMake/releases/download/v3.18.1/cmake-3.18.1-Darwin-x86_64.tar.gz | tar xpoz -C $HOME/.cache/cmake3.18 --strip-components 1; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then export PATH=$HOME/.cache/cmake3.18/CMake.app/Contents/bin:$PATH; fi
 
   # GLFW Dependancies
-  - sudo apt-get install -y libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get install -y libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev; fi
 
   # OpenGL Dependancies
-  - sudo apt-get install -y libgl1-mesa-dev
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get install -y libgl1-mesa-dev; fi
 
   # Other
-  - sudo apt-get install -y tree
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get install -y tree; fi
 
   - export CODECOV_TOKEN="55c385c2-a6b7-44ae-a868-d1377ef5e11f"
 
@@ -35,9 +44,10 @@ install:
 before_script:
   - mkdir build
   - cd build
+  #- tree $HOME/.cache
   - cmake ..
   - pwd
-  - tree .
+  #- tree .
 
 script:
   - cmake --build .
