@@ -10,6 +10,5 @@ variables:
 
 steps:
   - task: CMake@1
-    workingDirectory: 'build'
     #cmakeArgs:
 
