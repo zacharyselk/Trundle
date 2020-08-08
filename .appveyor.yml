@@ -1,5 +1,5 @@
 platform:
-  - x86
+  #- x86
   - x64
 
 configuration:
@@ -15,9 +15,9 @@ before_build:
       cd build
 
       $env:generator="Visual Studio 16 2019"
-      if ($env:PLATFORM -eq "x64") {
-          $env:generator="$env:generator Win64"
-      }
+      # if ($env:PLATFORM -eq "x64") {
+      #     $env:generator="$env:generator Win64"
+      # }
 
       echo generator="$env:generator"
       cmake .. -G "$env:generator"
