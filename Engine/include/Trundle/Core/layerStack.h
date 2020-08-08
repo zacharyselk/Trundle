@@ -1,8 +1,5 @@
 #pragma once
 
-#include <vector>
-#include <algorithm>
-
 #include <Trundle/Core/core.h>
 #include <Trundle/Core/layer.h>
 

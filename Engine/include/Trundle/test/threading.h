@@ -17,7 +17,7 @@ class TestThread {
     }
 
     int getResult() { return result; }
-    
+
     std::function<void(void)> getFunc() {
         return std::bind(&TestThread::run, this);
     }

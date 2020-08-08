@@ -1,3 +1,5 @@
+target_precompile_headers(engine PUBLIC "trundle.h")
+
 add_subdirectory(Core)
 add_subdirectory(Events)
 add_subdirectory(Math)

@@ -1,12 +1,10 @@
 #pragma once
 
-#include <variant>
-#include <iostream>
-
 // Debug info
 #define LOC " (" << __FILE__ << ": " << __LINE__ << ")\n"
 #define CHECK(condition) { if(!(condition)){ std::cerr << "ASSERT FAILED: " << #condition << LOC; exit(1) } }
 #define DIE(msg) { std::cerr << "Error: " << #msg << LOC; exit(1); }
+
 
 namespace common {
 

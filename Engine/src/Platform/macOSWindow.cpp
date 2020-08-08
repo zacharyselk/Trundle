@@ -1,7 +1,5 @@
 #if defined(TRUNDLE_OS_MACOS)
 
-#include <sstream>
-
 #include <Trundle/Platform/macOSWindow.h>
 #include <Trundle/Platform/OpenGL/openGLContext.h>
 #include <Trundle/Core/log.h>

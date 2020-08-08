@@ -1,7 +1,5 @@
 #pragma once
 
-#include <iostream>
-#include <memory>
 #include <Trundle/Core/core.h>
 
 #if !defined(TRUNDLE_LEVEL)

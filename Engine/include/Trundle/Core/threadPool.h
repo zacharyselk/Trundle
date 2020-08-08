@@ -1,14 +1,5 @@
 #pragma once
 
-#include <thread>
-#include <mutex>
-#include <condition_variable>
-#include <atomic>
-#include <functional>
-#include <deque>
-#include <array>
-#include <vector>
-
 
 // Primative queue that maintains jobs that can be accessed from multiple
 // threads
