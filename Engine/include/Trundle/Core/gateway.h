@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Trundle/trundle.hpp>
+#include <Trundle/common.h>
 #include <Trundle/Core/application.h>
 #include <Trundle/Core/log.h>
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Trundle/trundle.hpp>
+#include <Trundle/common.h>
 
 // Primative queue that maintains jobs that can be accessed from multiple
 // threads

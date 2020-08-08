@@ -51,7 +51,7 @@ set(TRUNDLE_GL3W_DIR CACHE PATH "Path to GL3W source directory")
 if (NOT TRUNDLE_GL3W_DIR)
   # TODO: Check if default path exists
   set(TRUNDLE_GL3W_DIR "${TRUNDLE_BUILD_DIR}/GL3W")
-  message(WARNING "TRUNDLE_GL3W_DIR not set, defaulting to ${TRUNDLE_GL3W_DIR}")
+  message(WARNING "TRUNDLE_GL3W_DIR not set, defaulting to ${TRUNDLE_GLW3_DIR}")
 endif()
 
 # ImGui path
@@ -96,7 +96,6 @@ add_library(engine SHARED)
 set_target_properties(engine PROPERTIES VERSION 1.0.0 SOVERSION 1)
 
 add_subdirectory(src)
-add_subdirectory(include)
 
 # ImGui
 file(GLOB IMGUI_SRC
@@ -111,8 +110,8 @@ file(GLOB IMGUI_INCLUDE
 target_sources(engine PRIVATE ${IMGUI_SRC})
 target_include_directories(engine PRIVATE "${TRUNDLE_IMGUI_DIR}")
 # TODO: Remove
-target_sources(engine PRIVATE "${TRUNDLE_IMGUI_DIR}/examples/imgui_impl_glfw.cpp")
-target_sources(engine PRIVATE "${TRUNDLE_IMGUI_DIR}/examples/imgui_impl_opengl3.cpp")
+target_sources(engine PRIVATE "${TRUNDLE_IMGUI_DIR}/Examples/imgui_impl_glfw.cpp")
+target_sources(engine PRIVATE "${TRUNDLE_IMGUI_DIR}/Examples/imgui_impl_opengl3.cpp")
 
 # Note: Removed for now, not working
 #add_subdirectory(test)

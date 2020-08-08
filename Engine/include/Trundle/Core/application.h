@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Trundle/trundle.hpp>
+#include <Trundle/common.h>
 #include <Trundle/Core/core.h>
 #include <Trundle/Core/window.h>
 #include <Trundle/Core/layer.h>

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Trundle/trundle.hpp>
+#include <Trundle/common.h>
 
 // Debug info
 #define LOC " (" << __FILE__ << ": " << __LINE__ << ")\n"

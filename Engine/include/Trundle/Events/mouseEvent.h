@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Trundle/trundle.hpp>
+#include <Trundle/common.h>
 #include <Trundle/Events/event.h>
 #include <Trundle/Util/boilerplate.h>
 
