@@ -52,6 +52,9 @@ before_script:
 script:
   - cmake --build .
 
+after_failure:
+  - tree ..
+
 after_success:
   - lcov --directory . --capture --output-file coverage.info
   - lcov --remove coverage.info '/usr/*' "${HOME}"'/.cache/*' --output-file coverage.info
