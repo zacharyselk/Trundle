@@ -10,6 +10,7 @@ image:
 
 before_build:
   - ps: |
+      git submodule update --init --recursive
       mkdir build
       cd build
 
@@ -18,6 +19,7 @@ before_build:
           $env:generator="$env:generator Win64"
       }
 
+      echo generator="$env:generator"
       cmake .. -G "$env:generator"
 
 build_script:
