@@ -1,8 +1,6 @@
 #pragma once
 
-#include <string>
-#include <sstream>
-
+#include <Trundle/common.h>
 #include <Trundle/Events/event.h>
 #include <Trundle/Util/boilerplate.h>
 

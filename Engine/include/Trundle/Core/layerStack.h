@@ -1,8 +1,6 @@
 #pragma once
 
-#include <vector>
-#include <algorithm>
-
+#include <Trundle/common.h>
 #include <Trundle/Core/core.h>
 #include <Trundle/Core/layer.h>
 
