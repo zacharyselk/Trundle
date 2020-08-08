@@ -1,7 +1,6 @@
 #pragma once
 
-#include <string>
-
+#include <Trundle/common.h>
 #include <Trundle/Core/core.h>
 #include <Trundle/Events/event.h>
 

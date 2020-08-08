@@ -1,8 +1,6 @@
 #pragma once
 
-#include <string>
-#include <functional>
-
+#include <Trundle/common.h>
 #include <Trundle/Core/core.h>
 
 namespace Trundle {

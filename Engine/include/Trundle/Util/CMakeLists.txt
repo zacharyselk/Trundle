@@ -1,7 +1,6 @@
 set(util_include_files
   boilerplate.h
   common.h
-  constants.h
   imGuiLayer.h
 )
 

@@ -1,5 +1,3 @@
-#include <cassert>
-
 #include <Trundle/Core/log.h>
 #include <Trundle/Platform/OpenGL/openGLContext.h>
 
