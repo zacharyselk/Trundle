@@ -11,15 +11,14 @@ cache:
 
 addons:
   apt:
-    packages: lcov
+    packages:
+      - lcov
 
 install:
   # Update brew
   #- if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew update; fi
   #- if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew install tree wget; fi
 
-  # (fake) install dependencies (usually involves wget, configure, make, ...)
-  # install into cache folder (build binaries+headers only, no sources and do NOT build there)
   - mkdir -p $HOME/.cache
 
   # Download CMake 3.18 binaries
@@ -44,26 +43,24 @@ install:
 before_script:
   - mkdir build
   - cd build
-  #- tree $HOME/.cache
   - cmake ..
   - pwd
-  #- tree .
 
 script:
   - cmake --build .
 
 after_failure:
-  - tree ../..
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then tree ../..; fi
 
 after_success:
-  - lcov --directory . --capture --output-file coverage.info
-  - lcov --remove coverage.info '/usr/*' "${HOME}"'/.cache/*' --output-file coverage.info
-  - lcov --list coverage.info
-  - bash <(curl -s https://codecov.io/bash) -f coverage.info || echo "Codecov did not collect coverage reports"
+  # - lcov --directory . --capture --output-file coverage.info
+  # - lcov --remove coverage.info '/usr/*' "${HOME}"'/.cache/*' --output-file coverage.info
+  # - lcov --list coverage.info
+  # - bash <(curl -s https://codecov.io/bash) -f coverage.info || echo "Codecov did not collect coverage reports"
 
   # Clang-Tidy
-  - export PROJECT_TOKEN="YOUR-TOKEN"
-  - export COMMIT="COMMIT-UUID"
+  # - export PROJECT_TOKEN="YOUR-TOKEN"
+  # - export COMMIT="COMMIT-UUID"
 
   # 1. Run Clang-Tidy
   # 2. Convert the Clang-Tidy output to a format that the Codacy API accepts
