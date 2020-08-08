@@ -36,12 +36,11 @@ This will build the sample `Driver` in `build/bin/` by default. To change the bu
 ## Running
 Once built an exacutable named `bin/driver` (or `bin\driver.exe`) will be created and simply needs to be executed to run.
 
-## Status
-| Platform | Build                                                                                                                     |
-| -------- | ------------------------------------------------------------------------------------------------------------------------- |
-| Windows  | TODO                                                                                                                      |
-| MacOS    | TODO                                                                                                                      |
-| Linux    | [![Build Status](https://travis-ci.com/zacharyselk/Trundle.svg?branch=master)](https://travis-ci.com/zacharyselk/Trundle) |
+## Builds
+| Service                                                   | System                | Compiler             | Status                                                                                                                                                                    |
+| --------------------------------------------------------- | --------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Travis CI](https://travis-ci.org/g-truc/glm)             | MacOSX, Linux 64 bits | Clang                | [![Build Status](https://travis-ci.com/zacharyselk/Trundle.svg?branch=master)](https://travis-ci.com/zacharyselk/Trundle)                                                 |
+| [AppVeyor](https://ci.appveyor.com/project/Groovounet/glm)| Windows 32 and 64     | Visual Studio 2019   | [![Build status](https://ci.appveyor.com/api/projects/status/tfs7wtb5ugy58bn5/branch/master?svg=true)](https://ci.appveyor.com/project/zacharyselk/trundle/branch/master) |
 
 ## Progress
 ### Done (draft version)
