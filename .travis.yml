@@ -12,7 +12,8 @@ cache:
 addons:
   apt:
     sources:
-      sourceline: 'deb https://apt.llvm.org/xenial/ llvm-toolchain-xenial-9 main'
+      - ubuntu-toolchain-r-test 
+      - sourceline: 'deb https://apt.llvm.org/xenial/ llvm-toolchain-xenial-9 main' 
       key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
     packages:
       packages:
