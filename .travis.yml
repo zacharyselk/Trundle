@@ -11,7 +11,13 @@ cache:
 
 addons:
   apt:
-    packages: lcov
+    sources:
+      sourceline: 'deb https://apt.llvm.org/xenial/ llvm-toolchain-xenial-9 main'
+      key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
+    packages:
+      packages:
+        - lcov
+        - clang-9
 
 install:
   # Update brew
@@ -44,10 +50,8 @@ install:
 before_script:
   - mkdir build
   - cd build
-  #- tree $HOME/.cache
   - cmake ..
   - pwd
-  #- tree .
 
 script:
   - cmake --build .
