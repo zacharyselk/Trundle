@@ -110,8 +110,8 @@ file(GLOB IMGUI_INCLUDE
 target_sources(engine PRIVATE ${IMGUI_SRC})
 target_include_directories(engine PRIVATE "${TRUNDLE_IMGUI_DIR}")
 # TODO: Remove
-target_sources(engine PRIVATE "${TRUNDLE_IMGUI_DIR}/Examples/imgui_impl_glfw.cpp")
-target_sources(engine PRIVATE "${TRUNDLE_IMGUI_DIR}/Examples/imgui_impl_opengl3.cpp")
+target_sources(engine PRIVATE "${TRUNDLE_IMGUI_DIR}/examples/imgui_impl_glfw.cpp")
+target_sources(engine PRIVATE "${TRUNDLE_IMGUI_DIR}/examples/imgui_impl_opengl3.cpp")
 
 # Note: Removed for now, not working
 #add_subdirectory(test)

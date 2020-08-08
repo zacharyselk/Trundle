@@ -53,7 +53,7 @@ script:
   - cmake --build .
 
 after_failure:
-  - tree ..
+  - tree ../..
 
 after_success:
   - lcov --directory . --capture --output-file coverage.info
