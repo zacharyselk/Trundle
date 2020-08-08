@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Trundle/trundle.hpp>
+
 
 namespace Trundle {
 namespace math {

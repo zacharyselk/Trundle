@@ -1,4 +1,4 @@
-target_precompile_headers(engine PUBLIC "trundle.h")
+target_precompile_headers(engine PRIVATE "trundle.hpp")
 
 add_subdirectory(Core)
 add_subdirectory(Events)

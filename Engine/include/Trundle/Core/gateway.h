@@ -1,6 +1,8 @@
 #pragma once
 
+#include <Trundle/trundle.hpp>
 #include <Trundle/Core/application.h>
+#include <Trundle/Core/log.h>
 
 #if defined(_WIN32)
 

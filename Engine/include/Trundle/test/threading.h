@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Trundle/trundle.hpp>
 #include <Trundle/Core/threadPool.h>
 #include <Trundle/Math/general.h>
 

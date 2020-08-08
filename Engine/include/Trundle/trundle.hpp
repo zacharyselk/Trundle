@@ -26,7 +26,7 @@
 #include <functional>
 #include <memory>
 #include <tuple>
-//#include <variant>
+#include <variant>
 
 // TODO: Remove
 #include <iostream>
