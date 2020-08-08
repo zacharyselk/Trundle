@@ -1,8 +1,5 @@
 #if defined(TRUNDLE_OS_WINDOWS)
 
-#include <sstream>
-#include <cassert>
-
 #include <Trundle/Platform/windowsWindow.h>
 #include <Trundle/Platform/OpenGL/openGLContext.h>
 #include <Trundle/Core/log.h>

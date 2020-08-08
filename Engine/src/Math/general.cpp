@@ -1,5 +1,4 @@
 #include <Trundle/Math/general.h>
-#include <cmath>
 
 
 uint64_t Trundle::math::fibonacci(uint64_t n) {

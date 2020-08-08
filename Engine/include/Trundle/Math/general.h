@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cstdint>
+#include <Trundle/common.h>
 
 
 namespace Trundle {

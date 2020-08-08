@@ -51,7 +51,7 @@ set(TRUNDLE_GL3W_DIR CACHE PATH "Path to GL3W source directory")
 if (NOT TRUNDLE_GL3W_DIR)
   # TODO: Check if default path exists
   set(TRUNDLE_GL3W_DIR "${TRUNDLE_BUILD_DIR}/GL3W")
-  message(WARNING "TRUNDLE_GL3W_DIR not set, defaulting to ${TRUNDLE_GL3W_DIR}")
+  message(WARNING "TRUNDLE_GL3W_DIR not set, defaulting to ${TRUNDLE_GLW3_DIR}")
 endif()
 
 # ImGui path
@@ -96,7 +96,6 @@ add_library(engine SHARED)
 set_target_properties(engine PROPERTIES VERSION 1.0.0 SOVERSION 1)
 
 add_subdirectory(src)
-add_subdirectory(include)
 
 # ImGui
 file(GLOB IMGUI_SRC

@@ -1,5 +1,3 @@
-#include <functional>
-
 #include <Trundle/Core/application.h>
 #include <Trundle/Core/log.h>
 #include <Trundle/Events/keyEvent.h>
