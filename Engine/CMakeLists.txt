@@ -62,6 +62,14 @@ if (NOT TRUNDLE_IMGUI_DIR)
   message(WARNING "TRUNDLE_IMGUI_DIR not set, defaulting to ${TRUNDLE_IMGUI_DIR}")
 endif()
 
+# Eigen path
+set(TRUNDLE_EIGEN_DIR CACHE PATH "Path to Eigen source directory")
+if (NOT TRUNDLE_EIGEN_DIR)
+  # TODO: Check if default path exists
+  set(TRUNDLE_EIGEN_DIR "${TRUNDLE_BUILD_DIR}/Eigen")
+  message(WARNING "TRUNDLE_EIGEN_DIR not set, defaulting to ${TRUNDLE_EIGEN_DIR}")
+endif()
+
 
 
 # Hack
@@ -95,8 +103,6 @@ endif()
 add_library(engine SHARED)
 set_target_properties(engine PROPERTIES VERSION 1.0.0 SOVERSION 1)
 
-add_subdirectory(src)
-
 # ImGui
 file(GLOB IMGUI_SRC
   "${TRUNDLE_IMGUI_DIR}/*.c"
@@ -112,6 +118,9 @@ target_include_directories(engine PRIVATE "${TRUNDLE_IMGUI_DIR}")
 # TODO: Remove
 target_sources(engine PRIVATE "${TRUNDLE_IMGUI_DIR}/examples/imgui_impl_glfw.cpp")
 target_sources(engine PRIVATE "${TRUNDLE_IMGUI_DIR}/examples/imgui_impl_opengl3.cpp")
+
+# Eigen
+target_include_directories(engine PRIVATE "${TRUNDLE_EIGEN_DIR}")
 
 # Note: Removed for now, not working
 #add_subdirectory(test)
@@ -149,6 +158,8 @@ target_include_directories(engine PRIVATE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
+
+add_subdirectory(src)
 
 # Copies the Engine header files to the build
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/include DESTINATION ${TRUNDLE_BUILD_DIR})

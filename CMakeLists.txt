@@ -111,6 +111,16 @@ ExternalProject_Add(gl3w
   TEST_COMMAND ""
   )
 
+ExternalProject_Add(eigen
+  GIT_REPOSITORY "https://gitlab.com/libeigen/eigen.git"
+  GIT_TAG "master"
+  SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/Eigen"
+  CONFIGURE_COMMAND ""
+  BUILD_COMMAND ""
+  INSTALL_COMMAND ""
+  TEST_COMMAND ""
+  )
+
 # ExternalProject_Add(gtes
 #   GIT_REPOSITORY "https://github.com/google/googletest.git"
 #   GIT_TAG "master"
