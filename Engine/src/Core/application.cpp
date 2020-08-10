@@ -4,7 +4,9 @@
 
 #include <GLFW/glfw3.h>
 
+
 namespace Trundle {
+
     Application* Application::instance = nullptr;
 
     Application::Application() {

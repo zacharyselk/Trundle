@@ -100,7 +100,7 @@ endif()
 
 
 # Build engine as a dynamic library
-add_library(engine SHARED)
+add_library(engine SHARED "")
 set_target_properties(engine PROPERTIES VERSION 1.0.0 SOVERSION 1)
 
 # ImGui
