@@ -42,7 +42,6 @@ class Game : public Trundle::Application {
     public:
     Game()  {
       pushLayer(new ExampleLayer);
-      pushOverlay(new Trundle::ImGuiLayer);
     }
 
     ~Game()  { }

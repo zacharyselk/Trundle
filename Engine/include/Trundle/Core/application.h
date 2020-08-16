@@ -66,7 +66,11 @@ namespace Trundle {
       bool running{true};
 
       std::unique_ptr<Window> window;
-      std::unique_ptr<ImGuiLayer> guiLayer;
+      //std::unique_ptr<ImGuiLayer> guiLayer;
+      ImGuiLayer* guiLayer;
+
+      unsigned int vertexBuffer, indexBuffer;
+      unsigned int vertexArray;
     };
 
     // Defined by the driver as an entry point into the engine.

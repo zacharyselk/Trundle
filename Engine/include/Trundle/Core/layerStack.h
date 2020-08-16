@@ -54,7 +54,8 @@ namespace Trundle {
     // Points to the end of the normal layers on the stack (overlay layers are
     // above)
     // TODO: Rename and use a uint rather than an iterator
-    std::vector<Layer*>::iterator it;
+    //std::vector<Layer*>::iterator it;
+    size_t it{0};
   };
 
 }

@@ -46,6 +46,7 @@ namespace Trundle {
 
   private:
     float time;
+    bool initalized{false};  // TODO: Remove the need for this
     ImVec4* backgroundColor;
   };
 
