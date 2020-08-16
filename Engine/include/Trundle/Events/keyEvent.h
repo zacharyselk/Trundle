@@ -15,10 +15,12 @@
 // limitations under the License.
 //
 //===-----------------------------------------------------------------------===//
+//
+// Represents the components of an event from the keyboad.
+//
+//===-----------------------------------------------------------------------===//
 
 #pragma once
-
-// Represents the components of an event from the keyboad.
 
 #include <Trundle/common.h>
 #include <Trundle/Events/event.h>
@@ -27,6 +29,11 @@
 
 namespace Trundle {
 
+  //===-- KeyEvent ---------------------------------------------------------===//
+  //
+  // Contains information unique to a keyboard event.
+  //
+  //===---------------------------------------------------------------------===//
   class TRUNDLE_API KeyEvent : public Event {
   public:
     int getKeyCode() const  { return keyCode; }
@@ -35,10 +42,15 @@ namespace Trundle {
     KeyEvent(int keyCode)
       : keyCode(keyCode)  { }
 
-    int keyCode = -1;
+    int keyCode{-1};
   };
 
 
+  //===-- KeyPressEvent ----------------------------------------------------===//
+  //
+  // An event for when a key on the keyboard is pressed down.
+  //
+  //===---------------------------------------------------------------------===//
   class TRUNDLE_API KeyPressEvent : public KeyEvent {
   public:
     EVENT_BOILERPLATE(KeyPress);
@@ -57,6 +69,11 @@ namespace Trundle {
   };
 
 
+  //===-- KeyReleaseEvent --------------------------------------------------===//
+  //
+  // An event for when a key on the keyboard is released.
+  //
+  //===---------------------------------------------------------------------===//
   class TRUNDLE_API KeyReleaseEvent: public KeyEvent {
   public:
     EVENT_BOILERPLATE(KeyRelease);

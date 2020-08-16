@@ -15,6 +15,11 @@
 // limitations under the License.
 //
 //===-----------------------------------------------------------------------===//
+//
+// An abstract base class for the window provided by the OS. This abstraction
+// needs to have a inherited implementation for each OS supported by Trundle.
+//
+//===-----------------------------------------------------------------------===//
 
 #pragma once
 
@@ -45,10 +50,15 @@ namespace Trundle {
     virtual uint32_t getWidth() = 0;
     virtual uint32_t getHeight() = 0;
 
+    // Setting an event callback allows for events to be captured from the OS
+    // without polling.
     virtual void setEventCallback(const eventCallback &callback) = 0;
+
+    // V-Sync...because reasons I guess
     virtual void setVSync(bool enable) = 0;
     virtual bool isVSync() const = 0;
 
+    // Returns a handle to the raw window object if needed
     virtual void* getNativeWindow() const = 0;
 
     static Window* create(const WindowProperties &properties=WindowProperties());

@@ -15,10 +15,12 @@
 // limitations under the License.
 //
 //===-----------------------------------------------------------------------===//
+//
+// Defines macros for adding simple boilerplate code.
+//
+//===-----------------------------------------------------------------------===//
 
 #pragma once
-
-// Defines macros for adding simple boilerplate code.
 
 
 #define EVENT_BOILERPLATE(type)                           \

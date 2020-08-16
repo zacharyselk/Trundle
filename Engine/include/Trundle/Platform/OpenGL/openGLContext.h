@@ -15,12 +15,13 @@
 // limitations under the License.
 //
 //===-----------------------------------------------------------------------===//
+//
+// Provides that OpenGL implementation of a graphical context and the API to
+// use it.
+//
+//===-----------------------------------------------------------------------===//
 
 #pragma once
-
-// Provides that OpenGL implementation of a graphical context and the API to
-// use it
-
 #include <Trundle/Render/renderingContext.h>
 
 struct GLFWwindow;

@@ -15,15 +15,18 @@
 // limitations under the License.
 //
 //===-----------------------------------------------------------------------===//
+//
+// The MacOS implementation of creating a repersentation for a window
+//
+//===-----------------------------------------------------------------------===//
 
 #pragma once
-
-// The MacOs implementation of creating a repersentation for a window
 
 #include <Trundle/Core/window.h>
 #include <Trundle/Render/renderingContext.h>
 
 #include <GLFW/glfw3.h>
+
 
 namespace Trundle {
 
@@ -44,8 +47,6 @@ namespace Trundle {
 		bool isVSync() const override final;
 
     void* getNativeWindow() const override final;
-
-    //virtual Window getWindow() const  { return window; }
 
   private:
     virtual void init(const WindowProperties &properties);

@@ -15,11 +15,20 @@
 // limitations under the License.
 //
 //===-----------------------------------------------------------------------===//
+//
+// Provides code core for the Engine to operate.
+// TODO: Core is a poor name so rename the and migrate it to
+//       Trundle/Engine/include/Trundle/Util,
+//
+//===-----------------------------------------------------------------------===//
 
 #pragma once
 
-// TODO: Migrate to to Trundle/Engine/include/Trundle/Util
 
+// On Windows we need to decorate all API classes (classes that will be used
+// by the driver) so that dynamic linking is functional. This is only needed
+// on windows however, so every other OS evaluates TRUNDLE_API to be an empty
+// macro.
 #if defined(TRUNDLE_OS_WINDOWS)
 #if defined(TRUNDLE_BUILD_LIB)
 #define TRUNDLE_API __declspec(dllexport)

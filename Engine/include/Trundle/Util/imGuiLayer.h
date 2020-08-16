@@ -15,11 +15,13 @@
 // limitations under the License.
 //
 //===-----------------------------------------------------------------------===//
-
-#pragma once
-
+//
 // Implments an (overlay) layer that definesthe ImGui UI creation, deletion,
 // and interactions.
+//
+//===-----------------------------------------------------------------------===//
+
+#pragma once
 
 #include <Trundle/common.h>
 #include <Trundle/Core/core.h>

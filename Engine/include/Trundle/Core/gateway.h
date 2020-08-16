@@ -15,16 +15,21 @@
 // limitations under the License.
 //
 //===-----------------------------------------------------------------------===//
+//
+// Provides the entry point for the code that uses an Application defined by the
+// driver to run the Engine.
+//
+//===-----------------------------------------------------------------------===//
 
 #pragma once
-
-// Provides the entry point for the code that uses an Application defined by the
-// driver to run the Engine
 
 #include <Trundle/common.h>
 #include <Trundle/Core/application.h>
 #include <Trundle/Core/log.h>
 
+
+// Running on Windows will eventually be done through winMain() rather than
+// main().
 #if defined(_WIN32)
 
 extern Trundle::Application* Trundle::CreateApplication();

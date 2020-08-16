@@ -15,10 +15,13 @@
 // limitations under the License.
 //
 //===-----------------------------------------------------------------------===//
+//
+// Represents the components of an event from the window.
+//
+//===-----------------------------------------------------------------------===//
 
 #pragma once
 
-// Represents the components of an event from the window.
 
 #include <Trundle/common.h>
 #include <Trundle/Events/event.h>
@@ -26,6 +29,11 @@
 
 namespace Trundle {
 
+  //===-- WindowCloseEvent -------------------------------------------------===//
+  //
+  // An event for when a window is closed.
+  //
+  //===---------------------------------------------------------------------===//
   class TRUNDLE_API WindowCloseEvent : public Event {
   public:
     EVENT_BOILERPLATE(WindowClose);
@@ -36,6 +44,12 @@ namespace Trundle {
     }
   };
 
+
+  //===-- WindowResizeEvent ------------------------------------------------===//
+  //
+  // An event for when a window is resized.
+  //
+  //===---------------------------------------------------------------------===//
   class TRUNDLE_API WindowResizeEvent : public Event {
   public:
     EVENT_BOILERPLATE(WindowResize);

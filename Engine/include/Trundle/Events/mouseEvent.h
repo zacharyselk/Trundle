@@ -15,17 +15,25 @@
 // limitations under the License.
 //
 //===-----------------------------------------------------------------------===//
+//
+// Represents the components of an event from the mouse.
+//
+//===-----------------------------------------------------------------------===//
 
 #pragma once
-
-// Represents the components of an event from the mouse.
 
 #include <Trundle/common.h>
 #include <Trundle/Events/event.h>
 #include <Trundle/Util/boilerplate.h>
 
+
 namespace Trundle {
 
+  //===-- MouseMoveEvent ---------------------------------------------------===//
+  //
+  // An event that represents when the mouse has moved.
+  //
+  //===---------------------------------------------------------------------===//
   class TRUNDLE_API MouseMoveEvent : public Event {
   public:
     EVENT_BOILERPLATE(MouseMove);
@@ -57,6 +65,12 @@ namespace Trundle {
     int mouseCode{-1};
   };
 
+
+  //===-- MousePressEvent --------------------------------------------------===//
+  //
+  // An event that represents when a mouse button has been clicked.
+  //
+  //===---------------------------------------------------------------------===//
   class TRUNDLE_API MousePressEvent : public MouseButtonEvent {
   public:
     EVENT_BOILERPLATE(MousePress);
@@ -70,6 +84,12 @@ namespace Trundle {
     }
   };
 
+
+  //===-- MouseReleaseEvent ------------------------------------------------===//
+  //
+  // An event that represents when a mouse button has been released.
+  //
+  //===---------------------------------------------------------------------===//
   class TRUNDLE_API MouseReleaseEvent: public MouseButtonEvent {
   public:
     EVENT_BOILERPLATE(MouseRelease);

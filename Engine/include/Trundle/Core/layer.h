@@ -15,12 +15,14 @@
 // limitations under the License.
 //
 //===-----------------------------------------------------------------------===//
-
-#pragma once
-
+//
 // An abstraction for the genaric layer type. Used to define interactable
 // objects that can be layered one infron of the other. An example of this would
 // be UI elements.
+//
+//===-----------------------------------------------------------------------===//
+
+#pragma once
 
 #include <Trundle/common.h>
 #include <Trundle/Core/core.h>
@@ -35,15 +37,17 @@ namespace Trundle {
       : name(name)  { }
     virtual ~Layer()  { }
 
+    // A set of actions that can be performed on a layer
     virtual void onAttach()  { }
     virtual void onDetach()  { }
     virtual void onUpdate()  { }
     virtual void onEvent(Event &event)  { }
 
+    // Reflective functions
     inline const std::string& getName()  { return name; }
 
   protected:
-    // TODO: Gen with reflection
+    // TODO: Gen with reflection code
     std::string name;
   };
 

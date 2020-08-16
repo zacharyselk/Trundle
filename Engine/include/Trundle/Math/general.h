@@ -15,11 +15,14 @@
 // limitations under the License.
 //
 //===-----------------------------------------------------------------------===//
+//
+// The start of a math library however this should propbably be removed as we
+// are currently using the eigan libary for math (TODO).
+//
+//===-----------------------------------------------------------------------===//
+
 
 #pragma once
-
-// The start of a math library however this should propbably be removed as we
-// are currently using the eigan libary for math.
 
 #include <Trundle/common.h>
 

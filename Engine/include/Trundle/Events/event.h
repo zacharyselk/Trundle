@@ -15,18 +15,25 @@
 // limitations under the License.
 //
 //===-----------------------------------------------------------------------===//
-
-#pragma once
-
+//
 // The base class for events. An event represents an interaction that the user
 // has with the program, that includes keyboard events, mouse events, and
 // actions performed to the window (ie resizing, closing, etc.).
+//
+//===-----------------------------------------------------------------------===//
+
+#pragma once
 
 #include <Trundle/common.h>
 #include <Trundle/Core/core.h>
 
 namespace Trundle {
 
+  //===-- EventType --------------------------------------------------------===//
+  //
+  // All of the types of events in the Engine.
+  //
+  //===---------------------------------------------------------------------===//
   enum class EventType {
     None=0,
     KeyPress, KeyRelease,
@@ -34,12 +41,25 @@ namespace Trundle {
     WindowClose, WindowResize
   };
 
+
+  //===-- EventCategory ----------------------------------------------------===//
+  //
+  // A bitmask to help check what category events are in.
+  //
+  //===---------------------------------------------------------------------===//
   enum class EventCategory {
     None=0,
-    KeyEvent =   1 << 0,
-    MouseEvent = 1 << 1
+    KeyEvent =    1 << 0,
+    MouseEvent =  1 << 1,
+    WindowEvent = 1 << 2
   };
 
+
+  //===-- Event ------------------------------------------------------------===//
+  //
+  // An abstract event type that all events inherit from.
+  //
+  //===---------------------------------------------------------------------===//
   class TRUNDLE_API Event {
   public:
     virtual ~Event() = default;
@@ -47,10 +67,11 @@ namespace Trundle {
     // Reflection
     virtual const char* getName() const = 0;
     virtual std::string getString() const { return getName(); }
-
-    virtual EventType getEventType() const = 0;
     virtual std::string toString() const = 0;
 
+    virtual EventType getEventType() const = 0;
+
+    // A flag that signals that the event has been handled
     bool handled{false};
 
   protected:
@@ -59,6 +80,12 @@ namespace Trundle {
   };
 
 
+  //===-- EventDispatch ----------------------------------------------------===//
+  //
+  // Used to link functions to an event type then dispactch events of that type
+  // to it.
+  //
+  //===---------------------------------------------------------------------===//
   class EventDispatch {
     template<typename T>
     using eventFunction = std::function<bool (T&)>;

@@ -15,11 +15,13 @@
 // limitations under the License.
 //
 //===-----------------------------------------------------------------------===//
-
-#pragma once
-
+//
 // Contains the classes required to maintain a simple thread pool designed to
 // handle running the tasks from a tasking system
+//
+//===-----------------------------------------------------------------------===//
+
+#pragma once
 
 #include <Trundle/common.h>
 

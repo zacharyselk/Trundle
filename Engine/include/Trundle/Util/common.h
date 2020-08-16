@@ -15,14 +15,16 @@
 // limitations under the License.
 //
 //===-----------------------------------------------------------------------===//
+//
+// Adds helper tools for general use.
+// TODO: Move into a different folder.
+//
+//===-----------------------------------------------------------------------===//
 
 #pragma once
 
-// Adds helper tools for general use.
-// TODO: Move into a different folder.
-
-
 #include <Trundle/common.h>
+
 
 // Debug info
 #define LOC " (" << __FILE__ << ": " << __LINE__ << ")\n"

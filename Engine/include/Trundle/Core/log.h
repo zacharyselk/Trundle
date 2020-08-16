@@ -15,13 +15,15 @@
 // limitations under the License.
 //
 //===-----------------------------------------------------------------------===//
-
-#pragma once
-
+//
 // A basic logging system for the engine that defines 6 different types of
 // output messages: Trace, Info, Debug, Warning, Error, and Critical. The level
 // of which these messages are output is defined at build time with the
 // TRUNDLE_LEVEL macro.
+//
+//===-----------------------------------------------------------------------===//
+
+#pragma once
 
 #include <Trundle/common.h>
 #include <Trundle/Core/core.h>

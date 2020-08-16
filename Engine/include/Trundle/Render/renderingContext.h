@@ -15,11 +15,13 @@
 // limitations under the License.
 //
 //===-----------------------------------------------------------------------===//
-
-#pragma once
-
+//
 // An abstract base class of a graphical context to be inherited by children
 // classes for each supported graphical API (OpenGL, DirectX, Vulkan, etc.).
+//
+//===-----------------------------------------------------------------------===//
+
+#pragma once
 
 
 namespace Trundle {
