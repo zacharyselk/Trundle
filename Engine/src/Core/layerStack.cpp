@@ -22,7 +22,7 @@
 namespace Trundle {
 
 LayerStack::LayerStack()
-  : layers{}, it(layers.begin())  { }
+  : layers{}, it{0} { }
 
 LayerStack::~LayerStack() {
   for (Layer* layer : layers) {
@@ -31,7 +31,8 @@ LayerStack::~LayerStack() {
 }
 
 void LayerStack::pushLayer(Layer* layer) {
-  it = layers.emplace(it, layer);
+  layers.emplace(layers.begin()+it, layer);
+  ++it;
   layer->onAttach();
 }
 
