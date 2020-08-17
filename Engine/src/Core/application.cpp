@@ -139,6 +139,8 @@ namespace Trundle {
       // Render<OpenGLAPI> render(api);
       // IndexBuffer* buf = createIndexBuffer(render, indices, 3);
       // IndexBuffer* buf = render.createIndexBuffer(indices, 3);
+      IndexBuffer buf = IndexBuffer::create(renderer, indices, 3);
+      buf.bind();
 
       unsigned int vertexShader;
       vertexShader = glCreateShader(GL_VERTEX_SHADER);
