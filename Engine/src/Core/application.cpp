@@ -107,11 +107,11 @@ namespace Trundle {
                                          std::placeholders::_1));
 
       // Temporary
+      Renderer renderer(RenderingAPI::OpenGLAPI);
+
       glGenVertexArrays(1, &vertexArray);
       glBindVertexArray(vertexArray);
 
-      glGenBuffers(1, &vertexBuffer);
-      glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 
       // Triangle
       float vertices[3*3] = {
@@ -120,7 +120,10 @@ namespace Trundle {
            0.0f,  0.5f, 0.0f
       };
 
-      glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+      // glGenBuffers(1, &vertexBuffer);
+      // glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+      // glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+      VertexBuffer vertexBuffer(renderer, vertices, sizeof(vertices));
       glEnableVertexAttribArray(0);
       glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), 0);
 
@@ -138,7 +141,6 @@ namespace Trundle {
       //glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
       //RenderingAPI api;
-      Renderer renderer(RenderingAPI::OpenGLAPI);
       IndexBuffer buf(renderer, indices, 3);
       // IndexBuffer* buf = createIndexBuffer(render, indices, 3);
       // IndexBuffer* buf = render.createIndexBuffer(indices, 3);
