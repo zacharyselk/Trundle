@@ -18,7 +18,7 @@ namespace OpenGL {
     //create(const Renderer& r, uint32_t* indices, uint32_t size) const;
     friend class OpenGL::IndexBuffer;
 
-  private:
+  public:
     class IndexBufferConcept {
     public:
       virtual ~IndexBufferConcept() = default;

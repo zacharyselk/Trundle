@@ -5,7 +5,7 @@
 
 namespace Trundle::OpenGL {
 
-  class IndexBuffer : Trundle::IndexBuffer::IndexBufferConcept {
+  class IndexBuffer : public Trundle::IndexBuffer::IndexBufferConcept {
   public:
     IndexBuffer(uint32_t* indices, uint32_t count);
 

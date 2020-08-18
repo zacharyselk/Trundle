@@ -1,5 +1,6 @@
 add_subdirectory(Math)
 add_subdirectory(Util)
+add_subdirectory(Render)
 add_subdirectory(test)
 add_subdirectory(Core)
 add_subdirectory(Platform)
