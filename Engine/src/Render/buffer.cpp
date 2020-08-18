@@ -4,19 +4,20 @@
 
 namespace Trundle {
 
-  IndexBuffer IndexBuffer::create(const Renderer& r,
-                                  uint32_t* indices,
-                                  uint32_t size) {
+  IndexBuffer::IndexBuffer(const Renderer &r, uint32_t* indices, uint32_t count) 
+    : vptr(nullptr) {
     switch (r.getAPI()) {
-    case RenderingAPI::None:
-      // TODO
-      assert(false && "Headless rendering is not supported yet");
-      break;
+      // TODO: Implement
+      case RenderingAPI::None:
+        break;
 
-    case RenderingAPI::OpenGL:
-      // TODO
-      return OpenGL::IndexBuffer::create(r, indices, size);
-    }
+      case RenderingAPI::OpenGLAPI:
+        vptr = std::make_shared<OpenGL::IndexBuffer>(indices, count);
+        break;
+
+      default:
+        Log::Error("Unknown graphics API");
+      }
   }
 
 }

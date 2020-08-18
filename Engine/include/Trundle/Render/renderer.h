@@ -5,7 +5,7 @@ namespace Trundle {
 
   enum RenderingAPI {
      None = 0,
-     OpenGL = 1
+     OpenGLAPI = 1
   };
 
   class Renderer {
@@ -16,6 +16,6 @@ namespace Trundle {
     RenderingAPI getAPI() const { return api; }
   private:
     RenderingAPI api;
-  }
+  };
 
 }

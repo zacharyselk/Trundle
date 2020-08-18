@@ -19,6 +19,8 @@
 #include <Trundle/Core/application.h>
 #include <Trundle/Core/log.h>
 #include <Trundle/Events/keyEvent.h>
+#include <Trundle/Render/renderer.h>
+#include <Trundle/Render/buffer.h>
 
 //#include <GLFW/glfw3.h>
 
@@ -124,8 +126,8 @@ namespace Trundle {
 
 
 
-      glGenBuffers(1, &indexBuffer);
-      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+      //glGenBuffers(1, &indexBuffer);
+      //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
 
       unsigned int indices[3] = { 0, 1, 2 };
       //uint32_t indices[3] = { 0, 1, 2 };
@@ -133,14 +135,15 @@ namespace Trundle {
       // indices[0] = 0;
       // indices[1] = 1;
       // indices[2] = 2;
-      glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+      //glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-      // OpenGLAPI api;
-      // Render<OpenGLAPI> render(api);
+      //RenderingAPI api;
+      Renderer renderer(RenderingAPI::OpenGLAPI);
+      IndexBuffer buf(renderer, indices, 3);
       // IndexBuffer* buf = createIndexBuffer(render, indices, 3);
       // IndexBuffer* buf = render.createIndexBuffer(indices, 3);
-      IndexBuffer buf = IndexBuffer::create(renderer, indices, 3);
-      buf.bind();
+      //IndexBuffer buf = IndexBuffer::create(renderer, indices, 3);
+      //buf.bind();
 
       unsigned int vertexShader;
       vertexShader = glCreateShader(GL_VERTEX_SHADER);
