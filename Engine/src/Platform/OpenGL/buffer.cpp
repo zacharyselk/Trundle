@@ -42,7 +42,7 @@ namespace Trundle::OpenGL {
         glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
     }
 
-    VertexBuffer::~VertexBUffer() {
+    VertexBuffer::~VertexBuffer() {
         glDeleteBuffers(1, &id);
     }
 

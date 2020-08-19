@@ -19,8 +19,14 @@
 #include <Trundle/Platform/OpenGL/buffer.h>
 #include <Trundle/Render/buffer.h>
 
+#include <GL/gl3w.h>
+#include <GLFW/glfw3.h>
+
 
 namespace Trundle {
+
+
+
 
   IndexBuffer::IndexBuffer(const Renderer &r, uint32_t* indices, uint32_t count) 
     : vptr(nullptr) {

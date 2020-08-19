@@ -25,6 +25,7 @@
 #include <Trundle/common.h>
 #include <Trundle/Core/log.h>
 #include <Trundle/Render/renderer.h>
+#include <Trundle/Render/util.h>
 
 
 namespace Trundle {
@@ -34,6 +35,33 @@ namespace OpenGL {
   class IndexBuffer;
   class VertexBuffer;
 }
+
+  struct LayoutElement {
+    LayoutElement(const Rendering::GraphicsType &type, const std::string &name)
+      : type(type), name(name), size(Rendering::getSizeOf(type)), offset(-1)  { }
+
+    Rendering::GraphicsType type;
+    std::string name;
+    uint32_t size;
+    uint32_t offset;
+  };
+
+
+  class BufferLayout {
+  public:
+    BufferLayout(const std::initializer_list<LayoutElement> &layout)
+      : layout(layout), stride(0) {
+        for (auto& element : this->layout) {
+          element.offset = stride;
+          stride += element.size;
+        }
+      }
+
+  private:
+    std::vector<LayoutElement> layout;
+    uint32_t stride;
+  };
+
 
   //===-- IndexBuffer ------------------------------------------------------===//
   //
