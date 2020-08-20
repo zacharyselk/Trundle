@@ -70,7 +70,9 @@ namespace OpenGL {
   //===---------------------------------------------------------------------===//
   class IndexBuffer {
   public:
+    IndexBuffer() = default;
     IndexBuffer(const Renderer &r, uint32_t* indices, uint32_t count);
+    IndexBuffer(IndexBuffer&&) = default;
 
     friend class OpenGL::IndexBuffer;
 
@@ -93,7 +95,9 @@ namespace OpenGL {
   //===---------------------------------------------------------------------===//
   class VertexBuffer {
   public:
+    
     VertexBuffer(const Renderer &r, float* vertices, uint32_t size);
+    VertexBuffer(VertexBuffer&&) = default;
 
     friend class OpenGL::VertexBuffer;
 

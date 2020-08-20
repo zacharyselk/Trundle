@@ -123,7 +123,8 @@ namespace Trundle {
       // glGenBuffers(1, &vertexBuffer);
       // glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
       // glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-      VertexBuffer vertexBuffer(renderer, vertices, sizeof(vertices));
+      //VertexBuffer vBuf(renderer, vertices, sizeof(vertices));
+      vertexBuffer = VertexBuffer(renderer, vertice, sizeof(vertices));
       glEnableVertexAttribArray(0);
       glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), 0);
 
@@ -141,7 +142,8 @@ namespace Trundle {
       //glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
       //RenderingAPI api;
-      IndexBuffer buf(renderer, indices, 3);
+      //IndexBuffer buf(renderer, indices, 3);
+      indexBuffer = std::move(IndexBuffer(renderer, indices, 3));
       // IndexBuffer* buf = createIndexBuffer(render, indices, 3);
       // IndexBuffer* buf = render.createIndexBuffer(indices, 3);
       //IndexBuffer buf = IndexBuffer::create(renderer, indices, 3);

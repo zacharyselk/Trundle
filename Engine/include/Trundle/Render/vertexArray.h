@@ -31,7 +31,7 @@ namespace Trundle {
 
     class VertexArray {
     public:
-        VertexArray(const Renderer &r, )
+        //VertexArray(const Renderer &r, )
     }
 
 }

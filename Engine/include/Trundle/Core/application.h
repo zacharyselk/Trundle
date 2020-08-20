@@ -30,6 +30,7 @@
 #include <Trundle/Core/layerStack.h>
 #include <Trundle/Events/windowEvent.h>
 #include <Trundle/Util/imGuiLayer.h>
+#include <Trundle/Render/buffer.h>
 
 
 namespace Trundle {
@@ -69,8 +70,11 @@ namespace Trundle {
       //std::unique_ptr<ImGuiLayer> guiLayer;
       ImGuiLayer* guiLayer;
 
-      unsigned int vertexBuffer, indexBuffer;
+      //unsigned int vertexBuffer, indexBuffer;
       unsigned int vertexArray;
+
+      VertexBuffer vertexBuffer;
+      IndexBuffer indexBuffer;
     };
 
     // Defined by the driver as an entry point into the engine.
