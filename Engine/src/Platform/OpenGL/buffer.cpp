@@ -25,7 +25,6 @@
 namespace Trundle::OpenGL {
 
     IndexBuffer::IndexBuffer(uint32_t* indices, uint32_t count) {
-        Log::Debug("IndexBuffer ctor");
         glGenBuffers(1, &id);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), 
@@ -33,20 +32,17 @@ namespace Trundle::OpenGL {
     }
 
     IndexBuffer::~IndexBuffer() {
-        Log::Debug("IndexBuffer dtor");
         glDeleteBuffers(1, &id);
     }
 
 
     VertexBuffer::VertexBuffer(float* vertices, uint32_t size) {
-        Log::Debug("VertexBuffer ctor");
         glGenBuffers(1, &id);
         glBindBuffer(GL_ARRAY_BUFFER, id);
         glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
     }
 
     VertexBuffer::~VertexBuffer() {
-        Log::Debug("VertexBuffer dtor");
         glDeleteBuffers(1, &id);
     }
 

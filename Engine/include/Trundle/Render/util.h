@@ -35,7 +35,8 @@ namespace Trundle::Rendering {
         None=0,
         Float,
         Float2,
-        Float3
+        Float3,
+        Float4
     };
 
 
@@ -47,6 +48,22 @@ namespace Trundle::Rendering {
             return 4*2;
         case Float3:
             return 4*3;
+        case Float4:
+            return 4*4;
+        }
+
+        Log::Error("Unknown GraphicsType");
+        exit(1);
+        return -1;
+    }
+
+        static uint32_t getComponentSizeOf(const GraphicsType &type) {
+        switch (type) {
+        case Float:
+        case Float2:
+        case Float3:
+        case Float4:
+            return 4;
         }
 
         Log::Error("Unknown GraphicsType");

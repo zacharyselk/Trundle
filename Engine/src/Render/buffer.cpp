@@ -26,16 +26,34 @@
 
 namespace Trundle {
 
-  LayoutElement::LayoutElement(const Rendering::GraphicsType &type, const std::string &name)
-    : type(type), name(name), size(Rendering::getSizeOf(type)), offset(-1)  { }
+  LayoutElement::LayoutElement(const Rendering::GraphicsType &type, const std::string &name, const bool &normalize)
+    : type(type), name(name), elementSize(Rendering::getSizeOf(type)), 
+    numberOfComponents(elementSize/Rendering::getComponentSizeOf(type)), 
+    offset(-1), normalize(normalize)  { }
 
 
   BufferLayout::BufferLayout(const std::initializer_list<LayoutElement> &layout)
     : layout(layout), stride(0) {
     for (auto& element : this->layout) {
       element.offset = stride;
-      stride += element.size;
+      stride += element.elementSize;
     }
+  }
+
+  LayoutElement &BufferLayout::operator[](size_t index) {
+    return layout[index];
+  }
+
+  size_t BufferLayout::size() {
+    return layout.size();
+  }
+
+  std::vector<LayoutElement>::iterator BufferLayout::begin()  { 
+    return layout.begin(); 
+  }
+
+  std::vector<LayoutElement>::iterator BufferLayout::end()  { 
+    return layout.end(); 
   }
 
 

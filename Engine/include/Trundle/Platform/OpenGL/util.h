@@ -28,11 +28,12 @@
 
 namespace Trundle::OpenGL {
 
-    static GLenum toOpenGL(const Trundle::GraphicsType &type) {
-        swtich (type) {
-        case Trundle::GraphicsType::Float:
-        case Trundle::GraphicsType::Float2:
-        case Trundle::GraphicsType::Float3:
+    static GLenum toOpenGL(const Trundle::Rendering::GraphicsType &type) {
+        switch (type) {
+        case Trundle::Rendering::Float:
+        case Trundle::Rendering::Float2:
+        case Trundle::Rendering::Float3:
+        case Trundle::Rendering::Float4:
             return GL_FLOAT;
         }
 

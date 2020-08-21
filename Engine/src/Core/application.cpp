@@ -28,6 +28,8 @@
 // Temporary
 #include <GL/gl3w.h>
 #include <GLFW/glfw3.h>
+#include <Trundle/Render/util.h>
+#include <Trundle/Platform/OpenGL/util.h>
 
 //#include <Trundle/Render/render.h>
 
@@ -114,60 +116,54 @@ namespace Trundle {
 
 
       // Triangle
-      float vertices[3*3] = {
-          -0.5f, -0.5f, 0.0f,
-           0.5f, -0.5f, 0.0f,
-           0.0f,  0.5f, 0.0f
+      float vertices[7*3] = {
+          -0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+           0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+           0.0f,  0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f
       };
 
-      // glGenBuffers(1, &vertexBuffer);
-      // glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-      // glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-      //VertexBuffer vBuf(renderer, vertices, sizeof(vertices));
       vertexBuffer = std::move(VertexBuffer(renderer, vertices, sizeof(vertices)));
-      //vertexBuffer(VertexBuffer(renderer, vertices, sizeof(vertices)));
-      glEnableVertexAttribArray(0);
-      glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), 0);
 
-
-
-      //glGenBuffers(1, &indexBuffer);
-      //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+      BufferLayout layout{
+        { Trundle::Rendering::Float3, "position" },
+        { Trundle::Rendering::Float4, "color"}
+      };
+      for (size_t i = 0; i < layout.size(); ++i) {
+        glEnableVertexAttribArray(i);
+        glVertexAttribPointer(
+          i, layout[i].numberOfComponents, OpenGL::toOpenGL(Rendering::Float4), 
+          layout[i].normalize ? GL_TRUE : GL_FALSE, layout.getStride(), (const void*)layout[i].offset);
+      }
 
       unsigned int indices[3] = { 0, 1, 2 };
-      //uint32_t indices[3] = { 0, 1, 2 };
-      // uint32_t* indices = new uint32_t[3];
-      // indices[0] = 0;
-      // indices[1] = 1;
-      // indices[2] = 2;
-      //glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-      //RenderingAPI api;
-      //IndexBuffer buf(renderer, indices, 3);
       indexBuffer = std::move(IndexBuffer(renderer, indices, 3));
-      // IndexBuffer* buf = createIndexBuffer(render, indices, 3);
-      // IndexBuffer* buf = render.createIndexBuffer(indices, 3);
-      //IndexBuffer buf = IndexBuffer::create(renderer, indices, 3);
-      //buf.bind();
 
       unsigned int vertexShader;
       vertexShader = glCreateShader(GL_VERTEX_SHADER);
 
       std::string vs =
         "#version 330 core\n"
-        "layout(location = 0) in vec4 position;\n"
+        "layout(location = 0) in vec3 in_position;\n"
+        "layout(location = 1) in vec4 in_color;\n"
+        "out vec3 v_position;\n"
+        "out vec4 v_color;\n"
         "void main(){\n"
-        "  gl_Position = position;\n"
+        "  v_position = in_position;\n"
+        "  v_color = in_color\n;"
+        "  gl_Position = vec4(in_position, 1.0);\n"
         "}\n";
       std::string fs =
         "#version 330 core\n"
         "layout(location = 0) out vec4 color;\n"
+        "in vec3 v_position;\n"
+        "in vec4 v_color;\n"
         "void main(){\n"
-        "  color = vec4(1.0, 0.0, 0.0, 1.0);\n"
+        "  color = v_color*0.5 + vec4(v_position * 0.5 + 0.5, 1.0) * 0.5;\n"
         "}\n";
 
       unsigned int id = createShader(vs, fs);
       glUseProgram(id);
+
     }
 
     Application::~Application()  { }

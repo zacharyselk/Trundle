@@ -36,19 +36,41 @@ namespace OpenGL {
   class VertexBuffer;
 }
 
+  //===-- LayoutElement ----------------------------------------------------===//
+  //
+  // A structure for defining how the layout of a vertex (element) is defined.
+  // TODO: Possibly should be moved somewhere else, either into LayoutElement
+  //       if it is the only one who uses this, otherwise maybe into
+  //       Render/util.h
+  //
+  //===---------------------------------------------------------------------===//
   struct LayoutElement {
-    LayoutElement(const Rendering::GraphicsType &type, const std::string &name);
+    LayoutElement(const Rendering::GraphicsType &type, const std::string &name, const bool &normalize=false);
 
     Rendering::GraphicsType type;
     std::string name;
-    uint32_t size;
+    uint32_t elementSize;
+    uint32_t numberOfComponents;
     uint32_t offset;
+    bool normalize;
   };
 
 
+  //===-- BufferLayout -----------------------------------------------------===//
+  //
+  // Constructs and calculates a genaric layout specification for a buffer.
+  //
+  //===---------------------------------------------------------------------===//
   class BufferLayout {
   public:
     BufferLayout(const std::initializer_list<LayoutElement> &layout);
+
+    uint32_t getStride() const { return stride; }
+
+    LayoutElement &operator[](size_t index);
+    size_t size();
+    std::vector<LayoutElement>::iterator begin();
+    std::vector<LayoutElement>::iterator end();
 
   private:
     std::vector<LayoutElement> layout;
@@ -66,7 +88,7 @@ namespace OpenGL {
     IndexBuffer() = default;
     IndexBuffer(const Renderer &r, uint32_t* indices, uint32_t count);
     IndexBuffer(IndexBuffer&&) = default;
-    IndexBuffer& operator=(IndexBuffer buf) noexcept
+    IndexBuffer& operator=(const IndexBuffer &buf) noexcept
       { vptr = buf.vptr; return *this; }
 
     friend class OpenGL::IndexBuffer;
@@ -93,8 +115,11 @@ namespace OpenGL {
     VertexBuffer() = default;
     VertexBuffer(const Renderer &r, float* vertices, uint32_t size);
     VertexBuffer(VertexBuffer&&) = default;
-    VertexBuffer& operator=(VertexBuffer buf) noexcept
+    VertexBuffer& operator=(const VertexBuffer &buf) noexcept
       { vptr = buf.vptr; return *this; }
+
+    //void setLayout(const BufferLayout &layout)  { vptr->setLayout(layout); }
+    //const BufferLayout &getLayout()  { return vptr->getLayout(); }
 
     friend class OpenGL::VertexBuffer;
 
