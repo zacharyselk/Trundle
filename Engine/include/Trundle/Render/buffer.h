@@ -73,6 +73,8 @@ namespace OpenGL {
     IndexBuffer() = default;
     IndexBuffer(const Renderer &r, uint32_t* indices, uint32_t count);
     IndexBuffer(IndexBuffer&&) = default;
+    IndexBuffer& operator=(IndexBuffer buf) noexcept
+      { vptr = buf.vptr; return *this; }
 
     friend class OpenGL::IndexBuffer;
 
@@ -95,9 +97,11 @@ namespace OpenGL {
   //===---------------------------------------------------------------------===//
   class VertexBuffer {
   public:
-    
+    VertexBuffer() = default;
     VertexBuffer(const Renderer &r, float* vertices, uint32_t size);
     VertexBuffer(VertexBuffer&&) = default;
+    VertexBuffer& operator=(VertexBuffer buf) noexcept
+      { vptr = buf.vptr; return *this; }
 
     friend class OpenGL::VertexBuffer;
 
