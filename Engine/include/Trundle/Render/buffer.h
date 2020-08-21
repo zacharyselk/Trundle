@@ -37,8 +37,7 @@ namespace OpenGL {
 }
 
   struct LayoutElement {
-    LayoutElement(const Rendering::GraphicsType &type, const std::string &name)
-      : type(type), name(name), size(Rendering::getSizeOf(type)), offset(-1)  { }
+    LayoutElement(const Rendering::GraphicsType &type, const std::string &name);
 
     Rendering::GraphicsType type;
     std::string name;
@@ -49,13 +48,7 @@ namespace OpenGL {
 
   class BufferLayout {
   public:
-    BufferLayout(const std::initializer_list<LayoutElement> &layout)
-      : layout(layout), stride(0) {
-        for (auto& element : this->layout) {
-          element.offset = stride;
-          stride += element.size;
-        }
-      }
+    BufferLayout(const std::initializer_list<LayoutElement> &layout);
 
   private:
     std::vector<LayoutElement> layout;

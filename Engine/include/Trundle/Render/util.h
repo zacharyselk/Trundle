@@ -25,8 +25,8 @@
 #include <Trundle/common.h>
 #include <Trundle/Core/log.h>
 
-#include <GL/gl3w.h>
-#include <GLFW/glfw3.h>
+//#include <GL/gl3w.h>
+//#include <GLFW/glfw3.h>
 
 
 namespace Trundle::Rendering {

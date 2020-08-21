@@ -18,6 +18,7 @@
 
 #include <Trundle/Platform/OpenGL/buffer.h>
 #include <Trundle/Render/buffer.h>
+#include <Trundle/Render/util.h>
 
 #include <GL/gl3w.h>
 #include <GLFW/glfw3.h>
@@ -25,7 +26,17 @@
 
 namespace Trundle {
 
+  LayoutElement::LayoutElement(const Rendering::GraphicsType &type, const std::string &name)
+    : type(type), name(name), size(Rendering::getSizeOf(type)), offset(-1)  { }
 
+
+  BufferLayout::BufferLayout(const std::initializer_list<LayoutElement> &layout)
+    : layout(layout), stride(0) {
+    for (auto& element : this->layout) {
+      element.offset = stride;
+      stride += element.size;
+    }
+  }
 
 
   IndexBuffer::IndexBuffer(const Renderer &r, uint32_t* indices, uint32_t count) 
