@@ -79,10 +79,6 @@ if (NOT TRUNDLE_EIGEN_DIR)
 endif()
 
 
-
-# Hack
-set(TRUNDLE_THIRD_PARTY_DIR "${CMAKE_INSTALL_PREFIX}/../Third-Party")
-
 # Platform specific flags
 if(WIN32)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_GLAGS} -DTRUNDLE_OS_WINDOWS -DTRUNDLE_BUILD_LIB")
@@ -134,7 +130,7 @@ target_include_directories(engine PRIVATE "${TRUNDLE_EIGEN_DIR}")
 # Note: Removed for now, not working
 #add_subdirectory(test)
 
-# GLFW should be built to the build directory
+# GLFW
 find_library(GLFW_LIB
   NAMES glfw3
   PATHS "${TRUNDLE_GLFW_DIR}/src/"

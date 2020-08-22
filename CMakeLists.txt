@@ -39,57 +39,8 @@ endif()
 
 # Download and build dependencies
 set(TRUNDLE_BUILD_DIR "${PROJECT_BINARY_DIR}")
-#configure_file(CMakeLists.txt.in "${TRUNDLE_BUILD_DIR}/CMakeLists.txt")
-
-# execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" "../tmp"
-#   WORKING_DIRECTORY "${TRUNDLE_BUILD_DIR}"
-# )
-# message("Four")
-# execute_process(COMMAND "${CMAKE_COMMAND}" --build .
-#   WORKING_DIRECTORY "${TRUNDLE_BUILD_DIR}"
-# )
 
 include(ExternalProject)
-
-# ExternalProject_Add(glfw
-#   PREFIX GLFW
-#   SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Third-Party/GLFW"
-#   CMAKE_CACHE_ARGS
-#       -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}
-# )
-
-# ExternalProject_Add(gl3w
-#   GIT_REPOSITORY "https://github.com/skaslev/gl3w"
-#   GIT_TAG "master"
-#   #SOURCE_DIR "${CMAKE_INSTALL_PREFIX}/gl3w/src"
-#   #BINARY_DIR "${CMAKE_INSTALL_PREFIX}/gl3w/bin"
-#   #SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Third-Party/gl3w"
-#   CMAKE_CACHE_ARGS
-#   -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}
-# )
-
-include(FetchContent)
-
-# FetchContent_Declare(GL3W
-#   GIT_REPOSITORY "https://github.com/skaslev/gl3w"
-#   GIT_TAG "master"
-# )
-# FetchContent_Declare(ImGui
-#   GIT_REPOSITORY "https://github.com/ocornut/imgui"
-#   GIT_TAG "v1.77"
-# )
-# FetchContent_Populate(GL3W)
-# FetchCOntent_Populate(ImGui)
-
-# ExternalProject_Add(imgui
-#   GIT_REPOSITORY "https://github.com/ocornut/imgui"
-#   GIT_TAG "v1.77"
-#   SOURCE_DIR "ImGui"
-#   CONFIGURE_COMMAND ""
-#   BUILD_COMMAND ""
-#   INSTALL_COMMAND ""
-#   TEST_COMMAND ""
-# )
 
 ExternalProject_Add(imgui
   GIT_REPOSITORY "https://github.com/ocornut/imgui"
@@ -152,12 +103,6 @@ ExternalProject_Add(engine
         -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}
   DEPENDS glfw gl3w imgui
 )
-# FetchContent_Declare(ImGui
-#   GIT_REPOSITORY "https://github.com/ocornut/imgui"
-#   GIT_TAG "v1.77"
-# )
-# FetchContent_MakeAvailable(GL3W)
-
 
 ExternalProject_Add(driver
   PREFIX Driver
