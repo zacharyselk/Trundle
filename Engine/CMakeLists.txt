@@ -131,7 +131,7 @@ target_include_directories(engine PRIVATE "${TRUNDLE_EIGEN_DIR}")
 # GLFW
 find_library(GLFW_LIB
   NAMES glfw3
-  PATHS "${TRUNDLE_GLFW_DIR}/src/"
+  PATHS "${TRUNDLE_GLFW_DIR}/src/" "${TRUNDLE_GLFW_DIR}/src/Release" "${TRUNDLE_GLFW_DIR}/src/Debug"
   PATH_SUFFIXES lib
   REQUIRED)
 target_include_directories(engine PRIVATE "${TRUNDLE_GLFW_DIR}/include")
