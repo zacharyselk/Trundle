@@ -51,7 +51,7 @@ set(TRUNDLE_GL3W_DIR CACHE PATH "Path to GL3W source directory")
 if (NOT TRUNDLE_GL3W_DIR)
   # TODO: Check if default path exists
   set(TRUNDLE_GL3W_DIR "${TRUNDLE_BUILD_DIR}/GL3W")
-  message(WARNING "TRUNDLE_GL3W_DIR not set, defaulting to ${TRUNDLE_GLW3_DIR}")
+  message(WARNING "TRUNDLE_GL3W_DIR not set, defaulting to ${TRUNDLE_GL3W_DIR}")
 endif()
 
 # GLFW path
@@ -59,7 +59,7 @@ set(TRUNDLE_GLFW_DIR CACHE PATH "Path to GLFW source directory")
 if (NOT TRUNDLE_GLFW_DIR)
   # TODO: Check if default path exists
   set(TRUNDLE_GLFW_DIR "${TRUNDLE_BUILD_DIR}/GLFW")
-  message(WARNING "TRUNDLE_GLFW_DIR not set, defaulting to ${TRUNDLE_GLWF_DIR}")
+  message(WARNING "TRUNDLE_GLFW_DIR not set, defaulting to ${TRUNDLE_GLFW_DIR}")
 endif()
 
 # ImGui path
