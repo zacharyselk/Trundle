@@ -54,6 +54,14 @@ if (NOT TRUNDLE_GL3W_DIR)
   message(WARNING "TRUNDLE_GL3W_DIR not set, defaulting to ${TRUNDLE_GLW3_DIR}")
 endif()
 
+# GLFW path
+set(TRUNDLE_GLFW_DIR CACHE PATH "Path to GLFW source directory")
+if (NOT TRUNDLE_GLFW_DIR)
+  # TODO: Check if default path exists
+  set(TRUNDLE_GLFW_DIR "${TRUNDLE_BUILD_DIR}/GLFW")
+  message(WARNING "TRUNDLE_GLFW_DIR not set, defaulting to ${TRUNDLE_GLWF_DIR}")
+endif()
+
 # ImGui path
 set(TRUNDLE_IMGUI_DIR CACHE PATH "Path to ImGui source directory")
 if (NOT TRUNDLE_IMGUI_DIR)
@@ -101,6 +109,7 @@ endif()
 
 # Build engine as a dynamic library
 add_library(engine SHARED)
+#add_library(engine STATIC)
 set_target_properties(engine PROPERTIES VERSION 1.0.0 SOVERSION 1)
 
 # ImGui
@@ -126,8 +135,12 @@ target_include_directories(engine PRIVATE "${TRUNDLE_EIGEN_DIR}")
 #add_subdirectory(test)
 
 # GLFW should be built to the build directory
-find_library(GLFW_LIB glfw3 ${TRUNDLE_LIB_DIR} REQUIRED)
-target_include_directories(engine PRIVATE ${TRUNDLE_INCLUDE_DIR})
+find_library(GLFW_LIB
+  NAMES glfw3
+  PATHS "${TRUNDLE_GLFW_DIR}/src/"
+  PATH_SUFFIXES lib
+  REQUIRED)
+target_include_directories(engine PRIVATE "${TRUNDLE_GLFW_DIR}/include")
 target_link_libraries(engine ${GLFW_LIB})
 
 # GL3W

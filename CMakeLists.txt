@@ -51,12 +51,12 @@ set(TRUNDLE_BUILD_DIR "${PROJECT_BINARY_DIR}")
 
 include(ExternalProject)
 
-ExternalProject_Add(glfw
-  PREFIX GLFW
-  SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Third-Party/GLFW"
-  CMAKE_CACHE_ARGS
-      -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}
-)
+# ExternalProject_Add(glfw
+#   PREFIX GLFW
+#   SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Third-Party/GLFW"
+#   CMAKE_CACHE_ARGS
+#       -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}
+# )
 
 # ExternalProject_Add(gl3w
 #   GIT_REPOSITORY "https://github.com/skaslev/gl3w"
@@ -110,6 +110,16 @@ ExternalProject_Add(gl3w
   INSTALL_COMMAND ""
   TEST_COMMAND ""
   )
+
+ExternalProject_Add(glfw
+  GIT_REPOSITORY "https://github.com/glfw/glfw"
+  GIT_TAG "master"
+  SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/GLFW"
+  BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/GLFW"
+  INSTALL_DIR "${CMAKE_CURRENT_BINARY_DIR}/GLFW"
+  INSTALL_COMMAND ""
+  TEST_COMMAND ""
+)
 
 ExternalProject_Add(eigen
   GIT_REPOSITORY "https://gitlab.com/libeigen/eigen.git"
