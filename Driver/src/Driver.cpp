@@ -31,6 +31,7 @@ public:
 
   void onUpdate() override final {
     Trundle::Log::Info("ExampleLayer::Update");
+    Trundle::Log::Error("Hello");
   }
 
   void onEvent(Trundle::Event& event) override final {
