@@ -71,10 +71,11 @@ namespace Trundle {
       ImGuiLayer* guiLayer;
 
       //unsigned int vertexBuffer, indexBuffer;
-      unsigned int vertexArray;
+      //unsigned int vertexArray;
 
-      VertexBuffer vertexBuffer;
-      IndexBuffer indexBuffer;
+      std::shared_ptr<VertexBuffer> vertexBuffer;
+      VertexArray vertexArray;
+      std::shared_ptr<IndexBuffer> indexBuffer;
     };
 
     // Defined by the driver as an entry point into the engine.

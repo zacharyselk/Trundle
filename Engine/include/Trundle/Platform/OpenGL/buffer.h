@@ -32,6 +32,9 @@ namespace Trundle::OpenGL {
     IndexBuffer(uint32_t* indices, uint32_t count);
     virtual ~IndexBuffer();
 
+    virtual void bind() const override final;
+    virtual void unbind() const override final;
+
   private:
     uint32_t id;
   };
@@ -42,7 +45,31 @@ namespace Trundle::OpenGL {
     VertexBuffer(float* vertices, uint32_t size);
     virtual ~VertexBuffer();
 
+    virtual void setLayout(const BufferLayout &layout) override final;
+    virtual const BufferLayout &getLayout() const override final;
+
+    virtual void bind() const override final;
+    virtual void unbind() const override final;
+
   private:
     uint32_t id;
+    BufferLayout layout;
+  };
+
+
+  class VertexArray : public Trundle::VertexArray::VertexArrayConcept {
+  public:
+    VertexArray();
+    virtual ~VertexArray();
+
+    void bind() const override final;
+    void unbind() const override final;
+    void addVertexBuffer(const std::shared_ptr<Trundle::VertexBuffer> &buf) override final;
+    void addIndexBuffer(const std::shared_ptr<Trundle::IndexBuffer> &buf) override final;
+
+  private:
+    uint32_t id;
+    std::vector<std::shared_ptr<Trundle::VertexBuffer>> vertexBuffers;
+    std::vector<std::shared_ptr<Trundle::IndexBuffer>> indexBuffers;
   };
 }

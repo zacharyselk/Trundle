@@ -26,12 +26,14 @@
 
 namespace Trundle {
 
+  //===-- LayoutElement ----------------------------------------------------===//
   LayoutElement::LayoutElement(const Rendering::GraphicsType &type, const std::string &name, const bool &normalize)
     : type(type), name(name), elementSize(Rendering::getSizeOf(type)), 
     numberOfComponents(elementSize/Rendering::getComponentSizeOf(type)), 
     offset(-1), normalize(normalize)  { }
 
 
+  //===-- BufferLayout -----------------------------------------------------===//
   BufferLayout::BufferLayout(const std::initializer_list<LayoutElement> &layout)
     : layout(layout), stride(0) {
     for (auto& element : this->layout) {
@@ -57,6 +59,7 @@ namespace Trundle {
   }
 
 
+  //===-- IndexBuffer ------------------------------------------------------===//
   IndexBuffer::IndexBuffer(const Renderer &r, uint32_t* indices, uint32_t count) 
     : vptr(nullptr) {
     switch (r.getAPI()) {
@@ -75,6 +78,7 @@ namespace Trundle {
   }
 
 
+  //===-- VertexBuffer -----------------------------------------------------===//
   VertexBuffer::VertexBuffer(const Renderer &r, float* vertices, uint32_t size) 
     : vptr(nullptr) {
     switch (r.getAPI()) {
@@ -92,4 +96,24 @@ namespace Trundle {
     }
   }
 
+
+  //===-- VertexArray ------------------------------------------------------===//
+    VertexArray::VertexArray(const Renderer &r) 
+    : vptr(nullptr) {
+    switch (r.getAPI()) {
+      // TODO: Implement
+      case RenderingAPI::None:
+        break;
+
+      case RenderingAPI::OpenGLAPI:
+        vptr = std::make_shared<OpenGL::VertexArray>();
+        break;
+
+      default:
+        Log::Error("Unknown graphics API");
+        exit(1);
+    }
+  }
+
+  
 }

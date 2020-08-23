@@ -111,8 +111,8 @@ namespace Trundle {
       // Temporary
       Renderer renderer(RenderingAPI::OpenGLAPI);
 
-      glGenVertexArrays(1, &vertexArray);
-      glBindVertexArray(vertexArray);
+      //glGenVertexArrays(1, &vertexArray);
+      //glBindVertexArray(vertexArray);
 
 
       // Triangle
@@ -122,21 +122,30 @@ namespace Trundle {
            0.0f,  0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f
       };
 
-      vertexBuffer = std::move(VertexBuffer(renderer, vertices, sizeof(vertices)));
+      vertexBuffer = std::make_shared<VertexBuffer>(std::move(VertexBuffer(renderer, vertices, sizeof(vertices))));
 
       BufferLayout layout{
         { Trundle::Rendering::Float3, "position" },
         { Trundle::Rendering::Float4, "color"}
       };
-      for (size_t i = 0; i < layout.size(); ++i) {
-        glEnableVertexAttribArray(i);
-        glVertexAttribPointer(
-          i, layout[i].numberOfComponents, OpenGL::toOpenGL(Rendering::Float4), 
-          layout[i].normalize ? GL_TRUE : GL_FALSE, layout.getStride(), (const void*)layout[i].offset);
-      }
+
+      vertexArray = std::move(VertexArray(renderer));
+
+      vertexBuffer->setLayout(layout);
+      //auto tmp = std::make_shared<Trundle::VertexBuffer>(vertexBuffer);
+      vertexArray.addVertexBuffer(vertexBuffer);
+
+      // for (size_t i = 0; i < layout.size(); ++i) {
+      //   glEnableVertexAttribArray(i);
+      //   glVertexAttribPointer(
+      //     i, layout[i].numberOfComponents, OpenGL::toOpenGL(Rendering::Float4), 
+      //     layout[i].normalize ? GL_TRUE : GL_FALSE, layout.getStride(), (const void*)layout[i].offset);
+      // }
 
       unsigned int indices[3] = { 0, 1, 2 };
-      indexBuffer = std::move(IndexBuffer(renderer, indices, 3));
+      indexBuffer = std::make_shared<IndexBuffer>(std::move(IndexBuffer(renderer, indices, 3)));
+      //auto tmp2 = std::make_shared<Trundle::IndexBuffer>(indexBuffer);
+      vertexArray.addIndexBuffer(indexBuffer);
 
       unsigned int vertexShader;
       vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -179,7 +188,8 @@ namespace Trundle {
         }
         guiLayer->end();
 
-        glBindVertexArray(vertexArray);
+        //glBindVertexArray(vertexArray);
+        vertexArray.bind();
         glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
 
         window->onUpdate();

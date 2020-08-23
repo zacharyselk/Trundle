@@ -17,6 +17,7 @@
 //===-----------------------------------------------------------------------===//
 
 #include <Trundle/Platform/OpenGL/buffer.h>
+#include <Trundle/Platform/OpenGL/util.h>
 
 #include <GL/gl3w.h>
 #include <GLFW/glfw3.h>
@@ -24,6 +25,7 @@
 
 namespace Trundle::OpenGL {
 
+    //===-- IndexBuffer ----------------------------------------------------===//
     IndexBuffer::IndexBuffer(uint32_t* indices, uint32_t count) {
         glGenBuffers(1, &id);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
@@ -35,7 +37,16 @@ namespace Trundle::OpenGL {
         glDeleteBuffers(1, &id);
     }
 
+    void IndexBuffer::bind() const {
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
+    }
 
+    void IndexBuffer::unbind() const {
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    }
+
+
+    //===-- VertexBuffer ---------------------------------------------------===//
     VertexBuffer::VertexBuffer(float* vertices, uint32_t size) {
         glGenBuffers(1, &id);
         glBindBuffer(GL_ARRAY_BUFFER, id);
@@ -44,6 +55,62 @@ namespace Trundle::OpenGL {
 
     VertexBuffer::~VertexBuffer() {
         glDeleteBuffers(1, &id);
+    }
+
+    void VertexBuffer::setLayout(const BufferLayout &layout) {
+        this->layout = layout;
+    }
+
+    const BufferLayout &VertexBuffer::getLayout() const {
+        return layout;
+    }
+
+    void VertexBuffer::bind() const {
+        glBindBuffer(GL_ARRAY_BUFFER, id);
+    }
+
+    void VertexBuffer::unbind() const {
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+    }
+
+
+    //===-- VertexArray ----------------------------------------------------===//
+    VertexArray::VertexArray() {
+        glCreateVertexArrays(1, &id);
+    }
+
+    VertexArray::~VertexArray() {
+        glDeleteBuffers(1, &id);
+    }
+
+    void VertexArray::bind() const {
+        glBindVertexArray(id);
+    }
+
+    void VertexArray::unbind() const {
+        glBindVertexArray(0);
+    }
+
+    void VertexArray::addVertexBuffer(const std::shared_ptr<Trundle::VertexBuffer> &buf)  {
+        glBindVertexArray(id);
+        buf->bind();
+
+        BufferLayout layout = buf->getLayout();
+        for (size_t i = 0; i < layout.size(); ++i) {
+        glEnableVertexAttribArray(i);
+        glVertexAttribPointer(
+          i, layout[i].numberOfComponents, OpenGL::toOpenGL(layout[i].type), 
+          layout[i].normalize ? GL_TRUE : GL_FALSE, layout.getStride(), (const void*)layout[i].offset);
+      }
+
+      vertexBuffers.push_back(buf);
+    }
+
+    void VertexArray::addIndexBuffer(const std::shared_ptr<Trundle::IndexBuffer> &buf) {
+        glBindVertexArray(id);
+        buf->bind();
+
+        indexBuffers.push_back(buf);
     }
 
 }

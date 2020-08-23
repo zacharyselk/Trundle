@@ -25,6 +25,9 @@
 #include <Trundle/common.h>
 #include <Trundle/Render/util.h>
 
+#include <GL/gl3w.h>
+#include <GLFW/glfw3.h>
+
 
 namespace Trundle::OpenGL {
 
