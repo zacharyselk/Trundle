@@ -69,7 +69,7 @@ namespace OpenGL {
     BufferLayout(const BufferLayout &layout) = default;
     BufferLayout(BufferLayout&&) noexcept = default;
     BufferLayout& operator=(const BufferLayout &layout) noexcept
-      { return *this = BufferLayout(layout); }
+      { this->layout = layout.layout; this->stride = layout.stride; return *this; }
 
     uint32_t getStride() const { return stride; }
 
