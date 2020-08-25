@@ -1,4 +1,4 @@
-//===-- buffer.h -----------------------------------------------------------===//
+//===-- buffer.cpp ----------------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -20,9 +20,6 @@
 #include <Trundle/Render/buffer.h>
 #include <Trundle/Render/util.h>
 
-#include <GL/gl3w.h>
-#include <GLFW/glfw3.h>
-
 
 namespace Trundle {
 
@@ -35,14 +32,21 @@ namespace Trundle {
 
   //===-- BufferLayout -----------------------------------------------------===//
   BufferLayout::BufferLayout(const std::initializer_list<LayoutElement> &layout)
-    : layout(layout), stride(0) {
-    for (auto& element : this->layout) {
-      element.offset = stride;
-      stride += element.elementSize;
+    : stride(0) {
+
+    for (const auto &element : layout) {
+      LayoutElement e(element);
+      std::shared_ptr<LayoutElement> s = std::make_shared<LayoutElement>(e);
+      this->layout.push_back(s);
+    }
+
+    for (auto &element : this->layout) {
+      element->offset = stride;
+      stride += element->elementSize;
     }
   }
 
-  LayoutElement &BufferLayout::operator[](size_t index) {
+  const std::shared_ptr<LayoutElement> &BufferLayout::operator[](size_t index) const {
     return layout[index];
   }
 
@@ -50,11 +54,11 @@ namespace Trundle {
     return layout.size();
   }
 
-  std::vector<LayoutElement>::iterator BufferLayout::begin()  { 
+  std::vector<std::shared_ptr<LayoutElement>>::const_iterator BufferLayout::begin() const { 
     return layout.begin(); 
   }
 
-  std::vector<LayoutElement>::iterator BufferLayout::end()  { 
+  std::vector<std::shared_ptr<LayoutElement>>::const_iterator BufferLayout::end() const { 
     return layout.end(); 
   }
 
@@ -79,7 +83,8 @@ namespace Trundle {
 
 
   //===-- VertexBuffer -----------------------------------------------------===//
-  VertexBuffer::VertexBuffer(const Renderer &r, float* vertices, uint32_t size) 
+  VertexBuffer::VertexBuffer(const Renderer &r, float* vertices, 
+                             const BufferLayout &layout, uint32_t size) 
     : vptr(nullptr) {
     switch (r.getAPI()) {
       // TODO: Implement
@@ -87,7 +92,7 @@ namespace Trundle {
         break;
 
       case RenderingAPI::OpenGLAPI:
-        vptr = std::make_shared<OpenGL::VertexBuffer>(vertices, size);
+        vptr = std::make_shared<OpenGL::VertexBuffer>(vertices, layout, size);
         break;
 
       default:
@@ -98,7 +103,9 @@ namespace Trundle {
 
 
   //===-- VertexArray ------------------------------------------------------===//
-    VertexArray::VertexArray(const Renderer &r) 
+    VertexArray::VertexArray(const Renderer &r, 
+                             const std::vector<VertexBuffer> &vertexBuffers,
+                             const std::vector<IndexBuffer> &indexBuffers) 
     : vptr(nullptr) {
     switch (r.getAPI()) {
       // TODO: Implement
@@ -106,7 +113,7 @@ namespace Trundle {
         break;
 
       case RenderingAPI::OpenGLAPI:
-        vptr = std::make_shared<OpenGL::VertexArray>();
+        vptr = std::make_shared<OpenGL::VertexArray>(vertexBuffers, indexBuffers);
         break;
 
       default:

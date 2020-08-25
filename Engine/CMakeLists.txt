@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.18.0)
+cmake_minimum_required(VERSION 3.17.0)
 project(Trundle_Engine C CXX)
 
 set(CMAKE_BINARY_DIR "${CMAKE_INSTALL_PREFIX}")
@@ -51,7 +51,7 @@ set(TRUNDLE_GL3W_DIR CACHE PATH "Path to GL3W source directory")
 if (NOT TRUNDLE_GL3W_DIR)
   # TODO: Check if default path exists
   set(TRUNDLE_GL3W_DIR "${TRUNDLE_BUILD_DIR}/GL3W")
-  message(WARNING "TRUNDLE_GL3W_DIR not set, defaulting to ${TRUNDLE_GLW3_DIR}")
+  message(WARNING "TRUNDLE_GL3W_DIR not set, defaulting to ${TRUNDLE_GL3W_DIR}")
 endif()
 
 # ImGui path

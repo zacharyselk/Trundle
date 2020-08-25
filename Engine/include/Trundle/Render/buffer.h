@@ -47,6 +47,10 @@ namespace OpenGL {
   //===---------------------------------------------------------------------===//
   struct LayoutElement {
     LayoutElement(const Rendering::GraphicsType &type, const std::string &name, const bool &normalize=false);
+    LayoutElement(const uint32_t &osffset, const Rendering::GraphicsType &type, const std::string &name, const bool &normalize=false);
+    //LayoutElement(const uint32_t &offset, const std::initializer_list<LayoutElement> &lst)
+    //  : LayoutElement(std::forward<std::initializer_list<LayoutElement>>(lst))  { }
+    LayoutElement(const LayoutElement &element) = default;
 
     Rendering::GraphicsType type;
     std::string name;
@@ -73,13 +77,14 @@ namespace OpenGL {
 
     uint32_t getStride() const { return stride; }
 
-    LayoutElement &operator[](size_t index);
+    const std::shared_ptr<LayoutElement> &operator[](size_t index) const;
     size_t size();
-    std::vector<LayoutElement>::iterator begin();
-    std::vector<LayoutElement>::iterator end();
+    std::vector<std::shared_ptr<LayoutElement>>::const_iterator begin() const;
+    std::vector<std::shared_ptr<LayoutElement>>::const_iterator end() const;
 
   private:
-    std::vector<LayoutElement> layout;
+    // TODO: Make const
+    std::vector<std::shared_ptr<LayoutElement>> layout;
     uint32_t stride;
   };
 
@@ -93,7 +98,7 @@ namespace OpenGL {
   public:
     IndexBuffer() = default;
     IndexBuffer(const Renderer &r, uint32_t* indices, uint32_t count);
-    IndexBuffer(IndexBuffer&&) = default;
+    //IndexBuffer(IndexBuffer&&) = default;
     IndexBuffer& operator=(const IndexBuffer &buf) noexcept
       { vptr = buf.vptr; return *this; }
 
@@ -125,12 +130,12 @@ namespace OpenGL {
   class VertexBuffer {
   public:
     VertexBuffer() = default;
-    VertexBuffer(const Renderer &r, float* vertices, uint32_t size);
-    VertexBuffer(VertexBuffer&&) = default;
+    VertexBuffer(const Renderer &r, float* vertices, 
+                 const BufferLayout &layout, uint32_t size);
+    //VertexBuffer(VertexBuffer&&) = default;
     VertexBuffer& operator=(const VertexBuffer &buf) noexcept
       { vptr = buf.vptr; return *this; }
 
-    void setLayout(const BufferLayout &layout) const  { vptr->setLayout(layout); }
     const BufferLayout &getLayout() const  { return vptr->getLayout(); }
 
     void bind() const { vptr->bind(); }
@@ -146,12 +151,11 @@ namespace OpenGL {
 
       virtual void bind() const = 0;
       virtual void unbind() const = 0;
-      virtual void setLayout(const BufferLayout &layout) = 0;
       virtual const BufferLayout &getLayout() const = 0;
     };
 
     // Custom virtual pointer to allow for value semantic polymorphism.
-    std::shared_ptr<VertexBufferConcept> vptr;
+    std::shared_ptr<const VertexBufferConcept> vptr;
   };
 
 
@@ -163,18 +167,16 @@ namespace OpenGL {
   class VertexArray {
   public:
     VertexArray() = default;
-    VertexArray(const Renderer &r);
+    // TODO: We only need to pass around the buffer vptrs
+    VertexArray(const Renderer &r, 
+                const std::vector<VertexBuffer> &vertexBuffers,
+                const std::vector<IndexBuffer> &indexBuffers);
     VertexArray(VertexArray&&) = default;
     VertexArray& operator=(const VertexArray &buf) noexcept
       { vptr = buf.vptr; return *this; }
 
-    void bind() { vptr->bind(); }
-    void unbind() { vptr->unbind(); }
-
-    void addVertexBuffer(const std::shared_ptr<VertexBuffer> &buf)
-      { vptr->addVertexBuffer(buf); }
-    void addIndexBuffer(const std::shared_ptr<IndexBuffer> &buf)
-      { vptr->addIndexBuffer(buf); }
+    void bind() const { vptr->bind(); }
+    void unbind() const { vptr->unbind(); }
 
     friend class OpenGL::VertexArray;
 
@@ -186,12 +188,10 @@ namespace OpenGL {
 
       virtual void bind() const = 0;
       virtual void unbind() const = 0;
-      virtual void addVertexBuffer(const std::shared_ptr<VertexBuffer> &buf) = 0;
-      virtual void addIndexBuffer(const std::shared_ptr<IndexBuffer> &buf) = 0;
     };
 
     // Custom virtual pointer to allow for value semantic polymorphism.
-    std::shared_ptr<VertexArrayConcept> vptr;
+    std::shared_ptr<const VertexArrayConcept> vptr;
   };
 
 }

@@ -21,6 +21,7 @@
 #include <Trundle/Events/keyEvent.h>
 #include <Trundle/Render/renderer.h>
 #include <Trundle/Render/buffer.h>
+#include <Trundle/Render/shader.h>
 
 //#include <GLFW/glfw3.h>
 
@@ -35,58 +36,6 @@
 
 
 namespace Trundle {
-
-  // IndexBuffer* createIndexBuffer(OpenGLAPI, uint32_t* indices , uint32_t count) {
-  //   IndexBuffer* buf = new IndexBuffer;
-  //   glGenBuffers(1, &(buf->id));
-  //   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buf->id);
-  //   glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW);
-
-  //   return buf;
-  // }
-
-
-
-  // Temporary
-  static unsigned int compileShader(unsigned int type, const std::string &src) {
-    unsigned int id = glCreateShader(type);
-    const char* c_src = src.c_str();
-    glShaderSource(id, 1, &c_src, NULL);
-    glCompileShader(id);
-
-    int result;
-    glGetShaderiv(id, GL_COMPILE_STATUS, &result);
-    if (result == GL_FALSE) {
-      int len;
-      glGetShaderiv(id, GL_INFO_LOG_LENGTH, &len);
-      char* msg = new char[len];
-      glGetShaderInfoLog(id, len, &len, msg);
-      std::stringstream ss;
-      ss << "Shader could not compile: " << msg;
-      Log::Error(ss.str());
-      exit(1);
-    }
-
-    return id;
-  }
-
-  // Temporary
-  static unsigned int createShader(const std::string &vertexShader,
-                                   const std::string &fragmentShader) {
-    unsigned int program = glCreateProgram();
-    unsigned int vs = compileShader(GL_VERTEX_SHADER, vertexShader);
-    unsigned int fs = compileShader(GL_FRAGMENT_SHADER, fragmentShader);
-
-    glAttachShader(program, vs);
-    glAttachShader(program, fs);
-    glLinkProgram(program);
-    glValidateProgram(program);
-
-    glDeleteShader(vs);
-    glDeleteShader(fs);
-
-    return program;
-  }
 
   Application* Application::instance = nullptr;
 
@@ -108,47 +57,28 @@ namespace Trundle {
       window->setEventCallback(std::bind(&Application::onEvent, this,
                                          std::placeholders::_1));
 
-      // Temporary
       Renderer renderer(RenderingAPI::OpenGLAPI);
 
-      //glGenVertexArrays(1, &vertexArray);
-      //glBindVertexArray(vertexArray);
-
-
       // Triangle
+      unsigned int indices[3] = { 0, 1, 2 };
       float vertices[7*3] = {
           -0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
            0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
            0.0f,  0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f
       };
 
-      vertexBuffer = std::make_shared<VertexBuffer>(std::move(VertexBuffer(renderer, vertices, sizeof(vertices))));
-
       BufferLayout layout{
         { Trundle::Rendering::Float3, "position" },
         { Trundle::Rendering::Float4, "color"}
       };
 
-      vertexArray = std::move(VertexArray(renderer));
+      auto vertexBuffer = std::move(VertexBuffer(renderer, vertices, layout, sizeof(vertices)));
+      std::vector<VertexBuffer> vertexBuffers = { vertexBuffer };
 
-      vertexBuffer->setLayout(layout);
-      //auto tmp = std::make_shared<Trundle::VertexBuffer>(vertexBuffer);
-      vertexArray.addVertexBuffer(vertexBuffer);
+      auto indexBuffer = std::move(IndexBuffer(renderer, indices, 3));
+      std::vector<IndexBuffer> indexBuffers = { indexBuffer };
 
-      // for (size_t i = 0; i < layout.size(); ++i) {
-      //   glEnableVertexAttribArray(i);
-      //   glVertexAttribPointer(
-      //     i, layout[i].numberOfComponents, OpenGL::toOpenGL(Rendering::Float4), 
-      //     layout[i].normalize ? GL_TRUE : GL_FALSE, layout.getStride(), (const void*)layout[i].offset);
-      // }
-
-      unsigned int indices[3] = { 0, 1, 2 };
-      indexBuffer = std::make_shared<IndexBuffer>(std::move(IndexBuffer(renderer, indices, 3)));
-      //auto tmp2 = std::make_shared<Trundle::IndexBuffer>(indexBuffer);
-      vertexArray.addIndexBuffer(indexBuffer);
-
-      unsigned int vertexShader;
-      vertexShader = glCreateShader(GL_VERTEX_SHADER);
+      vertexArray = std::move(VertexArray(renderer, vertexBuffers, indexBuffers));
 
       std::string vs =
         "#version 330 core\n"
@@ -170,8 +100,8 @@ namespace Trundle {
         "  color = v_color*0.5 + vec4(v_position * 0.5 + 0.5, 1.0) * 0.5;\n"
         "}\n";
 
-      unsigned int id = createShader(vs, fs);
-      glUseProgram(id);
+      shader = std::move(Shader(renderer, vs, fs));
+      shader.bind();
 
     }
 
@@ -179,6 +109,7 @@ namespace Trundle {
 
     void Application::run() {
       while(running) {
+        // Temporary
         glClear(GL_COLOR_BUFFER_BIT);
         glClearColor(0.54, 0.17, 0.89, 1);
 
@@ -188,13 +119,11 @@ namespace Trundle {
         }
         guiLayer->end();
 
-        //glBindVertexArray(vertexArray);
         vertexArray.bind();
+        // Temporary
         glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
 
         window->onUpdate();
-        //GLFWwindow* w = static_cast<GLFWwindow*>(window->getNativeWindow());
-        //glfwSwapBuffers(w);
       }
     }
 

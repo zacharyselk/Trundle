@@ -47,7 +47,9 @@ namespace Trundle::OpenGL {
 
 
     //===-- VertexBuffer ---------------------------------------------------===//
-    VertexBuffer::VertexBuffer(float* vertices, uint32_t size) {
+    VertexBuffer::VertexBuffer(
+        float* vertices, const BufferLayout &layout, uint32_t size) 
+        : layout(layout) {
         glGenBuffers(1, &id);
         glBindBuffer(GL_ARRAY_BUFFER, id);
         glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
@@ -55,10 +57,6 @@ namespace Trundle::OpenGL {
 
     VertexBuffer::~VertexBuffer() {
         glDeleteBuffers(1, &id);
-    }
-
-    void VertexBuffer::setLayout(const BufferLayout &layout) {
-        this->layout = layout;
     }
 
     const BufferLayout &VertexBuffer::getLayout() const {
@@ -75,8 +73,31 @@ namespace Trundle::OpenGL {
 
 
     //===-- VertexArray ----------------------------------------------------===//
-    VertexArray::VertexArray() {
-        glCreateVertexArrays(1, &id);
+    VertexArray::VertexArray(
+        const std::vector<Trundle::VertexBuffer> &vertexBuffers,
+        const std::vector<Trundle::IndexBuffer> &indexBuffers) 
+        : vertexBuffers(vertexBuffers), indexBuffers(indexBuffers) {
+        // OpenGL 4.5
+        //glCreateVertexArrays(1, &id);
+
+        glGenVertexArrays(1, &id);
+        glBindVertexArray(id);
+
+        for (const auto &buf : vertexBuffers) {
+            buf.bind();
+
+            BufferLayout layout = buf.getLayout();
+            for (size_t i = 0; i < layout.size(); ++i) {
+            glEnableVertexAttribArray(i);
+            glVertexAttribPointer(
+            i, layout[i]->numberOfComponents, OpenGL::toOpenGL(layout[i]->type), 
+            layout[i]->normalize ? GL_TRUE : GL_FALSE, layout.getStride(), (const void*)layout[i]->offset);
+            }
+        }
+
+        for (const auto &buf : indexBuffers) {
+            buf.bind();
+        }
     }
 
     VertexArray::~VertexArray() {
@@ -89,28 +110,6 @@ namespace Trundle::OpenGL {
 
     void VertexArray::unbind() const {
         glBindVertexArray(0);
-    }
-
-    void VertexArray::addVertexBuffer(const std::shared_ptr<Trundle::VertexBuffer> &buf)  {
-        glBindVertexArray(id);
-        buf->bind();
-
-        BufferLayout layout = buf->getLayout();
-        for (size_t i = 0; i < layout.size(); ++i) {
-        glEnableVertexAttribArray(i);
-        glVertexAttribPointer(
-          i, layout[i].numberOfComponents, OpenGL::toOpenGL(layout[i].type), 
-          layout[i].normalize ? GL_TRUE : GL_FALSE, layout.getStride(), (const void*)layout[i].offset);
-      }
-
-      vertexBuffers.push_back(buf);
-    }
-
-    void VertexArray::addIndexBuffer(const std::shared_ptr<Trundle::IndexBuffer> &buf) {
-        glBindVertexArray(id);
-        buf->bind();
-
-        indexBuffers.push_back(buf);
     }
 
 }

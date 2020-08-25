@@ -31,6 +31,7 @@
 #include <Trundle/Events/windowEvent.h>
 #include <Trundle/Util/imGuiLayer.h>
 #include <Trundle/Render/buffer.h>
+#include <Trundle/Render/shader.h>
 
 
 namespace Trundle {
@@ -73,9 +74,10 @@ namespace Trundle {
       //unsigned int vertexBuffer, indexBuffer;
       //unsigned int vertexArray;
 
-      std::shared_ptr<VertexBuffer> vertexBuffer;
+      //std::shared_ptr<VertexBuffer> vertexBuffer;
       VertexArray vertexArray;
-      std::shared_ptr<IndexBuffer> indexBuffer;
+      Shader shader;
+      //std::shared_ptr<IndexBuffer> indexBuffer;
     };
 
     // Defined by the driver as an entry point into the engine.
