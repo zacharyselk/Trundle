@@ -1,7 +1,6 @@
 set(opengl_source_files
   buffer.cpp
   openGLContext.cpp
-  renderer.cpp
   renderingQueue.cpp
   shader.cpp
 )
