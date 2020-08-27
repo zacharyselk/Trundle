@@ -5,9 +5,10 @@ This is a simple game engine built with c++17, created to learn about different 
 
 ## Dependancies
 This project attempts to keep the dependancies down to a minimum and creating submodules whenever possible to automate dependancy building. Currently the only dependancies are:
-* CMake 3.18 or higher
+* CMake 3.17 or higher
 * A c++17 supported compiler (gcc >= 8.0, clang >= 5.0)
 * OpenGL
+* Python 2.7 or higher
 
 ### Installing Dependancies
 Go to [cmake](https://cmake.org/download/) to download and install the latest version of CMake.
@@ -41,29 +42,3 @@ Once built an exacutable named `bin/driver` (or `bin\driver.exe`) will be create
 | --------------------------------------------------------- | --------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [Travis CI](https://travis-ci.org/g-truc/glm)             | MacOSX, Linux 64 bits | Clang                | [![Build Status](https://travis-ci.com/zacharyselk/Trundle.svg?branch=master)](https://travis-ci.com/zacharyselk/Trundle)                                                 |
 | [AppVeyor](https://ci.appveyor.com/project/Groovounet/glm)| Windows 32 and 64     | Visual Studio 2019   | [![Build status](https://ci.appveyor.com/api/projects/status/tfs7wtb5ugy58bn5/branch/master?svg=true)](https://ci.appveyor.com/project/zacharyselk/trundle/branch/master) |
-
-## Progress
-### Done (draft version)
-* Thread pool
-* Events
-* Layer stack
-* UI system (using ImGui)
-
-### Working on
-* Event handling
-
-### TODO
-#### Easy
-* Add Windows and MacOs to Travis
-* Add lit tests (using googletest)
-* Add elements to the UI
-* Add functionallity to the logger (formatting, coloring, etc.)
-* Make CMake build `/Engine` normally and use ExternalProject_Add on `/Driver`
-
-#### Medium
-* Add profiling system
-* Add a reflection system
-
-#### Hard
-* Add a Rendering system (Big job)
-* Add a different graphics api (DirectX, Metal, Vulkan, etc)
