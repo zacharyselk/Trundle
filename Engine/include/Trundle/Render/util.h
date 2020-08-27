@@ -40,6 +40,7 @@ namespace Trundle::Rendering {
     };
 
 
+    // Retruns the size of a GraphicsType similar to sizeof().
     static uint32_t getSizeOf(const GraphicsType &type) {
         switch (type) {
         case Float:
@@ -57,7 +58,9 @@ namespace Trundle::Rendering {
         return -1;
     }
 
-        static uint32_t getComponentSizeOf(const GraphicsType &type) {
+
+    // Returns the comonent size of a GraphicsType.
+    static uint32_t getComponentSizeOf(const GraphicsType &type) {
         switch (type) {
         case Float:
         case Float2:

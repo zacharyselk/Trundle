@@ -24,7 +24,9 @@
 namespace Trundle {
 
   //===-- LayoutElement ----------------------------------------------------===//
-  LayoutElement::LayoutElement(const Rendering::GraphicsType &type, const std::string &name, const bool &normalize)
+  LayoutElement::LayoutElement(const Rendering::GraphicsType &type, 
+                               const std::string &name, 
+                               const bool &normalize)
     : type(type), name(name), elementSize(Rendering::getSizeOf(type)), 
     numberOfComponents(elementSize/Rendering::getComponentSizeOf(type)), 
     offset(-1), normalize(normalize)  { }
@@ -46,7 +48,8 @@ namespace Trundle {
     }
   }
 
-  const std::shared_ptr<LayoutElement> &BufferLayout::operator[](size_t index) const {
+  const std::shared_ptr<LayoutElement> &
+  BufferLayout::operator[](size_t index) const {
     return layout[index];
   }
 
@@ -54,11 +57,13 @@ namespace Trundle {
     return layout.size();
   }
 
-  std::vector<std::shared_ptr<LayoutElement>>::const_iterator BufferLayout::begin() const { 
+  std::vector<std::shared_ptr<LayoutElement>>::const_iterator 
+  BufferLayout::begin() const { 
     return layout.begin(); 
   }
 
-  std::vector<std::shared_ptr<LayoutElement>>::const_iterator BufferLayout::end() const { 
+  std::vector<std::shared_ptr<LayoutElement>>::const_iterator 
+  BufferLayout::end() const { 
     return layout.end(); 
   }
 
@@ -105,7 +110,7 @@ namespace Trundle {
   //===-- VertexArray ------------------------------------------------------===//
     VertexArray::VertexArray(const Renderer &r, 
                              const std::vector<VertexBuffer> &vertexBuffers,
-                             const std::vector<IndexBuffer> &indexBuffers) 
+                             const IndexBuffer &indexBuffer) 
     : vptr(nullptr) {
     switch (r.getAPI()) {
       // TODO: Implement
@@ -113,7 +118,8 @@ namespace Trundle {
         break;
 
       case RenderingAPI::OpenGLAPI:
-        vptr = std::make_shared<OpenGL::VertexArray>(vertexBuffers, indexBuffers);
+        vptr = std::make_shared<OpenGL::VertexArray>(vertexBuffers, 
+                                                     indexBuffer);
         break;
 
       default:

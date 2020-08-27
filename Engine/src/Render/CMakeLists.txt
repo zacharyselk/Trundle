@@ -1,7 +1,7 @@
 set(render_source_files
   buffer.cpp
   renderer.cpp
-  renderingQueue.cpp
+  sceneRenderer.cpp
   shader.cpp
 )
 

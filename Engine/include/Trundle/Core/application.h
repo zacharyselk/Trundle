@@ -33,6 +33,7 @@
 #include <Trundle/Render/buffer.h>
 #include <Trundle/Render/shader.h>
 #include <Trundle/Render/renderingQueue.h>
+#include <Trundle/Render/sceneRenderer.h>
 
 
 namespace Trundle {

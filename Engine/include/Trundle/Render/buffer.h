@@ -38,12 +38,10 @@ namespace OpenGL {
 }
 
   //===-- LayoutElement ----------------------------------------------------===//
-  //
   // A structure for defining how the layout of a vertex (element) is defined.
   // TODO: Possibly should be moved somewhere else, either into LayoutElement
   //       if it is the only one who uses this, otherwise maybe into
   //       Render/util.h
-  //
   //===---------------------------------------------------------------------===//
   struct LayoutElement {
     LayoutElement(const Rendering::GraphicsType &type, const std::string &name, const bool &normalize=false);
@@ -62,9 +60,7 @@ namespace OpenGL {
 
 
   //===-- BufferLayout -----------------------------------------------------===//
-  //
   // Constructs and calculates a genaric layout specification for a buffer.
-  //
   //===---------------------------------------------------------------------===//
   class BufferLayout {
   public:
@@ -90,9 +86,7 @@ namespace OpenGL {
 
 
   //===-- IndexBuffer ------------------------------------------------------===//
-  //
-  // API for the index buffer.
-  //
+  // API for a buffer that contains vertexes and the order to render them in.
   //===---------------------------------------------------------------------===//
   class IndexBuffer {
   public:
@@ -123,9 +117,7 @@ namespace OpenGL {
 
 
   //===-- VertexBuffer -----------------------------------------------------===//
-  //
-  // API for the vertex buffer.
-  //
+  // API for abuffer that contains information for the vertex shader.
   //===---------------------------------------------------------------------===//
   class VertexBuffer {
   public:
@@ -160,9 +152,8 @@ namespace OpenGL {
 
 
   //===-- VertexArray ------------------------------------------------------===//
-  //
-  // API for the vertex array.
-  //
+  // API that defines a vertex array which references an index buffer and a
+  // list of vertex buffers used for rendering.
   //===---------------------------------------------------------------------===//
   class VertexArray {
   public:
@@ -170,7 +161,7 @@ namespace OpenGL {
     // TODO: We only need to pass around the buffer vptrs
     VertexArray(const Renderer &r, 
                 const std::vector<VertexBuffer> &vertexBuffers,
-                const std::vector<IndexBuffer> &indexBuffers);
+                const IndexBuffer &indexBuffer);
     VertexArray(VertexArray&&) = default;
     VertexArray(const VertexArray &array)
       { vptr = array.vptr; }

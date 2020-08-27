@@ -28,9 +28,7 @@
 namespace Trundle::OpenGL {
 
   //===-- Shader -----------------------------------------------------------===//
-  //
   // OpenGL implementation for the shader api.
-  //
   //===---------------------------------------------------------------------===//
   class Shader : public Trundle::Shader::ShaderConcept {
   public:
@@ -45,6 +43,8 @@ namespace Trundle::OpenGL {
     const uint32_t id;
 
     // Helper functions.
+
+    // Compiles shader text.
     uint32_t compile(uint32_t type, const std::string &src);
   };
 

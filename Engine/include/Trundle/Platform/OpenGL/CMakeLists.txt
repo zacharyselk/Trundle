@@ -1,7 +1,7 @@
 set(opengl_include_files
   buffer.h
   openGLContext.h
-  renderingQueue.h
+  sceneRenderer.h
   shader.h
   util.h
 )

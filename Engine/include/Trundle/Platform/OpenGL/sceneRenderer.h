@@ -1,4 +1,4 @@
-//===-- renderingQueue.h ---------------------------------------------------===//
+//===-- sceneRenderer.h- ---------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -22,20 +22,23 @@
 
 #pragma once
 
-#include <Trundle/Render/renderingQueue.h>
+#include <Trundle/Render/sceneRenderer.h>
 
 
 namespace Trundle::OpenGL {
 
+    //===-- SceneRenderer --------------------------------------------------===//
+    // Is used to hold the tasks needed to render a scene, then render them.
+    //===-------------------------------------------------------------------===//
     class SceneRenderer : public Trundle::SceneRenderer::SceneRendererConcept {
     public:
         SceneRenderer() = default;
         virtual ~SceneRenderer()  { }
 
-        virtual void clear() override final;
-        virtual void start() override final;
-        virtual void end() override final;
-        virtual void submit(const RenderingTask &task) override final;
+        virtual void clear() const override final;
+        virtual void start() const override final;
+        virtual void end() const override final;
+        virtual void submit(const RenderingTask &task) const override final;
     };
 
 }

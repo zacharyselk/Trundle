@@ -33,6 +33,12 @@ namespace Trundle {
      OpenGLAPI = 1
   };
 
+
+  //===-- Renderer ---------------------------------------------------------===//
+  // A cookie that is used by the rendering API to make decisions when
+  // rendering.
+  // TODO: Rename to RenderingContext.
+  //===---------------------------------------------------------------------===//
   class Renderer {
   public:
     Renderer(RenderingAPI api);

@@ -1,4 +1,4 @@
-//===-- renderingQueue.cpp -------------------------------------------------===//
+//===-- sceneRenderer.cpp --------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -16,7 +16,7 @@
 //
 //===-----------------------------------------------------------------------===//
 
-#include <Trundle/Platform/OpenGL/renderingQueue.h>
+#include <Trundle/Platform/OpenGL/sceneRenderer.h>
 
 #include <GL/gl3w.h>
 #include <GLFW/glfw3.h>
@@ -24,18 +24,19 @@
 
 namespace Trundle::OpenGL {
 
-    void SceneRenderer::clear() {
+    //===-- SceneRenderer --------------------------------------------------===//
+    void SceneRenderer::clear() const {
         glClear(GL_COLOR_BUFFER_BIT);
 
         // TODO: Make not static.
         glClearColor(0.54, 0.17, 0.89, 1);
     }
 
-    void SceneRenderer::start() {
+    void SceneRenderer::start() const {
         // TODO
     }
 
-    void SceneRenderer::end() {
+    void SceneRenderer::end() const {
         while(!queue.empty()) {
             auto task = queue.front();
             task.array.bind();
@@ -44,7 +45,7 @@ namespace Trundle::OpenGL {
         }
     }
 
-    void SceneRenderer::submit(const RenderingTask &task) {
+    void SceneRenderer::submit(const RenderingTask &task) const {
         queue.push(task);
     }
 

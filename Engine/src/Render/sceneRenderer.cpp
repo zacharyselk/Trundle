@@ -1,4 +1,4 @@
-//===-- renderingQueue.cpp -------------------------------------------------===//
+//===-- sceneRenderer.cpp --------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -15,8 +15,9 @@
 // limitations under the License.
 //
 //===-----------------------------------------------------------------------===//
-#include <Trundle/Render/renderingQueue.h>
-#include <Trundle/Platform/OpenGL/renderingQueue.h>
+
+#include <Trundle/Render/sceneRenderer.h>
+#include <Trundle/Platform/OpenGL/sceneRenderer.h>
 
 
 namespace Trundle {
@@ -38,6 +39,5 @@ namespace Trundle {
         exit(1);
     }
   }
-
 
 }

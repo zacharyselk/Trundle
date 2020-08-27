@@ -75,8 +75,8 @@ namespace Trundle::OpenGL {
     //===-- VertexArray ----------------------------------------------------===//
     VertexArray::VertexArray(
         const std::vector<Trundle::VertexBuffer> &vertexBuffers,
-        const std::vector<Trundle::IndexBuffer> &indexBuffers) 
-        : vertexBuffers(vertexBuffers), indexBuffers(indexBuffers) {
+        const Trundle::IndexBuffer &indexBuffer) 
+        : vertexBuffers(vertexBuffers), indexBuffer(indexBuffer) {
         // OpenGL 4.5
         //glCreateVertexArrays(1, &id);
 
@@ -95,9 +95,8 @@ namespace Trundle::OpenGL {
             }
         }
 
-        for (const auto &buf : indexBuffers) {
-            buf.bind();
-        }
+
+        indexBuffer.bind();
     }
 
     VertexArray::~VertexArray() {

@@ -67,9 +67,8 @@ namespace Trundle {
       std::vector<VertexBuffer> vertexBuffers = { vertexBuffer };
 
       auto indexBuffer = std::move(IndexBuffer(renderer, indices, 3));
-      std::vector<IndexBuffer> indexBuffers = { indexBuffer };
 
-      vertexArray = std::move(VertexArray(renderer, vertexBuffers, indexBuffers));
+      vertexArray = std::move(VertexArray(renderer, vertexBuffers, indexBuffer));
 
       std::string vs =
         "#version 330 core\n"

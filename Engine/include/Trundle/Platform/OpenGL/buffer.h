@@ -27,6 +27,9 @@
 
 namespace Trundle::OpenGL {
 
+  //===-- IndexBuffer ------------------------------------------------------===//
+  // A buffer that contains vertexes and the order to render them in.
+  //===---------------------------------------------------------------------===//
   class IndexBuffer : public Trundle::IndexBuffer::IndexBufferConcept {
   public:
     IndexBuffer(uint32_t* indices, uint32_t count);
@@ -39,7 +42,9 @@ namespace Trundle::OpenGL {
     uint32_t id;
   };
 
-
+  //===-- VertexBuffer -----------------------------------------------------===//
+  // A buffer that contains information for the vertex shader.
+  //===---------------------------------------------------------------------===//
   class VertexBuffer : public Trundle::VertexBuffer::VertexBufferConcept {
   public:
     VertexBuffer(float* vertices, const BufferLayout &layout, uint32_t size);
@@ -56,10 +61,14 @@ namespace Trundle::OpenGL {
   };
 
 
+  //===-- VertexArray ------------------------------------------------------===//
+  // Defines a vertex array which references an index buffer and a list of
+  // vertex buffers used for rendering.
+  //===---------------------------------------------------------------------===//
   class VertexArray : public Trundle::VertexArray::VertexArrayConcept {
   public:
     VertexArray(const std::vector<Trundle::VertexBuffer> &vertexBuffers,
-                const std::vector<Trundle::IndexBuffer> &indexBuffers);
+                const Trundle::IndexBuffer &indexBuffers);
     virtual ~VertexArray();
 
     void bind() const override final;
@@ -68,6 +77,6 @@ namespace Trundle::OpenGL {
   private:
     uint32_t id;
     std::vector<Trundle::VertexBuffer> vertexBuffers;
-    std::vector<Trundle::IndexBuffer> indexBuffers;
+    Trundle::IndexBuffer indexBuffer;
   };
 }

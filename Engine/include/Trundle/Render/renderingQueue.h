@@ -29,10 +29,9 @@
 
 namespace Trundle {
 
-namespace OpenGL {
-    class SceneRenderer;
-}
-    
+  //===-- RenderingTask ----------------------------------------------------===//
+  // A genaric task that defines a unit of rendering.
+  //===---------------------------------------------------------------------===//    
   class RenderingTask {
     public:
     RenderingTask(const VertexArray &a)
@@ -41,6 +40,10 @@ namespace OpenGL {
     VertexArray array;
   };
 
+
+  //===-- RenderingQueue ---------------------------------------------------===//
+  // A queue that holds a series of tasks waiting to be rendered.
+  //===---------------------------------------------------------------------===//
   class RenderingQueue {
   public:
     RenderingQueue() = default;
@@ -56,40 +59,5 @@ namespace OpenGL {
     // TODO: Replace with a threaded queue
     std::queue<RenderingTask> queue;
   };
-
-    class SceneRenderer {
-    public:
-        SceneRenderer() = default;
-        SceneRenderer(const Renderer &r);
-        SceneRenderer(SceneRenderer&&) = default;
-        SceneRenderer& operator=(const SceneRenderer &renderer) noexcept
-          { vptr = renderer.vptr; return *this; }
-
-        // TODO: Add flag for what to clear
-        void clear() { vptr->clear(); }
-        void start() { vptr->start(); }
-        void end() { vptr->end(); }
-        void submit(const RenderingTask &task) { vptr->submit(task); }
-
-        friend class OpenGL::SceneRenderer;
-        
-    private:
-        // Virtual base class for polymorphism.
-        class SceneRendererConcept {
-        public:
-        virtual ~SceneRendererConcept() = default;
-
-        virtual void clear() = 0;
-        virtual void start() = 0;
-        virtual void end() = 0;
-        virtual void submit(const RenderingTask &task) = 0;
-
-        protected:
-            RenderingQueue queue;
-        };
-
-    // Custom virtual pointer to allow for value semantic polymorphism.
-    std::shared_ptr<SceneRendererConcept> vptr;
-    };
 
 }

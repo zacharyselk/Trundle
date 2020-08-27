@@ -31,6 +31,7 @@
 
 namespace Trundle::OpenGL {
 
+    // Converts a GraphicsType into an OpenGL type.
     static GLenum toOpenGL(const Trundle::Rendering::GraphicsType &type) {
         switch (type) {
         case Trundle::Rendering::Float:

@@ -3,6 +3,7 @@ set(render_include_files
   renderer.h
   renderingContext.h
   renderingQueue.h
+  sceneRenderer.h
   shader.h
   util.h
 )
