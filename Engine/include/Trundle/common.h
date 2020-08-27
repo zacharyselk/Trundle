@@ -27,6 +27,7 @@
 #include <array>
 #include <vector>
 #include <string>
+#include <queue>
 
 // Data Types
 #include <cstdint>

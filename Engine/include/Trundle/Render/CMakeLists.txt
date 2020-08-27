@@ -1,6 +1,7 @@
 set(render_include_files
   buffer.h
   renderingContext.h
+  renderingQueue.h
   shader.h
 )
 

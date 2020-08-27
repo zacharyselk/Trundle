@@ -34,12 +34,23 @@ if(UNIX)
   set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
 endif()
 
+# Eigen path
+set(TRUNDLE_EIGEN_DIR CACHE PATH "Path to Eigen source directory")
+if (NOT TRUNDLE_EIGEN_DIR)
+  # TODO: Check if default path exists
+  set(TRUNDLE_EIGEN_DIR "${TRUNDLE_BUILD_DIR}/Eigen")
+  message(WARNING "TRUNDLE_EIGEN_DIR not set, defaulting to ${TRUNDLE_EIGEN_DIR}")
+endif()
+
 add_subdirectory(src)
 
 # Find and link the engine library and include files
 find_library(ENGINE_LIB engine ${TRUNDLE_LIB_DIR} REQUIRED)
 target_link_libraries(driver ${ENGINE_LIB})
 target_include_directories(driver PRIVATE ${TRUNDLE_INCLUDE_DIR})
+
+# Eigen
+target_include_directories(driver PRIVATE "${TRUNDLE_EIGEN_DIR}")
 
 # Deal with Visual Studio putting the exe in stupid places
 if(MSVC)

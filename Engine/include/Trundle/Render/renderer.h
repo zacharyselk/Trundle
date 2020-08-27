@@ -23,6 +23,10 @@
 
 #pragma once
 
+#include <Eigen/Dense>
+
+#include <Trundle/Render/renderingQueue.h>
+
 
 namespace Trundle {
 
@@ -33,12 +37,34 @@ namespace Trundle {
 
   class Renderer {
   public:
-    Renderer(RenderingAPI api)
-      : api(api)  { }
+    Renderer(RenderingAPI api);
+
+    // TODO: Add flag for what to clear
+    void clear() { vptr->clear(); }
+    void start() { vptr->start(); }
+    void end() { vptr->end(); }
+    void submit(const RenderingTask &task) { vptr->submit(task); }
 
     RenderingAPI getAPI() const { return api; }
   private:
     RenderingAPI api;
+
+    // Virtual base class for polymorphism.
+    class RendererConcept {
+    public:
+      virtual ~RendererConcept() = default;
+
+      virtual void clear() = 0;
+      virtual void start() = 0;
+      virtual void end() = 0;
+      virtual void submit(const RenderingTask &task) = 0;
+
+    protected:
+      RenderingQueue queue;
+    };
+
+    // Custom virtual pointer to allow for value semantic polymorphism.
+    std::shared_ptr<RendererConcept> vptr;
   };
 
 }

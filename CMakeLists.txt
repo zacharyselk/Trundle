@@ -140,7 +140,7 @@ ExternalProject_Add(engine
   CMAKE_ARGS list(APPEND CMAKE_ARGS "-DTRUNDLE_BUILD_DIR=${CMAKE_CURRENT_BINARY_DIR}")
   CMAKE_CACHE_ARGS
         -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}
-  DEPENDS glfw gl3w imgui
+  DEPENDS glfw gl3w imgui eigen
 )
 # FetchContent_Declare(ImGui
 #   GIT_REPOSITORY "https://github.com/ocornut/imgui"
