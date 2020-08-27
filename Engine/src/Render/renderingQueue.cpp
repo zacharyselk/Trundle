@@ -16,11 +16,28 @@
 //
 //===-----------------------------------------------------------------------===//
 #include <Trundle/Render/renderingQueue.h>
+#include <Trundle/Platform/OpenGL/renderingQueue.h>
 
 
 namespace Trundle {
 
-    RenderingTask::RenderingTask(const VertexArray &a)
-      : array(a)  { }
+  //===-- SceneRenderer ----------------------------------------------------===//
+  SceneRenderer::SceneRenderer(const Renderer &r) 
+    : vptr(nullptr) {
+    switch (r.getAPI()) {
+      // TODO: Implement
+      case RenderingAPI::None:
+        break;
+
+      case RenderingAPI::OpenGLAPI:
+        vptr = std::make_shared<Trundle::OpenGL::SceneRenderer>();
+        break;
+
+      default:
+        Log::Error("Unknown graphics API");
+        exit(1);
+    }
+  }
+
 
 }

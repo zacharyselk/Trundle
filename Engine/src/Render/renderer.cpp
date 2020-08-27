@@ -23,20 +23,6 @@ namespace Trundle {
 
   //===-- Renderer ---------------------------------------------------------===//
   Renderer::Renderer(RenderingAPI api)
-    : api(api), vptr(nullptr) {
-    switch (api) {
-      // TODO: Implement
-      case RenderingAPI::None:
-        break;
-
-      case RenderingAPI::OpenGLAPI:
-        vptr = std::make_shared<OpenGL::Renderer>();
-        break;
-
-      default:
-        Log::Error("Unknown graphics API");
-        exit(1);
-    }
-  }
+    : api(api)  { }
 
 }

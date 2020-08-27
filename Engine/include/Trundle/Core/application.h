@@ -32,6 +32,7 @@
 #include <Trundle/Util/imGuiLayer.h>
 #include <Trundle/Render/buffer.h>
 #include <Trundle/Render/shader.h>
+#include <Trundle/Render/renderingQueue.h>
 
 
 namespace Trundle {
@@ -77,6 +78,7 @@ namespace Trundle {
       //std::shared_ptr<VertexBuffer> vertexBuffer;
       VertexArray vertexArray;
       Shader shader;
+      SceneRenderer sceneRenderer;
       //std::shared_ptr<IndexBuffer> indexBuffer;
     };
 

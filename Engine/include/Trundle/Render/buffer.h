@@ -172,8 +172,10 @@ namespace OpenGL {
                 const std::vector<VertexBuffer> &vertexBuffers,
                 const std::vector<IndexBuffer> &indexBuffers);
     VertexArray(VertexArray&&) = default;
-    VertexArray& operator=(const VertexArray &buf) noexcept
-      { vptr = buf.vptr; return *this; }
+    VertexArray(const VertexArray &array)
+      { vptr = array.vptr; }
+    VertexArray& operator=(const VertexArray &array) noexcept
+      { vptr = array.vptr; return *this; }
 
     void bind() const { vptr->bind(); }
     void unbind() const { vptr->unbind(); }

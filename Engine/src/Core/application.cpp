@@ -22,17 +22,7 @@
 #include <Trundle/Render/renderer.h>
 #include <Trundle/Render/buffer.h>
 #include <Trundle/Render/shader.h>
-
-//#include <GLFW/glfw3.h>
-
-
-// Temporary
-#include <GL/gl3w.h>
-#include <GLFW/glfw3.h>
-#include <Trundle/Render/util.h>
-#include <Trundle/Platform/OpenGL/util.h>
-
-//#include <Trundle/Render/render.h>
+#include <Trundle/Render/renderingQueue.h>
 
 
 namespace Trundle {
@@ -58,6 +48,7 @@ namespace Trundle {
                                          std::placeholders::_1));
 
       Renderer renderer(RenderingAPI::OpenGLAPI);
+      sceneRenderer = std::move(SceneRenderer(renderer));
 
       // Triangle
       unsigned int indices[3] = { 0, 1, 2 };
@@ -109,9 +100,9 @@ namespace Trundle {
 
     void Application::run() {
       while(running) {
-        // Temporary
-        glClear(GL_COLOR_BUFFER_BIT);
-        glClearColor(0.54, 0.17, 0.89, 1);
+        sceneRenderer.clear();
+
+        sceneRenderer.start();
 
         guiLayer->begin();
         for (Layer* layer : layerStack) {
@@ -119,9 +110,8 @@ namespace Trundle {
         }
         guiLayer->end();
 
-        vertexArray.bind();
-        // Temporary
-        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
+        sceneRenderer.submit(vertexArray);
+        sceneRenderer.end();
 
         window->onUpdate();
       }
