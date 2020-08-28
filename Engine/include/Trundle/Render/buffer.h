@@ -171,9 +171,9 @@ namespace OpenGL {
     void bind() const { vptr->bind(); }
     void unbind() const { vptr->unbind(); }
     const std::shared_ptr<std::vector<VertexBuffer>> &getVertexBuffers() const
-      { return getVertexBuffers(); }
+      { return vptr->getVertexBuffers(); }
     const std::shared_ptr<IndexBuffer> &getIndexBuffer() const
-      { return getIndexBuffer(); }
+      { return vptr->getIndexBuffer(); }
 
     friend class OpenGL::VertexArray;
 

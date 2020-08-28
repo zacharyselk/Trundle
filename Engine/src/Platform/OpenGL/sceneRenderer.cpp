@@ -39,9 +39,8 @@ namespace Trundle::OpenGL {
     void SceneRenderer::end() const {
         while(!queue.empty()) {
             auto task = queue.front();
-            auto x = task.array.getIndexBuffer()->size();
             task.array.bind();
-            glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
+            glDrawElements(GL_TRIANGLES, task.array.getIndexBuffer()->size(), GL_UNSIGNED_INT, nullptr);
             queue.pop();
         }
     }
