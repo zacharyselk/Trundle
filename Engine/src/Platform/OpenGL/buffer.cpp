@@ -90,8 +90,8 @@ namespace Trundle::OpenGL {
             for (size_t i = 0; i < layout.size(); ++i) {
             glEnableVertexAttribArray(i);
             glVertexAttribPointer(
-            i, layout[i]->numberOfComponents, OpenGL::toOpenGL(layout[i]->type), 
-            layout[i]->normalize ? GL_TRUE : GL_FALSE, layout.getStride(), (const void*)layout[i]->offset);
+            i, layout[i].numberOfComponents, OpenGL::toOpenGL(layout[i].type), 
+            layout[i].normalize ? GL_TRUE : GL_FALSE, layout.getStride(), (const void*)layout[i].offset);
             }
         }
 

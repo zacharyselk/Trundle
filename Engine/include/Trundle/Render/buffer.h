@@ -42,12 +42,12 @@ namespace OpenGL {
   // TODO: Possibly should be moved somewhere else, either into LayoutElement
   //       if it is the only one who uses this, otherwise maybe into
   //       Render/util.h
+  // TODO: Check to see if this object is being copy constructed.
   //===---------------------------------------------------------------------===//
   struct LayoutElement {
     LayoutElement(const Rendering::GraphicsType &type, const std::string &name, const bool &normalize=false);
     LayoutElement(const uint32_t &osffset, const Rendering::GraphicsType &type, const std::string &name, const bool &normalize=false);
-    //LayoutElement(const uint32_t &offset, const std::initializer_list<LayoutElement> &lst)
-    //  : LayoutElement(std::forward<std::initializer_list<LayoutElement>>(lst))  { }
+    LayoutElement(const LayoutElement &elem, const uint32_t &offset);
     LayoutElement(const LayoutElement &element) = default;
 
     Rendering::GraphicsType type;
@@ -68,19 +68,16 @@ namespace OpenGL {
     BufferLayout(const std::initializer_list<LayoutElement> &layout);
     BufferLayout(const BufferLayout &layout) = default;
     BufferLayout(BufferLayout&&) noexcept = default;
-    BufferLayout& operator=(const BufferLayout &layout) noexcept
-      { this->layout = layout.layout; this->stride = layout.stride; return *this; }
 
     uint32_t getStride() const { return stride; }
 
-    const std::shared_ptr<LayoutElement> &operator[](size_t index) const;
-    size_t size();
-    std::vector<std::shared_ptr<LayoutElement>>::const_iterator begin() const;
-    std::vector<std::shared_ptr<LayoutElement>>::const_iterator end() const;
+    const LayoutElement &operator[](size_t index) const;
+    size_t size() const;
+    std::vector<LayoutElement>::const_iterator begin() const;
+    std::vector<LayoutElement>::const_iterator end() const;
 
   private:
-    // TODO: Make const
-    std::vector<std::shared_ptr<LayoutElement>> layout;
+    std::shared_ptr<const std::vector<LayoutElement>> layout;
     uint32_t stride;
   };
 

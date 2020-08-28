@@ -47,7 +47,9 @@ namespace Trundle {
       window->setEventCallback(std::bind(&Application::onEvent, this,
                                          std::placeholders::_1));
 
+      // Temporary
       Renderer renderer(RenderingAPI::OpenGLAPI);
+      // TODO: make this assignmnet better.
       sceneRenderer = std::move(SceneRenderer(renderer));
 
       // Triangle
@@ -63,33 +65,38 @@ namespace Trundle {
         { Trundle::Rendering::Float4, "color"}
       };
 
+      // TODO: make this assignmnet better.
       auto vertexBuffer = std::move(VertexBuffer(renderer, vertices, layout, sizeof(vertices)));
       std::vector<VertexBuffer> vertexBuffers = { vertexBuffer };
 
       auto indexBuffer = std::move(IndexBuffer(renderer, indices, 3));
 
+      // TODO: make this assignmnet better.
       vertexArray = std::move(VertexArray(renderer, vertexBuffers, indexBuffer));
 
-      std::string vs =
-        "#version 330 core\n"
-        "layout(location = 0) in vec3 in_position;\n"
-        "layout(location = 1) in vec4 in_color;\n"
-        "out vec3 v_position;\n"
-        "out vec4 v_color;\n"
-        "void main(){\n"
-        "  v_position = in_position;\n"
-        "  v_color = in_color\n;"
-        "  gl_Position = vec4(in_position, 1.0);\n"
-        "}\n";
-      std::string fs =
-        "#version 330 core\n"
-        "layout(location = 0) out vec4 color;\n"
-        "in vec3 v_position;\n"
-        "in vec4 v_color;\n"
-        "void main(){\n"
-        "  color = v_color*0.5 + vec4(v_position * 0.5 + 0.5, 1.0) * 0.5;\n"
-        "}\n";
+      std::string vs = R"(
+        #version 330 core
+        layout(location = 0) in vec3 in_position;
+        layout(location = 1) in vec4 in_color;
+        out vec3 v_position;
+        out vec4 v_color;
+        void main(){
+          v_position = in_position;
+          v_color = in_color;
+          gl_Position = vec4(in_position, 1.0);
+        }
+      )";
+      std::string fs = R"(
+        #version 330 core
+        layout(location = 0) out vec4 color;
+        in vec3 v_position;
+        in vec4 v_color;
+        void main(){
+          color = v_color*0.5 + vec4(v_position * 0.5 + 0.5, 1.0) * 0.5;
+        }
+        )";
 
+      // TODO: make this assignmnet better.
       shader = std::move(Shader(renderer, vs, fs));
       shader.bind();
 

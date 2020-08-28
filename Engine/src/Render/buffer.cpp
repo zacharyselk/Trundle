@@ -29,42 +29,46 @@ namespace Trundle {
                                const bool &normalize)
     : type(type), name(name), elementSize(Rendering::getSizeOf(type)), 
     numberOfComponents(elementSize/Rendering::getComponentSizeOf(type)), 
-    offset(-1), normalize(normalize)  { }
+    offset(0), normalize(normalize)  { }
+
+  LayoutElement::LayoutElement(const LayoutElement &elem, const uint32_t &offset)
+    : LayoutElement(elem)  {  
+    this->offset = offset; 
+  }
 
 
   //===-- BufferLayout -----------------------------------------------------===//
-  BufferLayout::BufferLayout(const std::initializer_list<LayoutElement> &layout)
-    : stride(0) {
+  BufferLayout::BufferLayout(const std::initializer_list<LayoutElement> &l)
+    : /*layout(std::make_shared<std::vector<LayoutElement>>(l)), */stride(0) {
 
-    for (const auto &element : layout) {
-      LayoutElement e(element);
-      std::shared_ptr<LayoutElement> s = std::make_shared<LayoutElement>(e);
-      this->layout.push_back(s);
+    std::vector<LayoutElement> list;
+    for (const auto &element : l) {
+      LayoutElement elem(element, stride);
+      //std::shared_ptr<LayoutElement> s = std::make_shared<LayoutElement>(elem);
+      list.push_back(elem);
+      stride += elem.elementSize;
     }
 
-    for (auto &element : this->layout) {
-      element->offset = stride;
-      stride += element->elementSize;
-    }
+    layout = std::make_shared<std::vector<LayoutElement>>(std::move(list));
   }
 
-  const std::shared_ptr<LayoutElement> &
+  const LayoutElement &
   BufferLayout::operator[](size_t index) const {
-    return layout[index];
+    return layout->operator[](index);
   }
 
-  size_t BufferLayout::size() {
-    return layout.size();
+  size_t BufferLayout::size() const {
+    return layout->size();
   }
 
-  std::vector<std::shared_ptr<LayoutElement>>::const_iterator 
+  std::vector<LayoutElement>::const_iterator 
   BufferLayout::begin() const { 
-    return layout.begin(); 
+    return layout->begin(); 
   }
 
-  std::vector<std::shared_ptr<LayoutElement>>::const_iterator 
+  std::vector<LayoutElement>::const_iterator 
   BufferLayout::end() const { 
-    return layout.end(); 
+    return layout->end(); 
   }
 
 
