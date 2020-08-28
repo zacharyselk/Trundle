@@ -38,8 +38,11 @@ namespace Trundle::OpenGL {
     virtual void bind() const override final;
     virtual void unbind() const override final;
 
+    virtual size_t size() const override final;
+
   private:
     uint32_t id;
+    size_t count;
   };
 
   //===-- VertexBuffer -----------------------------------------------------===//
@@ -73,10 +76,12 @@ namespace Trundle::OpenGL {
 
     void bind() const override final;
     void unbind() const override final;
+    virtual const std::shared_ptr<std::vector<Trundle::VertexBuffer>> &getVertexBuffers() const override final;
+    virtual const std::shared_ptr<Trundle::IndexBuffer> &getIndexBuffer() const override final;
 
   private:
     uint32_t id;
-    std::vector<Trundle::VertexBuffer> vertexBuffers;
-    Trundle::IndexBuffer indexBuffer;
+    std::shared_ptr<std::vector<Trundle::VertexBuffer>> vertexBuffers;
+    std::shared_ptr<Trundle::IndexBuffer> indexBuffer;
   };
 }

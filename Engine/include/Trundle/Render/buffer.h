@@ -96,6 +96,8 @@ namespace OpenGL {
     void bind() const { vptr->bind(); }
     void unbind() const { vptr->unbind(); }
 
+    size_t size() const  { return vptr->size(); }
+
     friend class OpenGL::IndexBuffer;
 
   private:
@@ -106,6 +108,7 @@ namespace OpenGL {
 
       virtual void bind() const = 0;
       virtual void unbind() const = 0;
+      virtual size_t size() const = 0;
     };
 
     // Custom virtual pointer to allow for value semantic polymorphism.
@@ -167,6 +170,10 @@ namespace OpenGL {
 
     void bind() const { vptr->bind(); }
     void unbind() const { vptr->unbind(); }
+    const std::shared_ptr<std::vector<VertexBuffer>> &getVertexBuffers() const
+      { return getVertexBuffers(); }
+    const std::shared_ptr<IndexBuffer> &getIndexBuffer() const
+      { return getIndexBuffer(); }
 
     friend class OpenGL::VertexArray;
 
@@ -178,6 +185,8 @@ namespace OpenGL {
 
       virtual void bind() const = 0;
       virtual void unbind() const = 0;
+      virtual const std::shared_ptr<std::vector<VertexBuffer>> &getVertexBuffers() const = 0;
+      virtual const std::shared_ptr<IndexBuffer> &getIndexBuffer() const = 0;
     };
 
     // Custom virtual pointer to allow for value semantic polymorphism.

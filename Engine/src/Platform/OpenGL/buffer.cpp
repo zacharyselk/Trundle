@@ -26,7 +26,8 @@
 namespace Trundle::OpenGL {
 
     //===-- IndexBuffer ----------------------------------------------------===//
-    IndexBuffer::IndexBuffer(uint32_t* indices, uint32_t count) {
+    IndexBuffer::IndexBuffer(uint32_t* indices, uint32_t count)
+      : count(count) {
         glGenBuffers(1, &id);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), 
@@ -43,6 +44,10 @@ namespace Trundle::OpenGL {
 
     void IndexBuffer::unbind() const {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    }
+
+    size_t IndexBuffer::size() const {
+        return count;
     }
 
 
@@ -76,14 +81,15 @@ namespace Trundle::OpenGL {
     VertexArray::VertexArray(
         const std::vector<Trundle::VertexBuffer> &vertexBuffers,
         const Trundle::IndexBuffer &indexBuffer) 
-        : vertexBuffers(vertexBuffers), indexBuffer(indexBuffer) {
+        : vertexBuffers(std::make_shared<std::vector<Trundle::VertexBuffer>>(vertexBuffers)), 
+          indexBuffer(std::make_shared<Trundle::IndexBuffer>(indexBuffer)) {
         // OpenGL 4.5
         //glCreateVertexArrays(1, &id);
 
         glGenVertexArrays(1, &id);
         glBindVertexArray(id);
 
-        for (const auto &buf : vertexBuffers) {
+        for (const auto &buf : *(this->vertexBuffers)) {
             buf.bind();
 
             BufferLayout layout = buf.getLayout();
@@ -96,7 +102,7 @@ namespace Trundle::OpenGL {
         }
 
 
-        indexBuffer.bind();
+        this->indexBuffer->bind();
     }
 
     VertexArray::~VertexArray() {
@@ -109,6 +115,14 @@ namespace Trundle::OpenGL {
 
     void VertexArray::unbind() const {
         glBindVertexArray(0);
+    }
+
+    const std::shared_ptr<std::vector<Trundle::VertexBuffer>> &VertexArray::getVertexBuffers() const {
+        return vertexBuffers;
+    }
+
+    const std::shared_ptr<Trundle::IndexBuffer> &VertexArray::getIndexBuffer() const {
+        return indexBuffer;
     }
 
 }
