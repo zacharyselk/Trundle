@@ -11,11 +11,21 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Platform specific flags
 if(WIN32)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_GLAGS} -DTRUNDLE_OS_WINDOWS")
+  message(DEBUG "Detected Windows OS as the build environment")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DTRUNDLE_OS_WINDOWS")
+
+  if(MINGW)
+    message(DEBUG "Detected the MinGW compiler; switching to static standard libraries")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
+  elseif(MSVC)
+    message(DEBUG "Detected the MSVC compiler")
+  endif()
 elseif(APPLE)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_GLAGS} -DTRUNDLE_OS_MACOS")
+  message(DEBUG "Detected OSX as the build environment")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DTRUNDLE_OS_MACOS")
 elseif(UNIX)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_GLAGS} -DTRUNDLE_OS_LINUX")
+  message(DEBUG "Detected Linux as the build environment")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DTRUNDLE_OS_LINUX")
 else()
   message(FATAL_ERROR "Error: Unknown platform, aborting.")
 endif()
@@ -25,9 +35,6 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Debug)
 endif()
 
-# Hack: Eventually figure out how to change default install dir
-set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}/build")
-
 # Set compile flags
 if(UNIX)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
@@ -35,61 +42,20 @@ if(UNIX)
   set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
 endif()
 
+
 ### Sub-Projects
+
+# Make sure that git is installed
+find_package(Git)
+if(NOT GIT_FOUND)
+  message(FATAL_ERROR
+    "Git was not found! Make sure that you have git installed in your environment")
+endif()
 
 # Download and build dependencies
 set(TRUNDLE_BUILD_DIR "${PROJECT_BINARY_DIR}")
-#configure_file(CMakeLists.txt.in "${TRUNDLE_BUILD_DIR}/CMakeLists.txt")
-
-# execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" "../tmp"
-#   WORKING_DIRECTORY "${TRUNDLE_BUILD_DIR}"
-# )
-# message("Four")
-# execute_process(COMMAND "${CMAKE_COMMAND}" --build .
-#   WORKING_DIRECTORY "${TRUNDLE_BUILD_DIR}"
-# )
 
 include(ExternalProject)
-
-ExternalProject_Add(glfw
-  PREFIX GLFW
-  SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Third-Party/GLFW"
-  CMAKE_CACHE_ARGS
-      -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}
-)
-
-# ExternalProject_Add(gl3w
-#   GIT_REPOSITORY "https://github.com/skaslev/gl3w"
-#   GIT_TAG "master"
-#   #SOURCE_DIR "${CMAKE_INSTALL_PREFIX}/gl3w/src"
-#   #BINARY_DIR "${CMAKE_INSTALL_PREFIX}/gl3w/bin"
-#   #SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Third-Party/gl3w"
-#   CMAKE_CACHE_ARGS
-#   -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}
-# )
-
-include(FetchContent)
-
-# FetchContent_Declare(GL3W
-#   GIT_REPOSITORY "https://github.com/skaslev/gl3w"
-#   GIT_TAG "master"
-# )
-# FetchContent_Declare(ImGui
-#   GIT_REPOSITORY "https://github.com/ocornut/imgui"
-#   GIT_TAG "v1.77"
-# )
-# FetchContent_Populate(GL3W)
-# FetchCOntent_Populate(ImGui)
-
-# ExternalProject_Add(imgui
-#   GIT_REPOSITORY "https://github.com/ocornut/imgui"
-#   GIT_TAG "v1.77"
-#   SOURCE_DIR "ImGui"
-#   CONFIGURE_COMMAND ""
-#   BUILD_COMMAND ""
-#   INSTALL_COMMAND ""
-#   TEST_COMMAND ""
-# )
 
 ExternalProject_Add(imgui
   GIT_REPOSITORY "https://github.com/ocornut/imgui"
@@ -104,17 +70,27 @@ ExternalProject_Add(imgui
 ExternalProject_Add(gl3w
   GIT_REPOSITORY "https://github.com/skaslev/gl3w"
   GIT_TAG "master"
-  SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/gl3w-download"
-  BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/GL3W"
-  INSTALL_DIR "${CMAKE_CURRENT_BINARY_DIR}/gl3w-install"
+  SOURCE_DIR "${TRUNDLE_BUILD_DIR}/gl3w-download"
+  BINARY_DIR "${TRUNDLE_BUILD_DIR}/GL3W"
+  INSTALL_DIR "${TRUNDLE_BUILD_DIR}/gl3w-install"
   INSTALL_COMMAND ""
   TEST_COMMAND ""
   )
 
+ExternalProject_Add(glfw
+  GIT_REPOSITORY "https://github.com/glfw/glfw"
+  GIT_TAG "master"
+  SOURCE_DIR "${TRUNDLE_BUILD_DIR}/GLFW"
+  BINARY_DIR "${TRUNDLE_BUILD_DIR}/GLFW"
+  INSTALL_DIR "${TRUNDLE_BUILD_DIR}/GLFW"
+  INSTALL_COMMAND ""
+  TEST_COMMAND ""
+)
+
 ExternalProject_Add(eigen
   GIT_REPOSITORY "https://gitlab.com/libeigen/eigen.git"
   GIT_TAG "master"
-  SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/Eigen"
+  SOURCE_DIR "${TRUNDLE_BUILD_DIR}/Eigen"
   CONFIGURE_COMMAND ""
   BUILD_COMMAND ""
   INSTALL_COMMAND ""
@@ -124,36 +100,30 @@ ExternalProject_Add(eigen
 # ExternalProject_Add(gtes
 #   GIT_REPOSITORY "https://github.com/google/googletest.git"
 #   GIT_TAG "master"
-#   SOURCE_DIR "${CMAKE_INSTALL_PREFIX}/googletest/src"
-#   BINARY_DIR "${CMAKE_INSTALL_PREFIX}/googletest/bin"
+#   SOURCE_DIR "${TRUNDLE_BUILD_DIR}/googletest/src"
+#   BINARY_DIR "${TRUNDLE_BUILD_DIR}/googletest/bin"
 #   CONFIGURE_COMMAND ""
 #   BUILD_COMMAND ""
 #   INSTALL_COMMAND ""
-#   TEST_COMMAND ""i
+#   TEST_COMMAND ""
 #   #CMAKE_CACHE_ARGS
-#   #-DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}
+#   #-DCMAKE_INSTALL_PREFIX:PATH=${TRUNDLE_BUILD_DIR}
 # )
 
 ExternalProject_Add(engine
   PREFIX Engine
   SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Engine"
-  CMAKE_ARGS list(APPEND CMAKE_ARGS "-DTRUNDLE_BUILD_DIR=${CMAKE_CURRENT_BINARY_DIR}")
+  CMAKE_ARGS list(APPEND CMAKE_ARGS "-DTRUNDLE_BUILD_DIR=${TRUNDLE_BUILD_DIR}")
   CMAKE_CACHE_ARGS
-        -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}
+    -DCMAKE_INSTALL_PREFIX:PATH=${TRUNDLE_BUILD_DIR}
   DEPENDS glfw gl3w imgui eigen
 )
-# FetchContent_Declare(ImGui
-#   GIT_REPOSITORY "https://github.com/ocornut/imgui"
-#   GIT_TAG "v1.77"
-# )
-# FetchContent_MakeAvailable(GL3W)
-
 
 ExternalProject_Add(driver
   PREFIX Driver
   SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Driver"
   CMAKE_CACHE_ARGS
-        -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}
+    -DCMAKE_INSTALL_PREFIX:PATH=${TRUNDLE_BUILD_DIR}
   INSTALL_COMMAND cmake -E echo "Skipping install step."
   DEPENDS engine
 )

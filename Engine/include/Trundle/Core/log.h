@@ -45,7 +45,20 @@ namespace details {
     Critical=6,
     None=7
   };
+
 }
+
+ namespace Color {
+   const std::string red("\033[0;31m");
+   const std::string orange("\033[0;33m");
+   const std::string yellow("\033[1;33m");
+   const std::string green("\033[0;32m");
+   const std::string blue("\033[0;34m");
+   const std::string cyan("\033[0;36m");
+   const std::string purple("\033[0;35m");
+   const std::string white("\033[1;37m");
+ }
+
 
   constexpr int LoggingLevel = TRUNDLE_LEVEL;
 
@@ -57,6 +70,7 @@ namespace details {
   template<typename T>
   void Trace(const T &msg) {
     if constexpr (LoggingLevel <= details::LogLevel::Trace) {
+        std::cout << Color::white << "[TRACE]   ";
         Log(details::LogLevel::Trace, msg);
     }
   }
@@ -64,6 +78,7 @@ namespace details {
   template<typename T>
   void Info(const T &msg) {
     if constexpr (LoggingLevel <= details::LogLevel::Info) {
+        std::cout << Color::green << "[INFO]    ";
         Log(details::LogLevel::Info, msg);
     }
   }
@@ -71,6 +86,7 @@ namespace details {
   template<typename T>
   void Debug(const T &msg) {
     if constexpr (LoggingLevel <= details::LogLevel::Debug) {
+        std::cout << Color::orange << "[DEBUG]   ";
         Log(details::LogLevel::Debug, msg);
     }
   }
@@ -78,6 +94,7 @@ namespace details {
   template<typename T>
   void Warn(const T &msg) {
     if constexpr (LoggingLevel <= details::LogLevel::Warn) {
+        std::cout << Color::yellow << "[WARNING] ";
         Log(details::LogLevel::Warn, msg);
     }
   }
@@ -85,6 +102,7 @@ namespace details {
   template<typename T>
   void Error(const T &msg) {
     if constexpr (LoggingLevel <= details::LogLevel::Error) {
+        std::cout << Color::red << "[ERROR]   ";
         Log(details::LogLevel::Error, msg);
     }
   }
@@ -92,6 +110,7 @@ namespace details {
   template<typename T>
   void Critical(const T &msg) {
     if constexpr (LoggingLevel <= details::LogLevel::Critical) {
+        std::cout << Color::cyan << "[CRITICAL] ";
         Log(details::LogLevel::Critical, msg);
     }
   }

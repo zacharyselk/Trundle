@@ -27,7 +27,7 @@ add_subdirectory("${CMAKE_BINARY_DIR}/googletest-src"
 if(CMAKE_VERSION VERSION_LESS 2.8.11)
   include_directories("${gtest_SOURCE_DIR}/include"
     "${gmock_SOURCE_DIR}/include"
-    )
+  )
 endif()
 
 
@@ -54,6 +54,14 @@ if (NOT TRUNDLE_GL3W_DIR)
   message(WARNING "TRUNDLE_GL3W_DIR not set, defaulting to ${TRUNDLE_GL3W_DIR}")
 endif()
 
+# GLFW path
+set(TRUNDLE_GLFW_DIR CACHE PATH "Path to GLFW source directory")
+if (NOT TRUNDLE_GLFW_DIR)
+  # TODO: Check if default path exists
+  set(TRUNDLE_GLFW_DIR "${TRUNDLE_BUILD_DIR}/GLFW")
+  message(WARNING "TRUNDLE_GLFW_DIR not set, defaulting to ${TRUNDLE_GLFW_DIR}")
+endif()
+
 # ImGui path
 set(TRUNDLE_IMGUI_DIR CACHE PATH "Path to ImGui source directory")
 if (NOT TRUNDLE_IMGUI_DIR)
@@ -70,10 +78,6 @@ if (NOT TRUNDLE_EIGEN_DIR)
   message(WARNING "TRUNDLE_EIGEN_DIR not set, defaulting to ${TRUNDLE_EIGEN_DIR}")
 endif()
 
-
-
-# Hack
-set(TRUNDLE_THIRD_PARTY_DIR "${CMAKE_INSTALL_PREFIX}/../Third-Party")
 
 # Platform specific flags
 if(WIN32)
@@ -115,7 +119,6 @@ file(GLOB IMGUI_INCLUDE
 )
 target_sources(engine PRIVATE ${IMGUI_SRC})
 target_include_directories(engine PRIVATE "${TRUNDLE_IMGUI_DIR}")
-# TODO: Remove
 target_sources(engine PRIVATE "${TRUNDLE_IMGUI_DIR}/examples/imgui_impl_glfw.cpp")
 target_sources(engine PRIVATE "${TRUNDLE_IMGUI_DIR}/examples/imgui_impl_opengl3.cpp")
 
@@ -125,10 +128,14 @@ target_include_directories(engine PRIVATE "${TRUNDLE_EIGEN_DIR}")
 # Note: Removed for now, not working
 #add_subdirectory(test)
 
-# GLFW should be built to the build directory
-find_library(GLFW_LIB glfw3 ${TRUNDLE_LIB_DIR} REQUIRED)
-target_include_directories(engine PRIVATE ${TRUNDLE_INCLUDE_DIR})
-target_link_libraries(engine ${GLFW_LIB})
+# GLFW
+find_library(GLFW_LIB
+  NAMES glfw3
+  PATHS "${TRUNDLE_GLFW_DIR}/src/" "${TRUNDLE_GLFW_DIR}/src/Release" "${TRUNDLE_GLFW_DIR}/src/Debug"
+  PATH_SUFFIXES lib
+  REQUIRED)
+target_include_directories(engine PRIVATE "${TRUNDLE_GLFW_DIR}/include")
+target_link_libraries(engine "${GLFW_LIB}")
 
 # GL3W
 file(GLOB GL3W_SRC
@@ -142,7 +149,7 @@ target_sources(engine PRIVATE "${GL3W_SRC}")
 # Link OpenGL
 if(WIN32)
   find_package(OpenGL REQUIRED)
-  target_link_libraries(engine ${OPENGL_LIBRARIES})
+  target_link_libraries(engine "${OPENGL_LIBRARIES}")
 elseif(APPLE)
   target_link_libraries(engine "-framework OpenGL")
   target_link_libraries(engine "-framework Cocoa")
@@ -150,7 +157,7 @@ elseif(APPLE)
   target_link_libraries(engine "-framework CoreVideo")
 else()
   find_package(OpenGL REQUIRED)
-  target_link_libraries(engine ${OPENGL_LIBRARIES})
+  target_link_libraries(engine "${OPENGL_LIBRARIES}")
 endif()
 
 # Add all the Engine header files from Engine/include
@@ -162,11 +169,11 @@ target_include_directories(engine PRIVATE
 add_subdirectory(src)
 
 # Copies the Engine header files to the build
-install(DIRECTORY ${PROJECT_SOURCE_DIR}/include DESTINATION ${TRUNDLE_BUILD_DIR})
+install(DIRECTORY "${PROJECT_SOURCE_DIR}/include" DESTINATION "${TRUNDLE_BUILD_DIR}")
 
 if(UNIX)
-  install(TARGETS engine DESTINATION ${TRUNDLE_LIB_DIR})
+  install(TARGETS engine DESTINATION "${TRUNDLE_LIB_DIR}")
 elseif(WIN32)
   # Windows cannot find dll's unless they are in the same dir
-  install(TARGETS engine DESTINATION ${TRUNDLE_BIN_DIR})
+  install(TARGETS engine DESTINATION "${TRUNDLE_BIN_DIR}")
 endif()

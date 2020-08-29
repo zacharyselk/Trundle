@@ -10,7 +10,7 @@ set(TRUNDLE_LIB_DIR "${TRUNDLE_BUILD_DIR}/lib")
 set(TRUNDLE_BIN_DIR "${TRUNDLE_BUILD_DIR}/bin")
 set(TRUNDLE_INCLUDE_DIR "${TRUNDLE_BUILD_DIR}/include")
 
-set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${TRUNDLE_BIN_DIR})
+set (CMAKE_RUNTIME_OUTPUT_DIRECTORY "${TRUNDLE_BIN_DIR}")
 
 # Platform specific flags
 if(WIN32)
@@ -45,18 +45,18 @@ endif()
 add_subdirectory(src)
 
 # Find and link the engine library and include files
-find_library(ENGINE_LIB engine ${TRUNDLE_LIB_DIR} REQUIRED)
-target_link_libraries(driver ${ENGINE_LIB})
-target_include_directories(driver PRIVATE ${TRUNDLE_INCLUDE_DIR})
+find_library(ENGINE_LIB engine "${TRUNDLE_LIB_DIR}" REQUIRED)
+target_link_libraries(driver "${ENGINE_LIB}")
+target_include_directories(driver PRIVATE "${TRUNDLE_INCLUDE_DIR}")
 
 # Eigen
 target_include_directories(driver PRIVATE "${TRUNDLE_EIGEN_DIR}")
 
 # Deal with Visual Studio putting the exe in stupid places
 if(MSVC)
-  set_target_properties(driver PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${TRUNDLE_BIN_DIR})
-  set_target_properties(driver PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ${TRUNDLE_BIN_DIR})
-  set_target_properties(driver PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${TRUNDLE_BIN_DIR})
+  set_target_properties(driver PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${TRUNDLE_BIN_DIR}")
+  set_target_properties(driver PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG "${TRUNDLE_BIN_DIR}")
+  set_target_properties(driver PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE "${TRUNDLE_BIN_DIR}")
 endif(MSVC)
 
-install (TARGETS driver DESTINATION ${TRUNDLE_BIN_DIR})
+install (TARGETS driver DESTINATION "${TRUNDLE_BIN_DIR}")

@@ -22,7 +22,7 @@
 namespace Trundle {
 
 LayerStack::LayerStack()
-  : layers{}, it(0)  { }
+  : layers{}, it{0}  { }
 
 LayerStack::~LayerStack() {
   for (Layer* layer : layers) {

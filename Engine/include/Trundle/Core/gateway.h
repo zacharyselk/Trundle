@@ -40,6 +40,7 @@ int main(int argc, char** argv) {
     app->run();
     delete app;
     Trundle::Log::Debug("Application Closed\n");
+    std::cout << Trundle::Log::Color::white;
 }
 
 #else
@@ -52,6 +53,7 @@ int main(int argc, char** argv) {
   app->run();
   delete app;
   Trundle::Log::Debug("Application Closed");
+  std::cout << Trundle::Log::Color::white;
 }
 
 #endif
