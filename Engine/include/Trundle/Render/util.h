@@ -1,4 +1,4 @@
-//===-- util.h -------------------------------------------------------------===//
+//===-- util.h ------------------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -14,64 +14,51 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//===-----------------------------------------------------------------------===//
+//===----------------------------------------------------------------------===//
 //
 // Rendering API helper functions.
 //
-//===-----------------------------------------------------------------------===//
-
+//===----------------------------------------------------------------------===//
 #pragma once
 
-#include <Trundle/common.h>
 #include <Trundle/Core/log.h>
-
-//#include <GL/gl3w.h>
-//#include <GLFW/glfw3.h>
-
+#include <Trundle/common.h>
 
 namespace Trundle::Rendering {
 
-    enum GraphicsType {
-        None=0,
-        Float,
-        Float2,
-        Float3,
-        Float4
-    };
+enum GraphicsType { None = 0, Float, Float2, Float3, Float4 };
 
+// Retruns the size of a GraphicsType similar to sizeof().
+static uint32_t getSizeOf(const GraphicsType& type) {
+  switch (type) {
+  case Float:
+    return 4;
+  case Float2:
+    return 4 * 2;
+  case Float3:
+    return 4 * 3;
+  case Float4:
+    return 4 * 4;
+  }
 
-    // Retruns the size of a GraphicsType similar to sizeof().
-    static uint32_t getSizeOf(const GraphicsType &type) {
-        switch (type) {
-        case Float:
-            return 4;
-        case Float2:
-            return 4*2;
-        case Float3:
-            return 4*3;
-        case Float4:
-            return 4*4;
-        }
-
-        Log::Error("Unknown GraphicsType");
-        exit(1);
-        return -1;
-    }
-
-
-    // Returns the comonent size of a GraphicsType.
-    static uint32_t getComponentSizeOf(const GraphicsType &type) {
-        switch (type) {
-        case Float:
-        case Float2:
-        case Float3:
-        case Float4:
-            return 4;
-        }
-
-        Log::Error("Unknown GraphicsType");
-        exit(1);
-        return -1;
-    }
-
+  Log::Error("Unknown GraphicsType");
+  exit(1);
+  return -1;
 }
+
+// Returns the comonent size of a GraphicsType.
+static uint32_t getComponentSizeOf(const GraphicsType& type) {
+  switch (type) {
+  case Float:
+  case Float2:
+  case Float3:
+  case Float4:
+    return 4;
+  }
+
+  Log::Error("Unknown GraphicsType");
+  exit(1);
+  return -1;
+}
+
+} // namespace Trundle::Rendering

@@ -1,4 +1,4 @@
-//===-- core.h -------------------------------------------------------------===//
+//===-- core.h ------------------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -14,16 +14,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//===-----------------------------------------------------------------------===//
+//===----------------------------------------------------------------------===//
 //
 // Provides code core for the Engine to operate.
 // TODO: Core is a poor name so rename the and migrate it to
 //       Trundle/Engine/include/Trundle/Util,
 //
-//===-----------------------------------------------------------------------===//
-
+//===----------------------------------------------------------------------===//
 #pragma once
-
 
 // On Windows we need to decorate all API classes (classes that will be used
 // by the driver) so that dynamic linking is functional. This is only needed

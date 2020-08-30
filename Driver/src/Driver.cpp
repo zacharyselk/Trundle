@@ -1,4 +1,4 @@
-//===-- imGuiLayer.h -------------------------------------------------------===//
+//===-- imGuiLayer.h ------------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -14,20 +14,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//===-----------------------------------------------------------------------===//
+//===----------------------------------------------------------------------===//
 //
 // A simple example of a user-end driver, used to test the code.
 //
-//===-----------------------------------------------------------------------===//
-
+//===----------------------------------------------------------------------===//
 #include <Trundle.h>
 #include <sstream>
 
-
 class ExampleLayer : public Trundle::Layer {
 public:
-  ExampleLayer()
-    : Layer("HelloLayer")  { }
+  ExampleLayer() : Layer("HelloLayer") {}
 
   void onUpdate() override final {
     Trundle::Log::Info("ExampleLayer::Update");
@@ -40,14 +37,10 @@ public:
 };
 
 class Game : public Trundle::Application {
-    public:
-    Game()  {
-      pushLayer(new ExampleLayer);
-    }
+public:
+  Game() { pushLayer(new ExampleLayer); }
 
-    ~Game()  { }
+  ~Game() {}
 };
 
-Trundle::Application* Trundle::CreateApplication() {
-    return new Game();
-}
+Trundle::Application* Trundle::CreateApplication() { return new Game(); }

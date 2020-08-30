@@ -1,4 +1,4 @@
-//===-- sceneRenderer.cpp --------------------------------------------------===//
+//===-- sceneRenderer.cpp -------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -14,30 +14,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//===-----------------------------------------------------------------------===//
-
-#include <Trundle/Render/sceneRenderer.h>
+//===----------------------------------------------------------------------===//
 #include <Trundle/Platform/OpenGL/sceneRenderer.h>
-
+#include <Trundle/Render/sceneRenderer.h>
 
 namespace Trundle {
 
-  //===-- SceneRenderer ----------------------------------------------------===//
-  SceneRenderer::SceneRenderer(const Renderer &r) 
-    : vptr(nullptr) {
-    switch (r.getAPI()) {
-      // TODO: Implement
-      case RenderingAPI::None:
-        break;
+//===-- SceneRenderer -----------------------------------------------------===//
+SceneRenderer::SceneRenderer(const Renderer& r) : vptr(nullptr) {
+  switch (r.getAPI()) {
+  // TODO: Implement.
+  case RenderingAPI::None:
+    break;
 
-      case RenderingAPI::OpenGLAPI:
-        vptr = std::make_shared<Trundle::OpenGL::SceneRenderer>();
-        break;
+  case RenderingAPI::OpenGLAPI:
+    vptr = std::make_shared<Trundle::OpenGL::SceneRenderer>();
+    break;
 
-      default:
-        Log::Error("Unknown graphics API");
-        exit(1);
-    }
+  default:
+    Log::Error("Unknown graphics API");
+    exit(1);
   }
-
 }
+
+} // namespace Trundle

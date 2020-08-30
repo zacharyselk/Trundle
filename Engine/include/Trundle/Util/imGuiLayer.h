@@ -1,4 +1,4 @@
-//===-- imGuiLayer.h -------------------------------------------------------===//
+//===-- imGuiLayer.h ------------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -14,40 +14,38 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//===-----------------------------------------------------------------------===//
+//===----------------------------------------------------------------------===//
 //
 // Implments an (overlay) layer that definesthe ImGui UI creation, deletion,
 // and interactions.
 //
-//===-----------------------------------------------------------------------===//
-
+//===----------------------------------------------------------------------===//
 #pragma once
 
-#include <Trundle/common.h>
 #include <Trundle/Core/core.h>
 #include <Trundle/Core/layer.h>
-
+#include <Trundle/common.h>
 
 struct ImVec4;
 
 namespace Trundle {
 
-  class TRUNDLE_API ImGuiLayer : public Layer {
-  public:
-    ImGuiLayer();
-    ~ImGuiLayer();
+class TRUNDLE_API ImGuiLayer : public Layer {
+public:
+  ImGuiLayer();
+  ~ImGuiLayer();
 
-    void onAttach() override final;
-    void onDetach() override final;
-    void onUpdate() override final;
-    void onEvent(Event &event) override final;
-    void begin();
-    void end();
+  void onAttach() override final;
+  void onDetach() override final;
+  void onUpdate() override final;
+  void onEvent(Event& event) override final;
+  void begin();
+  void end();
 
-  private:
-    float time;
-    bool initalized{false};  // TODO: Remove the need for this
-    ImVec4* backgroundColor;
-  };
+private:
+  float time;
+  bool initalized{false}; // TODO: Remove the need for this.
+  ImVec4* backgroundColor;
+};
 
-}
+} // namespace Trundle

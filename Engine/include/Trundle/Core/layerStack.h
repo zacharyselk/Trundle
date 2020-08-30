@@ -1,4 +1,4 @@
-//===-- layerStack.h -------------------------------------------------------===//
+//===-- layerStack.h ------------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -14,46 +14,44 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//===-----------------------------------------------------------------------===//
+//===----------------------------------------------------------------------===//
 //
 // A simple stack-like data structure that maintains the ordering of when layers
 // should be handled. The stack is split in two segements; normal layers in the
-// bottom segement and overlay (UI) layers in the upper segement. When proccessed
-// iterators will look from the top to the bottom of the stack for ordering
-// (newest to oldest).
+// bottom segement and overlay (UI) layers in the upper segement. When
+// proccessed iterators will look from the top to the bottom of the stack for
+// ordering (newest to oldest).
 //
-//===-----------------------------------------------------------------------===//
-
+//===----------------------------------------------------------------------===//
 #pragma once
 
-#include <Trundle/common.h>
 #include <Trundle/Core/core.h>
 #include <Trundle/Core/layer.h>
-
+#include <Trundle/common.h>
 
 namespace Trundle {
 
-  class TRUNDLE_API LayerStack {
-  public:
-    LayerStack();
-    ~LayerStack();
+class TRUNDLE_API LayerStack {
+public:
+  LayerStack();
+  ~LayerStack();
 
-    // Interact with the stack
-    void pushLayer(Layer* layer);
-    void pushOverlay(Layer* overlay);
-    void popLayer(Layer* layer);
-    void popOverlay(Layer* overlay);
+  // Interact with the stack
+  void pushLayer(Layer* layer);
+  void pushOverlay(Layer* overlay);
+  void popLayer(Layer* layer);
+  void popOverlay(Layer* overlay);
 
-    // Have standard iterators for ranged based for-loops
-    std::vector<Layer*>::iterator begin()  { return layers.begin(); }
-    std::vector<Layer*>::iterator end()  { return layers.end(); }
+  // Have standard iterators for ranged based for-loops
+  std::vector<Layer*>::iterator begin() { return layers.begin(); }
+  std::vector<Layer*>::iterator end() { return layers.end(); }
 
-  private:
-    std::vector<Layer*> layers;
+private:
+  std::vector<Layer*> layers;
 
-    // Points to the end of the normal layers on the stack (overlay layers are
-    // above).
-    size_t it;
-  };
+  // Points to the end of the normal layers on the stack (overlay layers are
+  // above).
+  size_t it;
+};
 
-}
+} // namespace Trundle

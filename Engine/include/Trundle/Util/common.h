@@ -1,4 +1,4 @@
-//===-- common.h -----------------------------------------------------------===//
+//===-- common.h ----------------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -14,23 +14,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//===-----------------------------------------------------------------------===//
+//===----------------------------------------------------------------------===//
 //
 // Adds helper tools for general use.
 // TODO: Move into a different folder.
 //
-//===-----------------------------------------------------------------------===//
-
+//===----------------------------------------------------------------------===//
 #pragma once
 
 #include <Trundle/common.h>
 
-
 // Debug info
 #define LOC " (" << __FILE__ << ": " << __LINE__ << ")\n"
-#define CHECK(condition) { if(!(condition)){ std::cerr << "ASSERT FAILED: " << #condition << LOC; exit(1) } }
-#define DIE(msg) { std::cerr << "Error: " << #msg << LOC; exit(1); }
-
+#define CHECK(condition)                                                       \
+  {                                                                            \
+    if (!(condition)) {                                                        \
+      std::cerr << "ASSERT FAILED: " << #condition << LOC;                     \
+      exit(1)                                                                  \
+    }                                                                          \
+  }
+#define DIE(msg)                                                               \
+  {                                                                            \
+    std::cerr << "Error: " << #msg << LOC;                                     \
+    exit(1);                                                                   \
+  }
 
 namespace common {
 
@@ -45,13 +52,12 @@ template <typename... LAMBDAS> struct visitors : LAMBDAS... {
   using LAMBDAS::operator()...;
 };
 
-template <typename... LAMBDAS> visitors(LAMBDAS... x) -> visitors<LAMBDAS...>;
-
+template <typename... LAMBDAS> visitors(LAMBDAS... x)->visitors<LAMBDAS...>;
 
 // Copy a value from one variant type to another.  The types allowed in the
 // source variant must all be allowed in the destination variant type.
-template <typename TOV, typename FROMV> TOV CopyVariant(const FROMV &u) {
-  return std::visit([](const auto &x) -> TOV { return {x}; }, u);
+template <typename TOV, typename FROMV> TOV CopyVariant(const FROMV& u) {
+  return std::visit([](const auto& x) -> TOV { return {x}; }, u);
 }
 
 }; // namespace common

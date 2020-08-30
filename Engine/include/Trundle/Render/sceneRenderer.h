@@ -1,4 +1,4 @@
-//===-- sceneRenderer.h ----------------------------------------------------===//
+//===-- sceneRenderer.h ---------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -14,61 +14,61 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//===-----------------------------------------------------------------------===//
+//===----------------------------------------------------------------------===//
 //
 // In charge of rendering a scene.
 //
-//===-----------------------------------------------------------------------===//
-
+//===----------------------------------------------------------------------===//
 #pragma once
 
-#include <Trundle/common.h>
 #include <Trundle/Render/renderingQueue.h>
-
+#include <Trundle/common.h>
 
 namespace Trundle {
 
 namespace OpenGL {
-    class SceneRenderer;
+class SceneRenderer;
 }
 
-    //===-- SceneRenderer --------------------------------------------------===//
-    // API that is used to hold the tasks needed to render a scene, then render
-    // them.
-    //===-------------------------------------------------------------------===//
-    class SceneRenderer {
-    public:
-        SceneRenderer() = default;
-        SceneRenderer(const Renderer &r);
-        SceneRenderer(SceneRenderer&&) = default;
-        SceneRenderer& operator=(const SceneRenderer &renderer) noexcept
-          { vptr = renderer.vptr; return *this; }
+//===-- SceneRenderer -----------------------------------------------------===//
+// API that is used to hold the tasks needed to render a scene, then render
+// them.
+//===----------------------------------------------------------------------===//
+class SceneRenderer {
+public:
+  SceneRenderer() = default;
+  SceneRenderer(const Renderer& r);
+  SceneRenderer(SceneRenderer&&) = default;
+  SceneRenderer& operator=(const SceneRenderer& renderer) noexcept {
+    vptr = renderer.vptr;
+    return *this;
+  }
 
-        // TODO: Add flag for what to clear
-        void clear() { vptr->clear(); }
-        void start() { vptr->start(); }
-        void end() { vptr->end(); }
-        void submit(const RenderingTask &task) { vptr->submit(task); }
+  // TODO: Add flag for what to clear.
+  void clear() { vptr->clear(); }
+  void start() { vptr->start(); }
+  void end() { vptr->end(); }
+  void submit(const RenderingTask& task) { vptr->submit(task); }
 
-        friend class OpenGL::SceneRenderer;
-        
-    private:
-        // Virtual base class for polymorphism.
-        class SceneRendererConcept {
-        public:
-            virtual ~SceneRendererConcept() = default;
+  friend class OpenGL::SceneRenderer;
 
-            virtual void clear() const = 0;
-            virtual void start() const = 0;
-            virtual void end() const = 0;
-            virtual void submit(const RenderingTask &task) const = 0;
+private:
+  // Virtual base class for polymorphism.
+  class SceneRendererConcept {
+  public:
+    virtual ~SceneRendererConcept() = default;
 
-        protected:
-            mutable RenderingQueue queue;
-        };
+    virtual void clear() const = 0;
+    virtual void start() const = 0;
+    virtual void end() const = 0;
+    virtual void submit(const RenderingTask& task) const = 0;
 
-    // Custom virtual pointer to allow for value semantic polymorphism.
-    std::shared_ptr<SceneRendererConcept> vptr;
-    };
+  protected:
+    mutable RenderingQueue queue;
+  };
 
-}
+  // Custom virtual pointer to allow for value semantic polymorphism.
+  std::shared_ptr<SceneRendererConcept> vptr;
+};
+
+} // namespace Trundle

@@ -1,4 +1,4 @@
-//===-- shader.h -----------------------------------------------------------===//
+//===-- shader.h ----------------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -14,38 +14,35 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//===-----------------------------------------------------------------------===//
+//===----------------------------------------------------------------------===//
 //
 // Defines the shader abstraction for OpenGL graphics.
 //
-//===-----------------------------------------------------------------------===//
-
+//===----------------------------------------------------------------------===//
 #pragma once
 
 #include <Trundle/Render/shader.h>
 
-
 namespace Trundle::OpenGL {
 
-  //===-- Shader -----------------------------------------------------------===//
-  // OpenGL implementation for the shader api.
-  //===---------------------------------------------------------------------===//
-  class Shader : public Trundle::Shader::ShaderConcept {
-  public:
-    Shader(const std::string &vertexShader,
-           const std::string &fragmentShader);
-    virtual ~Shader();
+//===-- Shader ------------------------------------------------------------===//
+// OpenGL implementation for the shader api.
+//===----------------------------------------------------------------------===//
+class Shader : public Trundle::Shader::ShaderConcept {
+public:
+  Shader(const std::string& vertexShader, const std::string& fragmentShader);
+  virtual ~Shader();
 
-    virtual void bind() const override final;
-    virtual void unbind() const override final;
+  virtual void bind() const override final;
+  virtual void unbind() const override final;
 
-  private:
-    const uint32_t id;
+private:
+  const uint32_t id;
 
-    // Helper functions.
+  // Helper functions.
 
-    // Compiles shader text.
-    uint32_t compile(uint32_t type, const std::string &src);
-  };
+  // Compiles shader text.
+  uint32_t compile(uint32_t type, const std::string& src);
+};
 
-}
+} // namespace Trundle::OpenGL

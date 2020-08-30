@@ -1,4 +1,4 @@
-//===-- event.h ------------------------------------------------------------===//
+//===-- event.h -----------------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -14,103 +14,91 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//===-----------------------------------------------------------------------===//
+//===----------------------------------------------------------------------===//
 //
 // The base class for events. An event represents an interaction that the user
 // has with the program, that includes keyboard events, mouse events, and
 // actions performed to the window (ie resizing, closing, etc.).
 //
-//===-----------------------------------------------------------------------===//
-
+//===----------------------------------------------------------------------===//
 #pragma once
 
-#include <Trundle/common.h>
 #include <Trundle/Core/core.h>
+#include <Trundle/common.h>
 
 namespace Trundle {
 
-  //===-- EventType --------------------------------------------------------===//
-  //
-  // All of the types of events in the Engine.
-  //
-  //===---------------------------------------------------------------------===//
-  enum class EventType {
-    None=0,
-    KeyPress, KeyRelease,
-    MousePress, MouseRelease, MouseMove,
-    WindowClose, WindowResize
-  };
+//===-- EventType ---------------------------------------------------------===//
+// All of the types of events in the Engine.
+//===----------------------------------------------------------------------===//
+enum class EventType {
+  None = 0,
+  KeyPress,
+  KeyRelease,
+  MousePress,
+  MouseRelease,
+  MouseMove,
+  WindowClose,
+  WindowResize
+};
 
+//===-- EventCategory -----------------------------------------------------===//
+// A bitmask to help check what category events are in.
+//===----------------------------------------------------------------------===//
+enum class EventCategory {
+  None = 0,
+  KeyEvent = 1 << 0,
+  MouseEvent = 1 << 1,
+  WindowEvent = 1 << 2
+};
 
-  //===-- EventCategory ----------------------------------------------------===//
-  //
-  // A bitmask to help check what category events are in.
-  //
-  //===---------------------------------------------------------------------===//
-  enum class EventCategory {
-    None=0,
-    KeyEvent =    1 << 0,
-    MouseEvent =  1 << 1,
-    WindowEvent = 1 << 2
-  };
+//===-- Event -------------------------------------------------------------===//
+// An abstract event type that all events inherit from.
+//===----------------------------------------------------------------------===//
+class TRUNDLE_API Event {
+public:
+  virtual ~Event() = default;
 
+  // Reflection
+  virtual const char* getName() const = 0;
+  virtual std::string getString() const { return getName(); }
+  virtual std::string toString() const = 0;
 
-  //===-- Event ------------------------------------------------------------===//
-  //
-  // An abstract event type that all events inherit from.
-  //
-  //===---------------------------------------------------------------------===//
-  class TRUNDLE_API Event {
-  public:
-    virtual ~Event() = default;
+  virtual EventType getEventType() const = 0;
 
-    // Reflection
-    virtual const char* getName() const = 0;
-    virtual std::string getString() const { return getName(); }
-    virtual std::string toString() const = 0;
+  // A flag that signals that the event has been handled.
+  bool handled{false};
 
-    virtual EventType getEventType() const = 0;
+protected:
+  friend class EventDispatch;
+};
 
-    // A flag that signals that the event has been handled
-    bool handled{false};
+//===-- EventDispatch -----------------------------------------------------===//
+// Used to link functions to an event type then dispactch events of that type
+// to it.
+//===----------------------------------------------------------------------===//
+class EventDispatch {
+  template <typename T> using eventFunction = std::function<bool(T&)>;
 
-  protected:
+public:
+  EventDispatch(Event& e) : event(e) {}
 
-    friend class EventDispatch;
-  };
-
-
-  //===-- EventDispatch ----------------------------------------------------===//
-  //
-  // Used to link functions to an event type then dispactch events of that type
-  // to it.
-  //
-  //===---------------------------------------------------------------------===//
-  class EventDispatch {
-    template<typename T>
-    using eventFunction = std::function<bool (T&)>;
-  public:
-    EventDispatch(Event& e)
-      : event(e)  { }
-
-    template<typename T>
-    bool dispatch(eventFunction<T> func) {
-      if (event.getEventType() == T::getStaticType()) {
-        event.handled = func(*(T*) &event);
-        return true;
-      }
-
-      return false;
+  template <typename T> bool dispatch(eventFunction<T> func) {
+    if (event.getEventType() == T::getStaticType()) {
+      event.handled = func(*(T*)&event);
+      return true;
     }
 
-  private:
-    Event &event;
-  };
-
-
-  // Logging function
-  inline std::ostream& operator<<(std::ostream &os, Event &e) {
-    return os << e.toString();
+    return false;
   }
 
+private:
+  Event& event;
+};
+
+// Logging function.
+inline std::ostream& operator<<(std::ostream& os, Event& e) {
+  return os << e.toString();
 }
+
+} // namespace Trundle

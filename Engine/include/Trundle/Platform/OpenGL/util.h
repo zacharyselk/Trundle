@@ -1,4 +1,4 @@
-//===-- util.h -------------------------------------------------------------===//
+//===-- util.h ------------------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -14,36 +14,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//===-----------------------------------------------------------------------===//
+//===----------------------------------------------------------------------===//
 //
 // Helper functions for the OpenGL rendering backend.
 //
-//===-----------------------------------------------------------------------===//
-
+//===----------------------------------------------------------------------===//
 #pragma once
 
-#include <Trundle/common.h>
 #include <Trundle/Render/util.h>
+#include <Trundle/common.h>
 
 #include <GL/gl3w.h>
 #include <GLFW/glfw3.h>
 
-
 namespace Trundle::OpenGL {
 
-    // Converts a GraphicsType into an OpenGL type.
-    static GLenum toOpenGL(const Trundle::Rendering::GraphicsType &type) {
-        switch (type) {
-        case Trundle::Rendering::Float:
-        case Trundle::Rendering::Float2:
-        case Trundle::Rendering::Float3:
-        case Trundle::Rendering::Float4:
-            return GL_FLOAT;
-        }
+// Converts a GraphicsType into an OpenGL type.
+static GLenum toOpenGL(const Trundle::Rendering::GraphicsType& type) {
+  switch (type) {
+  case Trundle::Rendering::Float:
+  case Trundle::Rendering::Float2:
+  case Trundle::Rendering::Float3:
+  case Trundle::Rendering::Float4:
+    return GL_FLOAT;
+  }
 
-        Log::Error("Unknown GraphicsType");
-        exit(1);
-        return (GLenum)-1; 
-    }
-
+  Log::Error("Unknown GraphicsType");
+  exit(1);
+  return (GLenum)-1;
 }
+
+} // namespace Trundle::OpenGL

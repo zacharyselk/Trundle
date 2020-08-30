@@ -1,4 +1,4 @@
-//===-- renderer.h ---------------------------------------------------------===//
+//===-- renderer.h --------------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -14,38 +14,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//===-----------------------------------------------------------------------===//
+//===----------------------------------------------------------------------===//
 //
 // Contains the information needed to instruct where to render and what
 // backend should be used to render it.
 //
-//===-----------------------------------------------------------------------===//
-
+//===----------------------------------------------------------------------===//
 #pragma once
 
 #include <Eigen/Dense>
 
-
 namespace Trundle {
 
-  enum RenderingAPI {
-     None = 0,
-     OpenGLAPI = 1
-  };
+enum RenderingAPI { None = 0, OpenGLAPI = 1 };
 
+//===-- Renderer ----------------------------------------------------------===//
+// A cookie that is used by the rendering API to make decisions when
+// rendering.
+// TODO: Rename to RenderingContext.
+//===----------------------------------------------------------------------===//
+class Renderer {
+public:
+  Renderer(RenderingAPI api);
 
-  //===-- Renderer ---------------------------------------------------------===//
-  // A cookie that is used by the rendering API to make decisions when
-  // rendering.
-  // TODO: Rename to RenderingContext.
-  //===---------------------------------------------------------------------===//
-  class Renderer {
-  public:
-    Renderer(RenderingAPI api);
+  RenderingAPI getAPI() const { return api; }
 
-    RenderingAPI getAPI() const { return api; }
-  private:
-    RenderingAPI api;
-  };
+private:
+  RenderingAPI api;
+};
 
-}
+} // namespace Trundle

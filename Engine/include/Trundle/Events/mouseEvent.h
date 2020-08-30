@@ -1,4 +1,4 @@
-//===-- mouseEvent.h -------------------------------------------------------===//
+//===-- mouseEvent.h ------------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -14,93 +14,78 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//===-----------------------------------------------------------------------===//
+//===----------------------------------------------------------------------===//
 //
 // Represents the components of an event from the mouse.
 //
-//===-----------------------------------------------------------------------===//
-
+//===----------------------------------------------------------------------===//
 #pragma once
 
-#include <Trundle/common.h>
 #include <Trundle/Events/event.h>
 #include <Trundle/Util/boilerplate.h>
-
+#include <Trundle/common.h>
 
 namespace Trundle {
 
-  //===-- MouseMoveEvent ---------------------------------------------------===//
-  //
-  // An event that represents when the mouse has moved.
-  //
-  //===---------------------------------------------------------------------===//
-  class TRUNDLE_API MouseMoveEvent : public Event {
-  public:
-    EVENT_BOILERPLATE(MouseMove);
-    MouseMoveEvent(double x, double y)
-      : x(x), y(y)  { }
+//===-- MouseMoveEvent ----------------------------------------------------===//
+// An event that represents when the mouse has moved.
+//===----------------------------------------------------------------------===//
+class TRUNDLE_API MouseMoveEvent : public Event {
+public:
+  EVENT_BOILERPLATE(MouseMove);
+  MouseMoveEvent(double x, double y) : x(x), y(y) {}
 
-    std::tuple<int, int> getPos() const  { return std::make_tuple(x, y); }
+  std::tuple<int, int> getPos() const { return std::make_tuple(x, y); }
 
-    std::string toString() const override final {
-      std::stringstream ss;
-      ss << "Recieved MouseMoveEvent at position (" << x
-         << ", " << y << ")";
-      return ss.str();
-    }
+  std::string toString() const override final {
+    std::stringstream ss;
+    ss << "Recieved MouseMoveEvent at position (" << x << ", " << y << ")";
+    return ss.str();
+  }
 
-  private:
-    double x = 0;
-    double y = 0;
-  };
+private:
+  double x = 0;
+  double y = 0;
+};
 
-  class TRUNDLE_API MouseButtonEvent : public Event {
-  public:
-    int getMouseCode() const  { return mouseCode; }
+class TRUNDLE_API MouseButtonEvent : public Event {
+public:
+  int getMouseCode() const { return mouseCode; }
 
-  protected:
-    MouseButtonEvent(int mouseCode)
-      : mouseCode(mouseCode)  { }
+protected:
+  MouseButtonEvent(int mouseCode) : mouseCode(mouseCode) {}
 
-    int mouseCode{-1};
-  };
+  int mouseCode{-1};
+};
 
+//===-- MousePressEvent ---------------------------------------------------===//
+// An event that represents when a mouse button has been clicked.
+//===----------------------------------------------------------------------===//
+class TRUNDLE_API MousePressEvent : public MouseButtonEvent {
+public:
+  EVENT_BOILERPLATE(MousePress);
+  MousePressEvent(int mouseCode) : MouseButtonEvent(mouseCode) {}
 
-  //===-- MousePressEvent --------------------------------------------------===//
-  //
-  // An event that represents when a mouse button has been clicked.
-  //
-  //===---------------------------------------------------------------------===//
-  class TRUNDLE_API MousePressEvent : public MouseButtonEvent {
-  public:
-    EVENT_BOILERPLATE(MousePress);
-    MousePressEvent(int mouseCode)
-      : MouseButtonEvent(mouseCode)  { }
+  std::string toString() const override final {
+    std::stringstream ss;
+    ss << "Recieved MousePressEvent with mouseCode " << mouseCode;
+    return ss.str();
+  }
+};
 
-    std::string toString() const override final {
-      std::stringstream ss;
-      ss << "Recieved MousePressEvent with mouseCode " << mouseCode;
-      return ss.str();
-    }
-  };
+//===-- MouseReleaseEvent -------------------------------------------------===//
+// An event that represents when a mouse button has been released.
+//===----------------------------------------------------------------------===//
+class TRUNDLE_API MouseReleaseEvent : public MouseButtonEvent {
+public:
+  EVENT_BOILERPLATE(MouseRelease);
+  MouseReleaseEvent(int mouseCode) : MouseButtonEvent(mouseCode) {}
 
+  std::string toString() const override final {
+    std::stringstream ss;
+    ss << "Recieved MouseReleaseEvent with mouseCode " << mouseCode;
+    return ss.str();
+  }
+};
 
-  //===-- MouseReleaseEvent ------------------------------------------------===//
-  //
-  // An event that represents when a mouse button has been released.
-  //
-  //===---------------------------------------------------------------------===//
-  class TRUNDLE_API MouseReleaseEvent: public MouseButtonEvent {
-  public:
-    EVENT_BOILERPLATE(MouseRelease);
-    MouseReleaseEvent(int mouseCode)
-      : MouseButtonEvent(mouseCode)  { }
-
-    std::string toString() const override final {
-      std::stringstream ss;
-      ss << "Recieved MouseReleaseEvent with mouseCode " << mouseCode;
-      return ss.str();
-    }
-  };
-
-}
+} // namespace Trundle

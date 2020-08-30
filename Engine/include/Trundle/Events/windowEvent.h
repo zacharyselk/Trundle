@@ -1,4 +1,4 @@
-//===-- windowEvent.h ------------------------------------------------------===//
+//===-- windowEvent.h -----------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -14,58 +14,50 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//===-----------------------------------------------------------------------===//
+//===----------------------------------------------------------------------===//
 //
 // Represents the components of an event from the window.
 //
-//===-----------------------------------------------------------------------===//
-
+//===----------------------------------------------------------------------===//
 #pragma once
 
-
-#include <Trundle/common.h>
 #include <Trundle/Events/event.h>
 #include <Trundle/Util/boilerplate.h>
+#include <Trundle/common.h>
 
 namespace Trundle {
 
-  //===-- WindowCloseEvent -------------------------------------------------===//
-  //
-  // An event for when a window is closed.
-  //
-  //===---------------------------------------------------------------------===//
-  class TRUNDLE_API WindowCloseEvent : public Event {
-  public:
-    EVENT_BOILERPLATE(WindowClose);
-    WindowCloseEvent()  { }
+//===-- WindowCloseEvent --------------------------------------------------===//
+// An event for when a window is closed.
+//===----------------------------------------------------------------------===//
+class TRUNDLE_API WindowCloseEvent : public Event {
+public:
+  EVENT_BOILERPLATE(WindowClose);
+  WindowCloseEvent() {}
 
-    std::string toString() const override final {
-      return std::string("Recieved WindowCloseEvent");
-    }
-  };
+  std::string toString() const override final {
+    return std::string("Recieved WindowCloseEvent");
+  }
+};
 
+//===-- WindowResizeEvent -------------------------------------------------===//
+// An event for when a window is resized.
+//===----------------------------------------------------------------------===//
+class TRUNDLE_API WindowResizeEvent : public Event {
+public:
+  EVENT_BOILERPLATE(WindowResize);
+  WindowResizeEvent(int w, int h) : width(w), height(h) {}
 
-  //===-- WindowResizeEvent ------------------------------------------------===//
-  //
-  // An event for when a window is resized.
-  //
-  //===---------------------------------------------------------------------===//
-  class TRUNDLE_API WindowResizeEvent : public Event {
-  public:
-    EVENT_BOILERPLATE(WindowResize);
-    WindowResizeEvent(int w, int h)
-      : width(w), height(h)  { }
+  std::string toString() const override final {
+    std::stringstream ss;
+    ss << "Recieved WindowResizeEvent with dimensions " << width << "x"
+       << height;
+    return ss.str();
+  }
 
-    std::string toString() const override final {
-      std::stringstream ss;
-      ss << "Recieved WindowResizeEvent with dimensions " << width
-         << "x" << height;
-      return ss.str();
-    }
+private:
+  int width{-1};
+  int height{-1};
+};
 
-  private:
-    int width{-1};
-    int height{-1};
-  };
-
-}
+} // namespace Trundle
