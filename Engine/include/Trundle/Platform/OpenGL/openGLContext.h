@@ -1,4 +1,4 @@
-//===-- openGLContext.h ----------------------------------------------------===//
+//===-- openGLContext.h ---------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -14,13 +14,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//===-----------------------------------------------------------------------===//
+//===----------------------------------------------------------------------===//
 //
 // Provides that OpenGL implementation of a graphical context and the API to
 // use it.
 //
-//===-----------------------------------------------------------------------===//
-
+//===----------------------------------------------------------------------===//
 #pragma once
 #include <Trundle/Render/renderingContext.h>
 
@@ -28,15 +27,15 @@ struct GLFWwindow;
 
 namespace Trundle {
 
-  class OpenGLContext : public RenderingContext {
-  public:
-    OpenGLContext(GLFWwindow* window);
+class OpenGLContext : public RenderingContext {
+public:
+  OpenGLContext(GLFWwindow* window);
 
-    bool init() override final;
-    void swapBuffers() override final;
+  bool init() override final;
+  void swapBuffers() override final;
 
-  private:
-    GLFWwindow* windowHandle;
-  };
+private:
+  GLFWwindow* windowHandle;
+};
 
-}
+} // namespace Trundle

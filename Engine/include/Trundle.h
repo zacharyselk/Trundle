@@ -1,4 +1,4 @@
-//===-- Trundle.h ----------------------------------------------------------===//
+//===-- Trundle.h ---------------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -14,11 +14,12 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 //
-//===-----------------------------------------------------------------------===//
-
-#pragma once
-
+//===----------------------------------------------------------------------===//
+//
 // Provides an interface between the client driver code and the engine API.
+//
+//===----------------------------------------------------------------------===//
+#pragma once
 
 #include <Trundle/Core/gateway.h>
 #include <Trundle/Core/log.h>

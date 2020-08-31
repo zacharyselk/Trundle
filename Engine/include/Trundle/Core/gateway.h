@@ -1,4 +1,4 @@
-//===-- gateway.h ----------------------------------------------------------===//
+//===-- gateway.h ---------------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -14,19 +14,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//===-----------------------------------------------------------------------===//
+//===----------------------------------------------------------------------===//
 //
 // Provides the entry point for the code that uses an Application defined by the
 // driver to run the Engine.
 //
-//===-----------------------------------------------------------------------===//
-
+//===----------------------------------------------------------------------===//
 #pragma once
 
-#include <Trundle/common.h>
 #include <Trundle/Core/application.h>
 #include <Trundle/Core/log.h>
-
+#include <Trundle/common.h>
 
 // Running on Windows will eventually be done through winMain() rather than
 // main().
@@ -35,12 +33,12 @@
 extern Trundle::Application* Trundle::CreateApplication();
 
 int main(int argc, char** argv) {
-    Trundle::Log::Debug("Starting Engine\n");
-    Trundle::Application* app = Trundle::CreateApplication();
-    app->run();
-    delete app;
-    Trundle::Log::Debug("Application Closed\n");
-    std::cout << Trundle::Log::Color::white;
+  Trundle::Log::Debug("Starting Engine\n");
+  Trundle::Application* app = Trundle::CreateApplication();
+  app->run();
+  delete app;
+  Trundle::Log::Debug("Application Closed\n");
+  std::cout << Trundle::Log::Color::white;
 }
 
 #else

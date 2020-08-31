@@ -1,4 +1,4 @@
-//===-- renderingContext.h -------------------------------------------------===//
+//===-- renderingContext.h ------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -14,22 +14,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//===-----------------------------------------------------------------------===//
+//===----------------------------------------------------------------------===//
 //
 // An abstract base class of a graphical context to be inherited by children
 // classes for each supported graphical API (OpenGL, DirectX, Vulkan, etc.).
 //
-//===-----------------------------------------------------------------------===//
-
+//===----------------------------------------------------------------------===//
 #pragma once
-
 
 namespace Trundle {
 
-  class RenderingContext {
-  public:
-    virtual bool init() = 0;
-    virtual void swapBuffers() = 0;
-  };
+class RenderingContext {
+public:
+  virtual bool init() = 0;
+  virtual void swapBuffers() = 0;
+};
 
-}
+} // namespace Trundle

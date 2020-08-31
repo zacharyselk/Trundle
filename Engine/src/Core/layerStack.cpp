@@ -1,4 +1,4 @@
-//===-- layerStack.cpp -----------------------------------------------------===//
+//===-- layerStack.cpp ----------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -14,15 +14,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//===-----------------------------------------------------------------------===//
-
+//===----------------------------------------------------------------------===//
 #include <Trundle/Core/layerStack.h>
-
 
 namespace Trundle {
 
-LayerStack::LayerStack()
-  : layers{}, it{0}  { }
+LayerStack::LayerStack() : layers{}, it{0} {}
 
 LayerStack::~LayerStack() {
   for (Layer* layer : layers) {
@@ -31,7 +28,7 @@ LayerStack::~LayerStack() {
 }
 
 void LayerStack::pushLayer(Layer* layer) {
-  layers.emplace(layers.begin()+it, layer);
+  layers.emplace(layers.begin() + it, layer);
   ++it;
   layer->onAttach();
 }
@@ -56,4 +53,4 @@ void LayerStack::popOverlay(Layer* overlay) {
   }
 }
 
-}
+} // namespace Trundle

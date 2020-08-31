@@ -1,4 +1,4 @@
-//===-- general.h ----------------------------------------------------------===//
+//===-- general.h ---------------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -14,18 +14,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//===-----------------------------------------------------------------------===//
+//===----------------------------------------------------------------------===//
 //
 // The start of a math library however this should propbably be removed as we
 // are currently using the eigan libary for math (TODO).
 //
-//===-----------------------------------------------------------------------===//
-
-
+//===----------------------------------------------------------------------===//
 #pragma once
 
 #include <Trundle/common.h>
-
 
 namespace Trundle {
 namespace math {

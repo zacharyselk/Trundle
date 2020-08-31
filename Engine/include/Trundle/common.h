@@ -1,4 +1,4 @@
-//===-- common.h -----------------------------------------------------------===//
+//===-- common.h ----------------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -14,42 +14,44 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//===-----------------------------------------------------------------------===//
-
+//===----------------------------------------------------------------------===//
+//
 // A header file that includes common library headers, can be compiled as a
 // precompiled binary to speedup build times.
+//
+//===----------------------------------------------------------------------===//
 
-// Algorithms
+// Algorithms.
 #include <algorithm>
 
-// Data structures
-#include <deque>
+// Data structures.
 #include <array>
-#include <vector>
-#include <string>
+#include <deque>
 #include <queue>
+#include <string>
+#include <vector>
 
-// Data Types
+// Data Types.
 #include <cstdint>
 
-// Error Handling
+// Error Handling.
 #include <cassert>
 
-// Mathmatics
+// Mathmatics.
 #include <cmath>
 
-// Threading
+// Threading.
 #include <atomic>
 #include <condition_variable>
 #include <mutex>
 #include <thread>
 
-// Utilities
+// Utilities.
 #include <functional>
 #include <memory>
 #include <tuple>
 //#include <variant>
 
-// TODO: Remove
+// TODO: Remove.
 #include <iostream>
 #include <sstream>

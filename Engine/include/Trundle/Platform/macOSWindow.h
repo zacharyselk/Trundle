@@ -1,4 +1,4 @@
-//===-- macOSWindow.h ------------------------------------------------------===//
+//===-- macOSWindow.h -----------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -14,12 +14,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//===-----------------------------------------------------------------------===//
+//===----------------------------------------------------------------------===//
 //
-// The MacOS implementation of creating a repersentation for a window
+// The MacOS implementation of creating a repersentation for a window.
 //
-//===-----------------------------------------------------------------------===//
-
+//===----------------------------------------------------------------------===//
 #pragma once
 
 #include <Trundle/Core/window.h>
@@ -27,42 +26,41 @@
 
 #include <GLFW/glfw3.h>
 
-
 namespace Trundle {
 
-  class MacOSWindow : public Window {
-  public:
-    using eventCallback = std::function<void(Event&)>;
-    MacOSWindow(const WindowProperties &properties);
-    virtual ~MacOSWindow();
+class MacOSWindow : public Window {
+public:
+  using eventCallback = std::function<void(Event&)>;
+  MacOSWindow(const WindowProperties& properties);
+  virtual ~MacOSWindow();
 
-    void onUpdate() override final;
-    uint32_t getWidth() override final  { return data.width; }
-    uint32_t getHeight() override final  { return data.height; }
+  void onUpdate() override final;
+  uint32_t getWidth() override final { return data.width; }
+  uint32_t getHeight() override final { return data.height; }
 
-    void setEventCallback(const eventCallback &callback) override final {
-      data.callback = callback;
-    }
-    void setVSync(bool enable) override final;
-		bool isVSync() const override final;
+  void setEventCallback(const eventCallback& callback) override final {
+    data.callback = callback;
+  }
+  void setVSync(bool enable) override final;
+  bool isVSync() const override final;
 
-    void* getNativeWindow() const override final;
+  void* getNativeWindow() const override final;
 
-  private:
-    virtual void init(const WindowProperties &properties);
-    virtual void shutdown();
+private:
+  virtual void init(const WindowProperties& properties);
+  virtual void shutdown();
 
-    struct WindowData {
-      std::string title;
-      uint32_t width, height;
-      bool vSync;
+  struct WindowData {
+    std::string title;
+    uint32_t width, height;
+    bool vSync;
 
-      eventCallback callback;
-    };
-
-    WindowData data;
-    RenderingContext* context;
-    GLFWwindow* window;
+    eventCallback callback;
   };
 
-}
+  WindowData data;
+  RenderingContext* context;
+  GLFWwindow* window;
+};
+
+} // namespace Trundle

@@ -1,4 +1,4 @@
-//===-- buffer.h -----------------------------------------------------------===//
+//===-- buffer.h ----------------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -14,183 +14,185 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//===-----------------------------------------------------------------------===//
+//===----------------------------------------------------------------------===//
 //
 // Defines the buffer APIs for the backend.
 //
-//===-----------------------------------------------------------------------===//
-
+//===----------------------------------------------------------------------===//
 #pragma once
 
-#include <Trundle/common.h>
 #include <Trundle/Core/log.h>
 #include <Trundle/Render/renderer.h>
 #include <Trundle/Render/util.h>
-
+#include <Trundle/common.h>
 
 namespace Trundle {
 
 // Forward declare the backend implementations.
 namespace OpenGL {
-  class IndexBuffer;
-  class VertexBuffer;
-  class VertexArray;
-}
+class IndexBuffer;
+class VertexBuffer;
+class VertexArray;
+} // namespace OpenGL
 
-  //===-- LayoutElement ----------------------------------------------------===//
-  // A structure for defining how the layout of a vertex (element) is defined.
-  // TODO: Possibly should be moved somewhere else, either into LayoutElement
-  //       if it is the only one who uses this, otherwise maybe into
-  //       Render/util.h
-  // TODO: Check to see if this object is being copy constructed.
-  //===---------------------------------------------------------------------===//
-  struct LayoutElement {
-    LayoutElement(const Rendering::GraphicsType &type, const std::string &name, const bool &normalize=false);
-    LayoutElement(const uint32_t &osffset, const Rendering::GraphicsType &type, const std::string &name, const bool &normalize=false);
-    LayoutElement(const LayoutElement &elem, const uint32_t &offset);
-    LayoutElement(const LayoutElement &element) = default;
+//===-- LayoutElement -----------------------------------------------------===//
+// A structure for defining how the layout of a vertex (element) is defined.
+// TODO: Possibly should be moved somewhere else, either into LayoutElement
+//       if it is the only one who uses this, otherwise maybe into
+//       Render/util.h
+// TODO: Check to see if this object is being copy constructed.
+//===----------------------------------------------------------------------===//
+struct LayoutElement {
+  LayoutElement(const Rendering::GraphicsType& type, const std::string& name,
+                const bool& normalize = false);
+  LayoutElement(const uint32_t& osffset, const Rendering::GraphicsType& type,
+                const std::string& name, const bool& normalize = false);
+  LayoutElement(const LayoutElement& elem, const uint32_t& offset);
+  LayoutElement(const LayoutElement& element) = default;
 
-    Rendering::GraphicsType type;
-    std::string name;
-    uint32_t elementSize;
-    uint32_t numberOfComponents;
-    uint32_t offset;
-    bool normalize;
-  };
+  Rendering::GraphicsType type;
+  std::string name;
+  uint32_t elementSize;
+  uint32_t numberOfComponents;
+  uint32_t offset;
+  bool normalize;
+};
 
+//===-- BufferLayout ------------------------------------------------------===//
+// Constructs and calculates a genaric layout specification for a buffer.
+//===----------------------------------------------------------------------===//
+class BufferLayout {
+public:
+  BufferLayout() = default;
+  BufferLayout(const std::initializer_list<LayoutElement>& layout);
+  BufferLayout(const BufferLayout& layout) = default;
+  BufferLayout(BufferLayout&&) noexcept = default;
 
-  //===-- BufferLayout -----------------------------------------------------===//
-  // Constructs and calculates a genaric layout specification for a buffer.
-  //===---------------------------------------------------------------------===//
-  class BufferLayout {
+  uint32_t getStride() const { return stride; }
+
+  const LayoutElement& operator[](size_t index) const;
+  size_t size() const;
+  std::vector<LayoutElement>::const_iterator begin() const;
+  std::vector<LayoutElement>::const_iterator end() const;
+
+private:
+  std::shared_ptr<const std::vector<LayoutElement>> layout;
+  uint32_t stride;
+};
+
+//===-- IndexBuffer -------------------------------------------------------===//
+// API for a buffer that contains vertexes and the order to render them in.
+//===----------------------------------------------------------------------===//
+class IndexBuffer {
+public:
+  IndexBuffer() = default;
+  IndexBuffer(const Renderer& r, uint32_t* indices, uint32_t count);
+  IndexBuffer& operator=(const IndexBuffer& buf) noexcept {
+    vptr = buf.vptr;
+    return *this;
+  }
+
+  void bind() const { vptr->bind(); }
+  void unbind() const { vptr->unbind(); }
+
+  size_t size() const { return vptr->size(); }
+
+  friend class OpenGL::IndexBuffer;
+
+private:
+  // Virtual base class for polymorphism.
+  class IndexBufferConcept {
   public:
-    BufferLayout() = default;
-    BufferLayout(const std::initializer_list<LayoutElement> &layout);
-    BufferLayout(const BufferLayout &layout) = default;
-    BufferLayout(BufferLayout&&) noexcept = default;
+    virtual ~IndexBufferConcept() = default;
 
-    uint32_t getStride() const { return stride; }
-
-    const LayoutElement &operator[](size_t index) const;
-    size_t size() const;
-    std::vector<LayoutElement>::const_iterator begin() const;
-    std::vector<LayoutElement>::const_iterator end() const;
-
-  private:
-    std::shared_ptr<const std::vector<LayoutElement>> layout;
-    uint32_t stride;
+    virtual void bind() const = 0;
+    virtual void unbind() const = 0;
+    virtual size_t size() const = 0;
   };
 
+  // Custom virtual pointer to allow for value semantic polymorphism.
+  std::shared_ptr<const IndexBufferConcept> vptr;
+};
 
-  //===-- IndexBuffer ------------------------------------------------------===//
-  // API for a buffer that contains vertexes and the order to render them in.
-  //===---------------------------------------------------------------------===//
-  class IndexBuffer {
+//===-- VertexBuffer ------------------------------------------------------===//
+// API for abuffer that contains information for the vertex shader.
+//===----------------------------------------------------------------------===//
+class VertexBuffer {
+public:
+  VertexBuffer() = default;
+  VertexBuffer(const Renderer& r, float* vertices, const BufferLayout& layout,
+               uint32_t size);
+  // VertexBuffer(VertexBuffer&&) = default;
+  VertexBuffer& operator=(const VertexBuffer& buf) noexcept {
+    vptr = buf.vptr;
+    return *this;
+  }
+
+  const BufferLayout& getLayout() const { return vptr->getLayout(); }
+
+  void bind() const { vptr->bind(); }
+  void unbind() const { vptr->unbind(); }
+
+  friend class OpenGL::VertexBuffer;
+
+private:
+  // Virtual base class for polymorphism.
+  class VertexBufferConcept {
   public:
-    IndexBuffer() = default;
-    IndexBuffer(const Renderer &r, uint32_t* indices, uint32_t count);
-    //IndexBuffer(IndexBuffer&&) = default;
-    IndexBuffer& operator=(const IndexBuffer &buf) noexcept
-      { vptr = buf.vptr; return *this; }
+    virtual ~VertexBufferConcept() = default;
 
-    void bind() const { vptr->bind(); }
-    void unbind() const { vptr->unbind(); }
-
-    size_t size() const  { return vptr->size(); }
-
-    friend class OpenGL::IndexBuffer;
-
-  private:
-    // Virtual base class for polymorphism.
-    class IndexBufferConcept {
-    public:
-      virtual ~IndexBufferConcept() = default;
-
-      virtual void bind() const = 0;
-      virtual void unbind() const = 0;
-      virtual size_t size() const = 0;
-    };
-
-    // Custom virtual pointer to allow for value semantic polymorphism.
-    std::shared_ptr<const IndexBufferConcept> vptr;
+    virtual void bind() const = 0;
+    virtual void unbind() const = 0;
+    virtual const BufferLayout& getLayout() const = 0;
   };
 
+  // Custom virtual pointer to allow for value semantic polymorphism.
+  std::shared_ptr<const VertexBufferConcept> vptr;
+};
 
-  //===-- VertexBuffer -----------------------------------------------------===//
-  // API for abuffer that contains information for the vertex shader.
-  //===---------------------------------------------------------------------===//
-  class VertexBuffer {
+//===-- VertexArray -------------------------------------------------------===//
+// API that defines a vertex array which references an index buffer and a
+// list of vertex buffers used for rendering.
+//===----------------------------------------------------------------------===//
+class VertexArray {
+public:
+  VertexArray() = default;
+  // TODO: We only need to pass around the buffer vptrs
+  VertexArray(const Renderer& r, const std::vector<VertexBuffer>& vertexBuffers,
+              const IndexBuffer& indexBuffer);
+  VertexArray(VertexArray&&) = default;
+  VertexArray(const VertexArray& array) { vptr = array.vptr; }
+  VertexArray& operator=(const VertexArray& array) noexcept {
+    vptr = array.vptr;
+    return *this;
+  }
+
+  void bind() const { vptr->bind(); }
+  void unbind() const { vptr->unbind(); }
+  const std::shared_ptr<std::vector<VertexBuffer>>& getVertexBuffers() const {
+    return vptr->getVertexBuffers();
+  }
+  const std::shared_ptr<IndexBuffer>& getIndexBuffer() const {
+    return vptr->getIndexBuffer();
+  }
+
+  friend class OpenGL::VertexArray;
+
+private:
+  // Virtual base class for polymorphism.
+  class VertexArrayConcept {
   public:
-    VertexBuffer() = default;
-    VertexBuffer(const Renderer &r, float* vertices, 
-                 const BufferLayout &layout, uint32_t size);
-    //VertexBuffer(VertexBuffer&&) = default;
-    VertexBuffer& operator=(const VertexBuffer &buf) noexcept
-      { vptr = buf.vptr; return *this; }
+    virtual ~VertexArrayConcept() = default;
 
-    const BufferLayout &getLayout() const  { return vptr->getLayout(); }
-
-    void bind() const { vptr->bind(); }
-    void unbind() const { vptr->unbind(); }
-
-    friend class OpenGL::VertexBuffer;
-
-  private:
-    // Virtual base class for polymorphism.
-    class VertexBufferConcept {
-    public:
-      virtual ~VertexBufferConcept() = default;
-
-      virtual void bind() const = 0;
-      virtual void unbind() const = 0;
-      virtual const BufferLayout &getLayout() const = 0;
-    };
-
-    // Custom virtual pointer to allow for value semantic polymorphism.
-    std::shared_ptr<const VertexBufferConcept> vptr;
+    virtual void bind() const = 0;
+    virtual void unbind() const = 0;
+    virtual const std::shared_ptr<std::vector<VertexBuffer>>&
+    getVertexBuffers() const = 0;
+    virtual const std::shared_ptr<IndexBuffer>& getIndexBuffer() const = 0;
   };
 
+  // Custom virtual pointer to allow for value semantic polymorphism.
+  std::shared_ptr<const VertexArrayConcept> vptr;
+};
 
-  //===-- VertexArray ------------------------------------------------------===//
-  // API that defines a vertex array which references an index buffer and a
-  // list of vertex buffers used for rendering.
-  //===---------------------------------------------------------------------===//
-  class VertexArray {
-  public:
-    VertexArray() = default;
-    // TODO: We only need to pass around the buffer vptrs
-    VertexArray(const Renderer &r, 
-                const std::vector<VertexBuffer> &vertexBuffers,
-                const IndexBuffer &indexBuffer);
-    VertexArray(VertexArray&&) = default;
-    VertexArray(const VertexArray &array)
-      { vptr = array.vptr; }
-    VertexArray& operator=(const VertexArray &array) noexcept
-      { vptr = array.vptr; return *this; }
-
-    void bind() const { vptr->bind(); }
-    void unbind() const { vptr->unbind(); }
-    const std::shared_ptr<std::vector<VertexBuffer>> &getVertexBuffers() const
-      { return vptr->getVertexBuffers(); }
-    const std::shared_ptr<IndexBuffer> &getIndexBuffer() const
-      { return vptr->getIndexBuffer(); }
-
-    friend class OpenGL::VertexArray;
-
-  private:
-    // Virtual base class for polymorphism.
-    class VertexArrayConcept {
-    public:
-      virtual ~VertexArrayConcept() = default;
-
-      virtual void bind() const = 0;
-      virtual void unbind() const = 0;
-      virtual const std::shared_ptr<std::vector<VertexBuffer>> &getVertexBuffers() const = 0;
-      virtual const std::shared_ptr<IndexBuffer> &getIndexBuffer() const = 0;
-    };
-
-    // Custom virtual pointer to allow for value semantic polymorphism.
-    std::shared_ptr<const VertexArrayConcept> vptr;
-  };
-
-}
+} // namespace Trundle

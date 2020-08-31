@@ -1,4 +1,4 @@
-//===-- sceneRenderer.h- ---------------------------------------------------===//
+//===-- sceneRenderer.h- --------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -14,31 +14,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//===-----------------------------------------------------------------------===//
+//===----------------------------------------------------------------------===//
 //
 // Defines the SceneRenderer abstraction for OpenGL graphics.
 //
-//===-----------------------------------------------------------------------===//
-
+//===----------------------------------------------------------------------===//
 #pragma once
 
 #include <Trundle/Render/sceneRenderer.h>
 
-
 namespace Trundle::OpenGL {
 
-    //===-- SceneRenderer --------------------------------------------------===//
-    // Is used to hold the tasks needed to render a scene, then render them.
-    //===-------------------------------------------------------------------===//
-    class SceneRenderer : public Trundle::SceneRenderer::SceneRendererConcept {
-    public:
-        SceneRenderer() = default;
-        virtual ~SceneRenderer()  { }
+//===-- SceneRenderer -----------------------------------------------------===//
+// Is used to hold the tasks needed to render a scene, then render them.
+//===----------------------------------------------------------------------===//
+class SceneRenderer : public Trundle::SceneRenderer::SceneRendererConcept {
+public:
+  SceneRenderer() = default;
+  virtual ~SceneRenderer() {}
 
-        virtual void clear() const override final;
-        virtual void start() const override final;
-        virtual void end() const override final;
-        virtual void submit(const RenderingTask &task) const override final;
-    };
+  virtual void clear() const override final;
+  virtual void start() const override final;
+  virtual void end() const override final;
+  virtual void submit(const RenderingTask& task) const override final;
+};
 
-}
+} // namespace Trundle::OpenGL

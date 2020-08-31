@@ -1,4 +1,4 @@
-//===-- shader.cpp ---------------------------------------------------------===//
+//===-- shader.cpp --------------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -14,31 +14,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//===-----------------------------------------------------------------------===//
-
+//===----------------------------------------------------------------------===//
 #include <Trundle/Platform/OpenGL/shader.h>
 #include <Trundle/Render/shader.h>
 
-
 namespace Trundle {
 
-  //===-- Shader -----------------------------------------------------------===//
-  Shader::Shader(const Renderer &r, const std::string &vertexShader,
-                 const std::string &fragmentShader) 
+//===-- Shader ------------------------------------------------------------===//
+Shader::Shader(const Renderer& r, const std::string& vertexShader,
+               const std::string& fragmentShader)
     : vptr(nullptr) {
-    switch (r.getAPI()) {
-      // TODO: Implement
-      case RenderingAPI::None:
-        break;
+  switch (r.getAPI()) {
+  // TODO: Implement.
+  case RenderingAPI::None:
+    break;
 
-      case RenderingAPI::OpenGLAPI:
-        vptr = std::make_shared<OpenGL::Shader>(vertexShader, fragmentShader);
-        break;
+  case RenderingAPI::OpenGLAPI:
+    vptr = std::make_shared<OpenGL::Shader>(vertexShader, fragmentShader);
+    break;
 
-      default:
-        Log::Error("Unknown graphics API");
-        exit(1);
-    }
+  default:
+    Log::Error("Unknown graphics API");
+    exit(1);
   }
-
 }
+
+} // namespace Trundle
