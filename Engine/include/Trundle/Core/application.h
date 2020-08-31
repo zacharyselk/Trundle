@@ -30,6 +30,10 @@
 #include <Trundle/Core/layerStack.h>
 #include <Trundle/Events/windowEvent.h>
 #include <Trundle/Util/imGuiLayer.h>
+#include <Trundle/Render/buffer.h>
+#include <Trundle/Render/shader.h>
+#include <Trundle/Render/renderingQueue.h>
+#include <Trundle/Render/sceneRenderer.h>
 
 
 namespace Trundle {
@@ -66,7 +70,17 @@ namespace Trundle {
       bool running{true};
 
       std::unique_ptr<Window> window;
-      std::unique_ptr<ImGuiLayer> guiLayer;
+      //std::unique_ptr<ImGuiLayer> guiLayer;
+      ImGuiLayer* guiLayer;
+
+      //unsigned int vertexBuffer, indexBuffer;
+      //unsigned int vertexArray;
+
+      //std::shared_ptr<VertexBuffer> vertexBuffer;
+      VertexArray vertexArray;
+      Shader shader;
+      SceneRenderer sceneRenderer;
+      //std::shared_ptr<IndexBuffer> indexBuffer;
     };
 
     // Defined by the driver as an entry point into the engine.

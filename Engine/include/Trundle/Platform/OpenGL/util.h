@@ -1,4 +1,4 @@
-//===-- imGuiLayer.h -------------------------------------------------------===//
+//===-- util.h -------------------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -16,38 +16,34 @@
 //
 //===-----------------------------------------------------------------------===//
 //
-// A simple example of a user-end driver, used to test the code.
+// Helper functions for the OpenGL rendering backend.
 //
 //===-----------------------------------------------------------------------===//
 
-#include <Trundle.h>
-#include <sstream>
+#pragma once
+
+#include <Trundle/common.h>
+#include <Trundle/Render/util.h>
+
+#include <GL/gl3w.h>
+#include <GLFW/glfw3.h>
 
 
-class ExampleLayer : public Trundle::Layer {
-public:
-  ExampleLayer()
-    : Layer("HelloLayer")  { }
+namespace Trundle::OpenGL {
 
-  void onUpdate() override final {
-    Trundle::Log::Info("ExampleLayer::Update");
-    Trundle::Log::Error("Hello");
-  }
+    // Converts a GraphicsType into an OpenGL type.
+    static GLenum toOpenGL(const Trundle::Rendering::GraphicsType &type) {
+        switch (type) {
+        case Trundle::Rendering::Float:
+        case Trundle::Rendering::Float2:
+        case Trundle::Rendering::Float3:
+        case Trundle::Rendering::Float4:
+            return GL_FLOAT;
+        }
 
-  void onEvent(Trundle::Event& event) override final {
-    Trundle::Log::Info(event.toString());
-  }
-};
-
-class Game : public Trundle::Application {
-    public:
-    Game()  {
-      pushLayer(new ExampleLayer);
+        Log::Error("Unknown GraphicsType");
+        exit(1);
+        return (GLenum)-1; 
     }
 
-    ~Game()  { }
-};
-
-Trundle::Application* Trundle::CreateApplication() {
-    return new Game();
 }

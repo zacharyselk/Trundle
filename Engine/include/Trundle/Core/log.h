@@ -29,7 +29,7 @@
 #include <Trundle/Core/core.h>
 
 #if !defined(TRUNDLE_LEVEL)
-#define TRUNDLE_LEVEL 1
+#define TRUNDLE_LEVEL 3
 #endif
 
 

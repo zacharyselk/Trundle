@@ -52,7 +52,7 @@ namespace Trundle {
     std::vector<Layer*> layers;
 
     // Points to the end of the normal layers on the stack (overlay layers are
-    // above)
+    // above).
     size_t it;
   };
 

@@ -116,7 +116,7 @@ ExternalProject_Add(engine
   CMAKE_ARGS list(APPEND CMAKE_ARGS "-DTRUNDLE_BUILD_DIR=${TRUNDLE_BUILD_DIR}")
   CMAKE_CACHE_ARGS
     -DCMAKE_INSTALL_PREFIX:PATH=${TRUNDLE_BUILD_DIR}
-  DEPENDS glfw gl3w imgui
+  DEPENDS glfw gl3w imgui eigen
 )
 
 ExternalProject_Add(driver

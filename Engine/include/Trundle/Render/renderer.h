@@ -1,4 +1,4 @@
-//===-- imGuiLayer.h -------------------------------------------------------===//
+//===-- renderer.h ---------------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -16,38 +16,36 @@
 //
 //===-----------------------------------------------------------------------===//
 //
-// A simple example of a user-end driver, used to test the code.
+// Contains the information needed to instruct where to render and what
+// backend should be used to render it.
 //
 //===-----------------------------------------------------------------------===//
 
-#include <Trundle.h>
-#include <sstream>
+#pragma once
+
+#include <Eigen/Dense>
 
 
-class ExampleLayer : public Trundle::Layer {
-public:
-  ExampleLayer()
-    : Layer("HelloLayer")  { }
+namespace Trundle {
 
-  void onUpdate() override final {
-    Trundle::Log::Info("ExampleLayer::Update");
-    Trundle::Log::Error("Hello");
-  }
+  enum RenderingAPI {
+     None = 0,
+     OpenGLAPI = 1
+  };
 
-  void onEvent(Trundle::Event& event) override final {
-    Trundle::Log::Info(event.toString());
-  }
-};
 
-class Game : public Trundle::Application {
-    public:
-    Game()  {
-      pushLayer(new ExampleLayer);
-    }
+  //===-- Renderer ---------------------------------------------------------===//
+  // A cookie that is used by the rendering API to make decisions when
+  // rendering.
+  // TODO: Rename to RenderingContext.
+  //===---------------------------------------------------------------------===//
+  class Renderer {
+  public:
+    Renderer(RenderingAPI api);
 
-    ~Game()  { }
-};
+    RenderingAPI getAPI() const { return api; }
+  private:
+    RenderingAPI api;
+  };
 
-Trundle::Application* Trundle::CreateApplication() {
-    return new Game();
 }
