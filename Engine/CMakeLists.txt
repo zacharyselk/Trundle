@@ -70,12 +70,12 @@ if (NOT TRUNDLE_IMGUI_DIR)
   message(WARNING "TRUNDLE_IMGUI_DIR not set, defaulting to ${TRUNDLE_IMGUI_DIR}")
 endif()
 
-# Eigen path
-set(TRUNDLE_EIGEN_DIR CACHE PATH "Path to Eigen source directory")
-if (NOT TRUNDLE_EIGEN_DIR)
+# GLM path
+set(TRUNDLE_GLM_DIR CACHE PATH "Path to GLM source directory")
+if (NOT TRUNDLE_GLM_DIR)
   # TODO: Check if default path exists
-  set(TRUNDLE_EIGEN_DIR "${TRUNDLE_BUILD_DIR}/Eigen")
-  message(WARNING "TRUNDLE_EIGEN_DIR not set, defaulting to ${TRUNDLE_EIGEN_DIR}")
+  set(TRUNDLE_GLM_DIR "${TRUNDLE_BUILD_DIR}/GLM")
+  message(WARNING "TRUNDLE_GLM_DIR not set, defaulting to ${TRUNDLE_GLM_DIR}")
 endif()
 
 
@@ -122,8 +122,8 @@ target_include_directories(engine PRIVATE "${TRUNDLE_IMGUI_DIR}")
 target_sources(engine PRIVATE "${TRUNDLE_IMGUI_DIR}/examples/imgui_impl_glfw.cpp")
 target_sources(engine PRIVATE "${TRUNDLE_IMGUI_DIR}/examples/imgui_impl_opengl3.cpp")
 
-# Eigen
-target_include_directories(engine PRIVATE "${TRUNDLE_EIGEN_DIR}")
+# GLM
+target_include_directories(engine PRIVATE "${TRUNDLE_GLM_DIR}")
 
 # Note: Removed for now, not working
 #add_subdirectory(test)

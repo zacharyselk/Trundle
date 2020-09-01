@@ -87,17 +87,17 @@ ExternalProject_Add(glfw
   TEST_COMMAND ""
 )
 
-ExternalProject_Add(eigen
-  GIT_REPOSITORY "https://gitlab.com/libeigen/eigen.git"
+ExternalProject_Add(glm
+  GIT_REPOSITORY "https://github.com/g-truc/glm"
   GIT_TAG "master"
-  SOURCE_DIR "${TRUNDLE_BUILD_DIR}/Eigen"
+  SOURCE_DIR "${TRUNDLE_BUILD_DIR}/GLM"
   CONFIGURE_COMMAND ""
   BUILD_COMMAND ""
   INSTALL_COMMAND ""
   TEST_COMMAND ""
-  )
+)
 
-# ExternalProject_Add(gtes
+# ExternalProject_Add(gtest
 #   GIT_REPOSITORY "https://github.com/google/googletest.git"
 #   GIT_TAG "master"
 #   SOURCE_DIR "${TRUNDLE_BUILD_DIR}/googletest/src"
@@ -116,7 +116,7 @@ ExternalProject_Add(engine
   CMAKE_ARGS list(APPEND CMAKE_ARGS "-DTRUNDLE_BUILD_DIR=${TRUNDLE_BUILD_DIR}")
   CMAKE_CACHE_ARGS
     -DCMAKE_INSTALL_PREFIX:PATH=${TRUNDLE_BUILD_DIR}
-  DEPENDS glfw gl3w imgui eigen
+  DEPENDS glfw gl3w imgui glm
 )
 
 ExternalProject_Add(driver
