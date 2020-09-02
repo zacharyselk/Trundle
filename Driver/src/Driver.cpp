@@ -26,10 +26,7 @@ class ExampleLayer : public Trundle::Layer {
 public:
   ExampleLayer() : Layer("HelloLayer") {}
 
-  void onUpdate() override final {
-    Trundle::Log::Info("ExampleLayer::Update");
-    Trundle::Log::Error("Hello");
-  }
+  void onUpdate() override final {}
 
   void onEvent(Trundle::Event& event) override final {
     Trundle::Log::Info(event.toString());
