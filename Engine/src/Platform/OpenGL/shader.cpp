@@ -39,8 +39,15 @@ Shader::Shader(const std::string& vertexShader,
   glDeleteShader(vs);
   glDeleteShader(fs);
 
+  bind();
+
   GLint loc = glGetUniformLocation(id, uniform.name.c_str());
   glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(uniform.matrix));
+
+  GLfloat val[16];
+  glGetUniformfv(id, glGetUniformLocation(id, uniform.name.c_str()), val);
+  for (int i = 0; i < 16; ++i)
+    printf("Value is %f\n", val[i]);
 }
 
 Shader::~Shader() { glDeleteProgram(id); }

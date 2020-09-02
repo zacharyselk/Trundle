@@ -23,6 +23,15 @@
 
 namespace Trundle {
 
+void GLAPIENTRY MessageCallback(GLenum source, GLenum type, GLuint id,
+                                GLenum severity, GLsizei length,
+                                const GLchar* message, const void* userParam) {
+  fprintf(stderr,
+          "GL CALLBACK: %s\n  Type = 0x%x\n  Severity = 0x%x\n  Message = %s\n",
+          (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""), type, severity,
+          message);
+}
+
 //===-- OpenGLContext -----------------------------------------------------===//
 OpenGLContext::OpenGLContext(GLFWwindow* window) : windowHandle(window) {
   assert(window && "Error: Window handler is uninitalized");
@@ -38,6 +47,10 @@ bool OpenGLContext::init() {
     Log::Error("failed to initialize OpenGL\n");
     return false;
   }
+
+  // Enable debug output
+  glEnable(GL_DEBUG_OUTPUT);
+  glDebugMessageCallback(MessageCallback, 0);
 
   return true;
 }
