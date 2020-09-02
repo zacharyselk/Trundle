@@ -50,7 +50,7 @@ void GLAPIENTRY MessageCallback(GLenum source, GLenum type, GLuint id,
   fprintf(stderr,
           "GL CALLBACK: %s\n  Type: 0x%x\n  Severity: %s\n  Message: %s\n",
           (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""), type,
-          severityStr, message);
+          severityStr.c_str(), message);
 }
 
 //===-- OpenGLContext -----------------------------------------------------===//
