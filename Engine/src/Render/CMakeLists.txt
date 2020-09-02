@@ -1,5 +1,6 @@
 set(render_source_files
   buffer.cpp
+  camera.cpp
   renderer.cpp
   sceneRenderer.cpp
   shader.cpp

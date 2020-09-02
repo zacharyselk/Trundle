@@ -22,7 +22,7 @@ namespace Trundle {
 
 //===-- Shader ------------------------------------------------------------===//
 Shader::Shader(const Renderer& r, const std::string& vertexShader,
-               const std::string& fragmentShader)
+               const std::string& fragmentShader, const Uniform& uniform)
     : vptr(nullptr) {
   switch (r.getAPI()) {
   // TODO: Implement.
@@ -30,7 +30,8 @@ Shader::Shader(const Renderer& r, const std::string& vertexShader,
     break;
 
   case RenderingAPI::OpenGLAPI:
-    vptr = std::make_shared<OpenGL::Shader>(vertexShader, fragmentShader);
+    vptr =
+        std::make_shared<OpenGL::Shader>(vertexShader, fragmentShader, uniform);
     break;
 
   default:

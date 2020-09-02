@@ -30,7 +30,8 @@ namespace Trundle::OpenGL {
 //===----------------------------------------------------------------------===//
 class Shader : public Trundle::Shader::ShaderConcept {
 public:
-  Shader(const std::string& vertexShader, const std::string& fragmentShader);
+  Shader(const std::string& vertexShader, const std::string& fragmentShader,
+         const Uniform& uniform);
   virtual ~Shader();
 
   virtual void bind() const override final;

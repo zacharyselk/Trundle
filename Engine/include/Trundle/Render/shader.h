@@ -26,12 +26,25 @@
 #include <Trundle/Render/util.h>
 #include <Trundle/common.h>
 
+#include <glm/glm.hpp>
+
 namespace Trundle {
 
 // Forward declare the backend implementations.
 namespace OpenGL {
 class Shader;
 }
+
+//===-- Uniform -----------------------------------------------------------===//
+// A struct that defines a uniform by name and with a data type.
+// TODO: Currently using a fixed size matrix, need to use a std::variant
+//===----------------------------------------------------------------------===//
+struct Uniform {
+  Uniform(std::string str, glm::mat4 mat) : name(str), matrix(mat) {}
+
+  std::string name;
+  glm::mat4 matrix;
+};
 
 //===-- Shader ------------------------------------------------------------===//
 // API for a shader.
@@ -40,7 +53,7 @@ class Shader {
 public:
   Shader() = default;
   Shader(const Renderer& r, const std::string& vertexShader,
-         const std::string& fragmentShader);
+         const std::string& fragmentShader, const Uniform& uniform);
   Shader& operator=(const Shader& shader) noexcept {
     vptr = shader.vptr;
     return *this;

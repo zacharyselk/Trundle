@@ -20,11 +20,13 @@
 #include <GL/gl3w.h>
 #include <GLFW/glfw3.h>
 
+#include <glm/gtc/type_ptr.hpp>
+
 namespace Trundle::OpenGL {
 
 //===-- Shader ------------------------------------------------------------===//
 Shader::Shader(const std::string& vertexShader,
-               const std::string& fragmentShader)
+               const std::string& fragmentShader, const Uniform& uniform)
     : id(glCreateProgram()) {
   uint32_t vs = compile(GL_VERTEX_SHADER, vertexShader);
   uint32_t fs = compile(GL_FRAGMENT_SHADER, fragmentShader);
@@ -36,6 +38,9 @@ Shader::Shader(const std::string& vertexShader,
 
   glDeleteShader(vs);
   glDeleteShader(fs);
+
+  GLint loc = glGetUniformLocation(id, uniform.name.c_str());
+  glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(uniform.matrix));
 }
 
 Shader::~Shader() { glDeleteProgram(id); }
