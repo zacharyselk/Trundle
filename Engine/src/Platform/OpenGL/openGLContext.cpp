@@ -26,10 +26,31 @@ namespace Trundle {
 void GLAPIENTRY MessageCallback(GLenum source, GLenum type, GLuint id,
                                 GLenum severity, GLsizei length,
                                 const GLchar* message, const void* userParam) {
+  std::string severityStr;
+  switch (severity) {
+  case GL_DEBUG_SEVERITY_NOTIFICATION:
+    // No need to output anything on a notification
+    return;
+
+  case GL_DEBUG_SEVERITY_LOW:
+    severityStr = "Low";
+    break;
+
+  case GL_DEBUG_SEVERITY_MEDIUM:
+    severityStr = "Medium";
+    break;
+
+  case GL_DEBUG_SEVERITY_HIGH:
+    severityStr = "High";
+    break;
+
+  default:
+    Log::Error("Unknow OpenGL Severity Level!");
+  }
   fprintf(stderr,
-          "GL CALLBACK: %s\n  Type = 0x%x\n  Severity = 0x%x\n  Message = %s\n",
-          (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""), type, severity,
-          message);
+          "GL CALLBACK: %s\n  Type: 0x%x\n  Severity: %s\n  Message: %s\n",
+          (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""), type,
+          severityStr.c_str(), message);
 }
 
 //===-- OpenGLContext -----------------------------------------------------===//
