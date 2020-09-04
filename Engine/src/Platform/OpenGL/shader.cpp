@@ -17,6 +17,8 @@
 //===----------------------------------------------------------------------===//
 #include <Trundle/Platform/OpenGL/shader.h>
 
+#include <type_traits>
+
 #include <GL/gl3w.h>
 #include <GLFW/glfw3.h>
 
@@ -40,21 +42,35 @@ Shader::Shader(const std::string& vertexShader,
   glDeleteShader(fs);
 
   bind();
-
-  GLint loc = glGetUniformLocation(id, uniform.name.c_str());
-  glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(uniform.matrix));
-
-  GLfloat val[16];
-  glGetUniformfv(id, glGetUniformLocation(id, uniform.name.c_str()), val);
-  for (int i = 0; i < 16; ++i)
-    printf("Value is %f\n", val[i]);
+  submitUniform(uniform);
 }
 
 Shader::~Shader() { glDeleteProgram(id); }
 
+std::shared_ptr<const Trundle::Shader::ShaderConcept> Shader::move() const {
+  std::shared_ptr<const Trundle::Shader::ShaderConcept> copy =
+      std::make_shared<const Shader>(*this);
+
+  // Set id to 0 to invalidate the object
+  const_cast<std::remove_const<decltype(id)>::type&>(id) = 0;
+
+  return copy;
+}
+
 void Shader::bind() const { glUseProgram(id); }
 
 void Shader::unbind() const { glUseProgram(0); }
+
+void Shader::reset(const Uniform& uniform) const {
+  bind(); // Not sure if this is strictly necessary
+  submitUniform(uniform);
+}
+
+void Shader::submitUniform(const Uniform& uniform) const {
+  GLint loc = glGetUniformLocation(id, uniform.name.c_str());
+  assert(loc != -1 && "Error: Uniform location not found!");
+  glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(uniform.matrix));
+}
 
 uint32_t Shader::compile(unsigned int type, const std::string& src) {
   unsigned int srcId = glCreateShader(type);

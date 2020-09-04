@@ -27,7 +27,7 @@ namespace Trundle {
 
 Application* Application::instance = nullptr;
 
-Application::Application() : camera(-1.0f, 1.0f, -1.0f, 1.0f) {
+Application::Application() : camera() {
   instance = this;
 
   // Create window context and object. Window::create() also will initalize
@@ -94,7 +94,7 @@ Application::Application() : camera(-1.0f, 1.0f, -1.0f, 1.0f) {
         }
         )";
 
-  Uniform uniform("viewPtrojection", camera.getViewProjectionMatrix());
+  Uniform uniform("viewProjection", camera.getViewProjectionMatrix());
 
   // TODO: make this assignmnet better.
   shader = std::move(Shader(renderer, vs, fs, uniform));
@@ -105,6 +105,11 @@ Application::~Application() {}
 
 void Application::run() {
   while (running) {
+    // camera.setPosition(camera.getPosition() + glm::vec3{0.01f});
+    camera.setRotation(camera.getRotation() + 0.01f);
+    Uniform uniform("viewProjection", camera.getViewProjectionMatrix());
+    shader.reset(uniform);
+
     sceneRenderer.clear();
 
     sceneRenderer.start();

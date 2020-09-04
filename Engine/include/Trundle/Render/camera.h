@@ -39,22 +39,20 @@ class OrthographicCamera {
 public:
   // Define the boarders of the camera with raw values to create a projection
   // matrix.
-  OrthographicCamera(float left, float right, float bottom, float top,
+  OrthographicCamera(float left = -1.0f, float right = 1.0f,
+                     float bottom = -1.0f, float top = 1.0f,
                      float front = -1.0f, float back = 1.0f);
   // Pass the camera a projection matrix that will define the translation.
   OrthographicCamera(const glm::mat4& projectionMatrix);
 
-  const glm::vec3& getPosition() const { return pos; }
-  float getRotation() const { return rotation; }
-  const glm::mat4& getViewProjectionMatrix() {
-    Log::Warn(glm::to_string(viewProjectionMatrix));
-    return viewProjectionMatrix;
-  }
-
-  // Temporary
-  void setPos(const glm::vec3& p) { pos = p; }
-  void setRotation(float r) { rotation = r; }
+  void setPosition(const glm::vec3& position);
+  void setPosition(float x, float y, float z);
+  void setRotation(float r);
   void recalculateViewMatrix();
+
+  const glm::vec3& getPosition() const;
+  float getRotation() const;
+  const glm::mat4& getViewProjectionMatrix() const;
 
 private:
   glm::vec3 pos{0.0f};

@@ -22,6 +22,7 @@
 #pragma once
 
 #include <Trundle/Core/log.h>
+#include <Trundle/Render/camera.h>
 #include <Trundle/Render/renderer.h>
 #include <Trundle/Render/util.h>
 #include <Trundle/common.h>
@@ -52,6 +53,7 @@ struct Uniform {
 class Shader {
 public:
   Shader() = default;
+  Shader(const Shader&) = default;
   Shader(const Renderer& r, const std::string& vertexShader,
          const std::string& fragmentShader, const Uniform& uniform);
   Shader& operator=(const Shader& shader) noexcept {
@@ -61,6 +63,12 @@ public:
 
   void bind() const { vptr->bind(); }
   void unbind() const { vptr->unbind(); }
+  // TODO: Make this work with a camera object or something
+  // TODO: Remove move() function
+  void reset(const Uniform& uniform) noexcept {
+    vptr = vptr->move();
+    vptr->reset(uniform);
+  }
 
   friend class OpenGL::Shader;
 
@@ -70,8 +78,10 @@ private:
   public:
     virtual ~ShaderConcept() = default;
 
+    virtual std::shared_ptr<const ShaderConcept> move() const = 0;
     virtual void bind() const = 0;
     virtual void unbind() const = 0;
+    virtual void reset(const Uniform&) const = 0;
   };
 
   // Custom virtual pointer to allow for value semantic polymorphism.

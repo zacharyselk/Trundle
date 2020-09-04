@@ -35,6 +35,28 @@ OrthographicCamera::OrthographicCamera(float left, float right, float bottom,
   viewProjectionMatrix = projectionMatrix * viewMatrix;
 }
 
+void OrthographicCamera::setPosition(const glm::vec3& position) {
+  pos = position;
+  recalculateViewMatrix();
+}
+
+void OrthographicCamera::setPosition(float x, float y, float z) {
+  setPosition(glm::vec3(x, y, z));
+}
+
+void OrthographicCamera::setRotation(float r) {
+  rotation = r;
+  recalculateViewMatrix();
+}
+
+const glm::vec3& OrthographicCamera::getPosition() const { return pos; }
+
+float OrthographicCamera::getRotation() const { return rotation; }
+
+const glm::mat4& OrthographicCamera::getViewProjectionMatrix() const {
+  return viewProjectionMatrix;
+}
+
 void OrthographicCamera::recalculateViewMatrix() {
   glm::mat4 transform =
       glm::translate(glm::mat4(1.0f), pos) *
