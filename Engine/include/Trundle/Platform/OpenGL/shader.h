@@ -30,11 +30,19 @@ namespace Trundle::OpenGL {
 //===----------------------------------------------------------------------===//
 class Shader : public Trundle::Shader::ShaderConcept {
 public:
-  Shader(const std::string& vertexShader, const std::string& fragmentShader);
+  Shader(const std::string& vertexShader, const std::string& fragmentShader,
+         const Uniform& uniform);
   virtual ~Shader();
 
+  virtual std::shared_ptr<const Trundle::Shader::ShaderConcept>
+  move() const override final;
   virtual void bind() const override final;
   virtual void unbind() const override final;
+  virtual void reset(const Uniform& uniform) const override final;
+
+  void submitUniform(const Uniform& uniform) const;
+
+  friend class Trundle::Shader;
 
 private:
   const uint32_t id;

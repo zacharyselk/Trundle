@@ -28,6 +28,7 @@
 #include <Trundle/Core/window.h>
 #include <Trundle/Events/windowEvent.h>
 #include <Trundle/Render/buffer.h>
+#include <Trundle/Render/camera.h>
 #include <Trundle/Render/renderingQueue.h>
 #include <Trundle/Render/sceneRenderer.h>
 #include <Trundle/Render/shader.h>
@@ -74,6 +75,8 @@ private:
   VertexArray vertexArray;
   Shader shader;
   SceneRenderer sceneRenderer;
+
+  OrthographicCamera camera;
 };
 
 // Defined by the driver as an entry point into the engine.

@@ -22,8 +22,6 @@
 //===----------------------------------------------------------------------===//
 #pragma once
 
-#include <glm/glm.hpp>
-
 namespace Trundle {
 
 enum RenderingAPI { None = 0, OpenGLAPI = 1 };
