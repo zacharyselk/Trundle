@@ -1,4 +1,4 @@
-//===-- windowsWindow.cpp -------------------------------------------------===//
+//===-- window.cpp --------------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -15,14 +15,14 @@
 // limitations under the License.
 //
 //===----------------------------------------------------------------------===//
-#if defined(TRUNDLE_OS_WINDOWS)
+#if defined(TRUNDLE_OS_LINUX) // No longer needed
 
 #include <Trundle/Core/log.h>
 #include <Trundle/Events/keyEvent.h>
 #include <Trundle/Events/mouseEvent.h>
 #include <Trundle/Events/windowEvent.h>
+#include <Trundle/Platform/Linux/window.h>
 #include <Trundle/Platform/OpenGL/openGLContext.h>
-#include <Trundle/Platform/windowsWindow.h>
 
 namespace Trundle {
 
@@ -35,16 +35,16 @@ static void GLFWErrorCallback(int error, const char* description) {
 }
 
 Window* Window::create(const WindowProperties& properties) {
-  return new WindowsWindow(properties);
+  return new LinuxWindow(properties);
 }
 
-WindowsWindow::WindowsWindow(const WindowProperties& properties) {
+LinuxWindow::LinuxWindow(const WindowProperties& properties) {
   init(properties);
 }
 
-WindowsWindow::~WindowsWindow() { shutdown(); }
+LinuxWindow::~LinuxWindow() { shutdown(); }
 
-void WindowsWindow::init(const WindowProperties& properties) {
+void LinuxWindow::init(const WindowProperties& properties) {
   data.title = properties.title;
   data.width = properties.width;
   data.height = properties.height;
@@ -165,14 +165,14 @@ void WindowsWindow::init(const WindowProperties& properties) {
   });
 }
 
-void WindowsWindow::shutdown() { glfwDestroyWindow(window); }
+void LinuxWindow::shutdown() { glfwDestroyWindow(window); }
 
-void WindowsWindow::onUpdate() {
+void LinuxWindow::onUpdate() {
   glfwPollEvents();
   context->swapBuffers();
 }
 
-void WindowsWindow::setVSync(bool enable) {
+void LinuxWindow::setVSync(bool enable) {
   if (enable) {
     glfwSwapInterval(1);
   } else {
@@ -181,9 +181,9 @@ void WindowsWindow::setVSync(bool enable) {
   data.vSync = enable;
 }
 
-bool WindowsWindow::isVSync() const { return data.vSync; }
+bool LinuxWindow::isVSync() const { return data.vSync; }
 
-void* WindowsWindow::getNativeWindow() const { return (void*)window; }
+void* LinuxWindow::getNativeWindow() const { return (void*)window; }
 
 } // namespace Trundle
 
