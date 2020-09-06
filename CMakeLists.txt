@@ -59,7 +59,7 @@ include(ExternalProject)
 
 ExternalProject_Add(imgui
   GIT_REPOSITORY "https://github.com/ocornut/imgui"
-  GIT_TAG "v1.77"
+  GIT_TAG "docking"
   SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/ImGui"
   CONFIGURE_COMMAND ""
   BUILD_COMMAND ""
