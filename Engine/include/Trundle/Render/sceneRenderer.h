@@ -45,10 +45,13 @@ public:
   }
 
   // TODO: Add flag for what to clear.
-  void clear() { vptr->clear(); }
-  void start() { vptr->start(); }
-  void end() { vptr->end(); }
-  void submit(const RenderingTask& task) { vptr->submit(task); }
+  void clear();
+  void start();
+  // TODO: end will have no idea when frame is over when we start multithreading
+  void end();
+  void submit(const RenderingTask& task);
+
+  double deltaTime();
 
   friend class OpenGL::SceneRenderer;
 
@@ -69,6 +72,12 @@ private:
 
   // Custom virtual pointer to allow for value semantic polymorphism.
   std::shared_ptr<SceneRendererConcept> vptr;
+
+  // Frame data
+  // TODO: Should move this at some point to a better class
+  std::chrono::high_resolution_clock::time_point frameStartTimestamp;
+  std::chrono::duration<double> lastFrameDuration;
 };
+//===----------------------------------------------------------------------===//
 
 } // namespace Trundle
