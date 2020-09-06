@@ -1,4 +1,4 @@
-//===-- macOSWindow.cpp ---------------------------------------------------===//
+//===-- window.cpp --------------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -15,14 +15,14 @@
 // limitations under the License.
 //
 //===----------------------------------------------------------------------===//
-#if defined(TRUNDLE_OS_MACOS)
+#if defined(TRUNDLE_OS_MACOS) // No longer needed
 
 #include <Trundle/Core/log.h>
 #include <Trundle/Events/keyEvent.h>
 #include <Trundle/Events/mouseEvent.h>
 #include <Trundle/Events/windowEvent.h>
+#include <Trundle/Platform/MacOS/window.h>
 #include <Trundle/Platform/OpenGL/openGLContext.h>
-#include <Trundle/Platform/macOSWindow.h>
 
 namespace Trundle {
 

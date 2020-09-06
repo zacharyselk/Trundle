@@ -1,9 +1,5 @@
+add_subdirectory(MacOS)
+add_subdirectory(Linux)
+add_subdirectory(Windows)
+
 add_subdirectory(OpenGL)
-
-set(platform_include_files
-  linuxWindow.h
-  macOSWindow.h
-  windowsWindow.h
-)
-
-target_sources(engine PRIVATE ${platform_include_files})

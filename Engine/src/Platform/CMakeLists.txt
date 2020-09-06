@@ -1,9 +1,12 @@
+# Platform specific compilationi
+if(APPLE)
+  add_subdirectory(MacOS)
+elseif(UNIX)
+  add_subdirectory(Linux)
+elseif(WIN32)
+  add_subdirectory(Windows)
+else()
+  message(FATAL_ERROR "Error: Unknown platform, aborting.")
+endif()
+
 add_subdirectory(OpenGL)
-
-set(platform_source_files
-  macOSWindow.cpp
-  windowsWindow.cpp
-  linuxWindow.cpp
-  )
-
-target_sources(engine PRIVATE ${platform_source_files})
