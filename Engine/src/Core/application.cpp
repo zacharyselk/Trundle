@@ -23,8 +23,6 @@
 #include <Trundle/Render/renderingQueue.h>
 #include <Trundle/Render/shader.h>
 
-#include <unistd.h>
-
 namespace Trundle {
 
 Application* Application::instance = nullptr;
