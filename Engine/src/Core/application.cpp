@@ -105,14 +105,16 @@ Application::~Application() {}
 
 void Application::run() {
   while (running) {
-    // camera.setPosition(camera.getPosition() + glm::vec3{0.01f});
-    camera.setRotation(camera.getRotation() + 0.01f);
-    Uniform uniform("viewProjection", camera.getViewProjectionMatrix());
-    shader.reset(uniform);
-
     sceneRenderer.clear();
 
     sceneRenderer.start();
+
+    // camera.setPosition(camera.getPosition() + (glm::vec3{0.01f} *
+    // sceneRenderer.deltaTime()));
+    camera.setRotation(camera.getRotation() +
+                       (30.0f * sceneRenderer.deltaTime()));
+    Uniform uniform("viewProjection", camera.getViewProjectionMatrix());
+    shader.reset(uniform);
 
     guiLayer->begin();
     for (Layer* layer : layerStack) {
