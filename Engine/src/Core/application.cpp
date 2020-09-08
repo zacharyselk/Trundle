@@ -75,13 +75,14 @@ Application::Application() : camera() {
         layout(location = 1) in vec4 in_color;
 
         uniform mat4 viewProjection;
+        uniform mat4 transform;
 
         out vec3 v_position;
         out vec4 v_color;
         void main(){
           v_position = in_position;
           v_color = in_color;
-          gl_Position = viewProjection * vec4(in_position, 1.0);
+          gl_Position = viewProjection * transform * vec4(in_position, 1.0);
         }
       )";
   std::string fs = R"(
@@ -104,6 +105,9 @@ Application::Application() : camera() {
 Application::~Application() {}
 
 void Application::run() {
+  glm::mat4 trianglePos(1.0f);
+  int count = 0;
+  float increment = 1.5f;
   while (running) {
     sceneRenderer.clear();
 
@@ -112,9 +116,19 @@ void Application::run() {
     // camera.setPosition(camera.getPosition() + (glm::vec3{0.01f} *
     // sceneRenderer.deltaTime()));
     camera.setRotation(camera.getRotation() +
-                       (30.0f * sceneRenderer.deltaTime()));
-    Uniform uniform("viewProjection", camera.getViewProjectionMatrix());
-    shader.reset(uniform);
+                       10.0f * sceneRenderer.deltaTime());
+    if (count > 120 || count < 0) {
+      increment *= -1;
+    }
+    count += increment / 1.5f + 0.0001;
+    trianglePos = glm::translate(
+        trianglePos, glm::vec3(increment * sceneRenderer.deltaTime(),
+                               increment * sceneRenderer.deltaTime(), 0));
+    Uniform projectionUniform("viewProjection",
+                              camera.getViewProjectionMatrix());
+    Uniform translationUniform("transform", trianglePos);
+    std::vector<Uniform> uniforms = {projectionUniform, translationUniform};
+    shader.reset(uniforms);
 
     guiLayer->begin();
     for (Layer* layer : layerStack) {

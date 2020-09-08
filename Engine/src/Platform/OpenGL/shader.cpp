@@ -61,9 +61,11 @@ void Shader::bind() const { glUseProgram(id); }
 
 void Shader::unbind() const { glUseProgram(0); }
 
-void Shader::reset(const Uniform& uniform) const {
+void Shader::reset(const std::vector<Uniform>& uniformList) const {
   bind(); // Not sure if this is strictly necessary
-  submitUniform(uniform);
+  for (const auto& uniform : uniformList) {
+    submitUniform(uniform);
+  }
 }
 
 void Shader::submitUniform(const Uniform& uniform) const {

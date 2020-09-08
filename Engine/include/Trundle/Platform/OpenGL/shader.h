@@ -38,7 +38,8 @@ public:
   move() const override final;
   virtual void bind() const override final;
   virtual void unbind() const override final;
-  virtual void reset(const Uniform& uniform) const override final;
+  virtual void
+  reset(const std::vector<Uniform>& uniformList) const override final;
 
   void submitUniform(const Uniform& uniform) const;
 
