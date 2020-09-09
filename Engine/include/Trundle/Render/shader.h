@@ -67,7 +67,13 @@ public:
   // TODO: Remove move() function
   void reset(const Uniform& uniform) noexcept {
     vptr = vptr->move();
-    vptr->reset(uniform);
+    std::vector<Uniform> uniformList = {uniform};
+    vptr->reset(uniformList);
+  }
+
+  void reset(const std::vector<Uniform>& uniformList) noexcept {
+    vptr = vptr->move();
+    vptr->reset(uniformList);
   }
 
   friend class OpenGL::Shader;
@@ -81,7 +87,8 @@ private:
     virtual std::shared_ptr<const ShaderConcept> move() const = 0;
     virtual void bind() const = 0;
     virtual void unbind() const = 0;
-    virtual void reset(const Uniform&) const = 0;
+    // TODO: Use StackAllocated data structure
+    virtual void reset(const std::vector<Uniform>&) const = 0;
   };
 
   // Custom virtual pointer to allow for value semantic polymorphism.
