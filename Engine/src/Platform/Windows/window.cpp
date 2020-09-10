@@ -83,10 +83,6 @@ void WindowsWindow::init(const WindowProperties& properties) {
     void* userPointer = glfwGetWindowUserPointer(window);
     WindowData* data = (WindowData*)userPointer;
 
-    std::stringstream ss;
-    ss << "Key is: " << key;
-    Log::Debug(ss.str());
-
     Event* event;
     switch (action) {
     case GLFW_PRESS:

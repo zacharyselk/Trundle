@@ -26,6 +26,7 @@
 #include <Trundle/Core/layer.h>
 #include <Trundle/Core/layerStack.h>
 #include <Trundle/Core/window.h>
+#include <Trundle/Events/keyEvent.h>
 #include <Trundle/Events/windowEvent.h>
 #include <Trundle/Render/buffer.h>
 #include <Trundle/Render/camera.h>
@@ -47,6 +48,8 @@ public:
 
   // Handles what to do when the window is closed.
   bool onWindowClose(WindowCloseEvent&);
+
+  bool onKeyPress(KeyPressEvent&);
 
   // Despatch the apropriot function corrisponding which event what recived.
   void onEvent(Event& event);
