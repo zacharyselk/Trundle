@@ -15,6 +15,7 @@
 // limitations under the License.
 //
 //===----------------------------------------------------------------------===//
+#include <Trundle/Core/time.h>
 #include <Trundle/Platform/OpenGL/sceneRenderer.h>
 #include <Trundle/Render/sceneRenderer.h>
 
@@ -40,19 +41,15 @@ SceneRenderer::SceneRenderer(const Renderer& r) : vptr(nullptr) {
 void SceneRenderer::clear() { vptr->clear(); }
 
 void SceneRenderer::start() {
-  frameStartTimestamp = std::chrono::high_resolution_clock::now();
+  Time::startFrame();
   vptr->start();
 }
 
 void SceneRenderer::end() {
   vptr->end();
-  lastFrameDuration = std::chrono::duration_cast<std::chrono::duration<double>>(
-      std::chrono::high_resolution_clock::now() - frameStartTimestamp);
 }
 
 void SceneRenderer::submit(const RenderingTask& task) { vptr->submit(task); }
-
-double SceneRenderer::deltaTime() { return lastFrameDuration.count(); }
 //===----------------------------------------------------------------------===//
 
 } // namespace Trundle
