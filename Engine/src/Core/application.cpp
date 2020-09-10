@@ -117,7 +117,7 @@ void Application::run() {
     // sceneRenderer.deltaTime()));
     // camera.setRotation(camera.getRotation() +
     //                    10.0f * Time::deltaTime());
-    if (count % 120 == 0) {
+    if (count % 60 == 0) {
       increment *= -1;
     }
     count += increment / 1.5f + 0.0001;

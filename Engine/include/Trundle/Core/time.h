@@ -1,4 +1,4 @@
-//===-- time.---------h ---------------------------------------------------===//
+//===-- time.h ------------------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -40,24 +40,5 @@ private:
   static std::chrono::high_resolution_clock::time_point frameStartTimestamp;
   static std::chrono::microseconds lastFrameDuration;
 };
-
-std::chrono::high_resolution_clock::time_point Time::frameStartTimestamp =
-    std::chrono::high_resolution_clock::now();
-std::chrono::microseconds Time::lastFrameDuration =
-    std::chrono::microseconds(0);
-
-void Time::startFrame() {
-  auto now = std::chrono::high_resolution_clock::now();
-  lastFrameDuration = std::chrono::duration_cast<std::chrono::microseconds>(
-      now - frameStartTimestamp);
-  frameStartTimestamp = std::chrono::high_resolution_clock::now();
-}
-
-double Time::deltaTime() {
-  std::chrono::duration<double> sec =
-      std::chrono::duration_cast<std::chrono::duration<double>>(
-          lastFrameDuration);
-  return sec.count();
-}
 
 } // namespace Trundle

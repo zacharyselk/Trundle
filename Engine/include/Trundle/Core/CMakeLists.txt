@@ -4,6 +4,7 @@ set(core_include_files
   gateway.h
   log.h
   threadPool.h
+  time.h
 )
 
 target_sources(engine PRIVATE ${core_include_files})
