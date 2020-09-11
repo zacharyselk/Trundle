@@ -23,7 +23,7 @@
 #include <Trundle/Render/renderer.h>
 #include <Trundle/Render/renderingQueue.h>
 #include <Trundle/Render/shader.h>
-#include <Trundle/Util/primitive.h>
+#include <Trundle/Util/primitives.h>
 
 // Temp
 #include <Trundle/Core/input.h>
@@ -97,6 +97,24 @@ Application::Application() : camera(0, 1280, 0, 720) {
   // TODO: make this assignmnet better.
   vertexArray = std::move(VertexArray(renderer, vertexBuffers, indexBuffer));
 
+  // Square
+  float squareVertices[4 * 7] = {0.0f,   0.0f,   0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+                                 100.0f, 0.0f,   0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+                                 100.0f, 100.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+                                 0.0f,   100.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f};
+  uint32_t squareIndices[6] = {0, 1, 2, 2, 3, 0};
+
+  // TODO: make this assignmnet better.
+  auto squareVertexBuffer = std::move(
+      VertexBuffer(renderer, squareVertices, layout, sizeof(squareVertices)));
+  std::vector<VertexBuffer> squareVertexBuffers = {squareVertexBuffer};
+
+  auto squareIndexBuffer = std::move(IndexBuffer(renderer, squareIndices, 6));
+
+  // TODO: make this assignmnet better.
+  squareVertexArray =
+      std::move(VertexArray(renderer, squareVertexBuffers, squareIndexBuffer));
+
   std::string vs = R"(
         #version 330 core
         layout(location = 0) in vec3 in_position;
@@ -148,9 +166,9 @@ void Application::run() {
     if (++count % 60 == 0) {
       speed *= -1;
     }
-    trianglePos = glm::translate(trianglePos,
-                                 glm::vec3(speed * Time::deltaTime(),
-                                           speed * Time::deltaTime(), 0));
+    trianglePos =
+        glm::translate(trianglePos, glm::vec3(speed * Time::deltaTime(),
+                                              speed * Time::deltaTime(), 0));
     Uniform projectionUniform("viewProjection",
                               camera.getViewProjectionMatrix());
     Uniform translationUniform("transform", trianglePos);

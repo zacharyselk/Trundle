@@ -1,6 +1,6 @@
 set(util_source_files
   imGuiLayer.cpp
-  primitive.cpp
+  primitives.cpp
 )
 
 target_sources(engine PRIVATE ${util_source_files})

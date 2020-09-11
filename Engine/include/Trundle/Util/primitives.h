@@ -26,7 +26,7 @@
 namespace Trundle {
 
 //===-- Triangle ----------------------------------------------------------===//
-// Holds a representaion of a triangle and can return
+// Holds a representaion of a triangle.
 //===----------------------------------------------------------------------===//
 struct Triangle {
   Triangle(float base, float height);
@@ -37,5 +37,18 @@ struct Triangle {
   glm::vec3 center;
   glm::vec3 vertices[3];
 };
+
+//===-- Quad --------------------------------------------------------------===//
+// Holds a representaion of a square.
+//===----------------------------------------------------------------------===//
+// struct Quad {
+//   Quad(float width, float height);
+//   Quad(glm::vec3 verts[4]);
+
+//   void setPosition(float x, float y, float z = 0.0f);
+
+//   glm::vec3 center;
+//   glm::vec3 vertices[6];
+// };
 
 } // namespace Trundle
