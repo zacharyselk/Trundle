@@ -1,4 +1,4 @@
-//===-- time.h ------------------------------------------------------------===//
+//===-- time.cpp ----------------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -15,31 +15,9 @@
 // limitations under the License.
 //
 //===----------------------------------------------------------------------===//
-//
-// Handles timing for the engine.
-//
-//===----------------------------------------------------------------------===//
-#pragma once
-
-#include <Trundle/common.h>
+#include <Trundle/Core/time.h>
 
 namespace Trundle {
-
-//===-- Time --------------------------------------------------------------===//
-// Static timing class that manages the timing elements of the engine such as
-// the frame delta time.
-//===----------------------------------------------------------------------===//
-class Time {
-public:
-  static void startFrame();
-  static double deltaTime();
-
-private:
-  Time() = default;
-
-  static std::chrono::high_resolution_clock::time_point frameStartTimestamp;
-  static std::chrono::microseconds lastFrameDuration;
-};
 
 std::chrono::high_resolution_clock::time_point Time::frameStartTimestamp =
     std::chrono::high_resolution_clock::now();
