@@ -1,4 +1,4 @@
-//===-- time.h ------------------------------------------------------------===//
+//===-- primitive.h -------------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -16,29 +16,26 @@
 //
 //===----------------------------------------------------------------------===//
 //
-// Handles timing for the engine.
+// A collection of helper classes to build and maintian primative shapes.
 //
 //===----------------------------------------------------------------------===//
 #pragma once
 
-#include <Trundle/common.h>
+#include <glm/glm.hpp>
 
 namespace Trundle {
 
-//===-- Time --------------------------------------------------------------===//
-// Static timing class that manages the timing elements of the engine such as
-// the frame delta time.
+//===-- Triangle ----------------------------------------------------------===//
+// Holds a representaion of a triangle and can return
 //===----------------------------------------------------------------------===//
-class Time {
-public:
-  static void startFrame();
-  static double deltaTime();
+struct Triangle {
+  Triangle(float base, float height);
+  Triangle(glm::vec3 verts[3]);
 
-private:
-  Time() = default;
+  void setPosition(float x, float y, float z = 0.0f);
 
-  static std::chrono::high_resolution_clock::time_point frameStartTimestamp;
-  static std::chrono::microseconds lastFrameDuration;
+  glm::vec3 center;
+  glm::vec3 vertices[3];
 };
 
 } // namespace Trundle
