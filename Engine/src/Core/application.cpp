@@ -24,6 +24,9 @@
 #include <Trundle/Render/renderingQueue.h>
 #include <Trundle/Render/shader.h>
 
+// Temp
+#include <Trundle/Core/input.h>
+
 namespace Trundle {
 
 Application* Application::instance = nullptr;
@@ -143,6 +146,34 @@ void Application::run() {
   }
 }
 
+bool Application::onKeyPress(KeyPressEvent&) {
+  if (Input::isKeyPressed(GLFW_KEY_W)) {
+    camera.setPosition(camera.getPosition() +
+                       (glm::vec3(0.0, 10.0 * sceneRenderer.deltaTime(), 0.0)));
+    Uniform uniform("viewProjection", camera.getViewProjectionMatrix());
+    shader.reset(uniform);
+  } else if (Input::isKeyPressed(GLFW_KEY_A)) {
+    camera.setPosition(
+        camera.getPosition() +
+        (glm::vec3(-10.0 * sceneRenderer.deltaTime(), 0.0, 0.0)));
+    Uniform uniform("viewProjection", camera.getViewProjectionMatrix());
+    shader.reset(uniform);
+  } else if (Input::isKeyPressed(GLFW_KEY_S)) {
+    camera.setPosition(
+        camera.getPosition() +
+        (glm::vec3(0.0, -10.0 * sceneRenderer.deltaTime(), 0.0)));
+    Uniform uniform("viewProjection", camera.getViewProjectionMatrix());
+    shader.reset(uniform);
+  } else if (Input::isKeyPressed(GLFW_KEY_D)) {
+    camera.setPosition(camera.getPosition() +
+                       (glm::vec3(10.0 * sceneRenderer.deltaTime(), 0.0, 0.0)));
+    Uniform uniform("viewProjection", camera.getViewProjectionMatrix());
+    shader.reset(uniform);
+  }
+
+  return true;
+}
+
 bool Application::onWindowClose(WindowCloseEvent&) {
   running = false;
   return true;
@@ -152,6 +183,8 @@ void Application::onEvent(Event& event) {
   EventDispatch dispatcher(event);
   dispatcher.dispatch<WindowCloseEvent>(
       std::bind(&Application::onWindowClose, this, std::placeholders::_1));
+  dispatcher.dispatch<KeyPressEvent>(
+      std::bind(&Application::onKeyPress, this, std::placeholders::_1));
 
   for (auto it = layerStack.end(); it != layerStack.begin();) {
     --it;
