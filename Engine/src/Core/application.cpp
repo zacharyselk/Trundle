@@ -17,6 +17,8 @@
 //===----------------------------------------------------------------------===//
 #include <Trundle/Core/application.h>
 #include <Trundle/Core/log.h>
+#include <Trundle/Core/time.h>
+#include <Trundle/Events/keyEvent.h>
 #include <Trundle/Render/buffer.h>
 #include <Trundle/Render/renderer.h>
 #include <Trundle/Render/renderingQueue.h>
@@ -112,20 +114,19 @@ void Application::run() {
   float increment = 1.5f;
   while (running) {
     sceneRenderer.clear();
-
     sceneRenderer.start();
 
     // camera.setPosition(camera.getPosition() + (glm::vec3{0.01f} *
     // sceneRenderer.deltaTime()));
-    camera.setRotation(camera.getRotation() +
-                       10.0f * sceneRenderer.deltaTime());
-    if (count > 120 || count < 0) {
+    // camera.setRotation(camera.getRotation() +
+    //                    10.0f * Time::deltaTime());
+    if (count % 60 == 0) {
       increment *= -1;
     }
     count += increment / 1.5f + 0.0001;
     trianglePos = glm::translate(
-        trianglePos, glm::vec3(increment * sceneRenderer.deltaTime(),
-                               increment * sceneRenderer.deltaTime(), 0));
+        trianglePos, glm::vec3(increment * Time::deltaTime(),
+                               increment * Time::deltaTime(), 0));
     Uniform projectionUniform("viewProjection",
                               camera.getViewProjectionMatrix());
     Uniform translationUniform("transform", trianglePos);
@@ -148,24 +149,24 @@ void Application::run() {
 bool Application::onKeyPress(KeyPressEvent&) {
   if (Input::isKeyPressed(GLFW_KEY_W)) {
     camera.setPosition(camera.getPosition() +
-                       (glm::vec3(0.0, 10.0 * sceneRenderer.deltaTime(), 0.0)));
+                       (glm::vec3(0.0, 10.0 * Time::deltaTime(), 0.0)));
     Uniform uniform("viewProjection", camera.getViewProjectionMatrix());
     shader.reset(uniform);
   } else if (Input::isKeyPressed(GLFW_KEY_A)) {
     camera.setPosition(
         camera.getPosition() +
-        (glm::vec3(-10.0 * sceneRenderer.deltaTime(), 0.0, 0.0)));
+        (glm::vec3(-10.0 * Time::deltaTime(), 0.0, 0.0)));
     Uniform uniform("viewProjection", camera.getViewProjectionMatrix());
     shader.reset(uniform);
   } else if (Input::isKeyPressed(GLFW_KEY_S)) {
     camera.setPosition(
         camera.getPosition() +
-        (glm::vec3(0.0, -10.0 * sceneRenderer.deltaTime(), 0.0)));
+        (glm::vec3(0.0, -10.0 * Time::deltaTime(), 0.0)));
     Uniform uniform("viewProjection", camera.getViewProjectionMatrix());
     shader.reset(uniform);
   } else if (Input::isKeyPressed(GLFW_KEY_D)) {
     camera.setPosition(camera.getPosition() +
-                       (glm::vec3(10.0 * sceneRenderer.deltaTime(), 0.0, 0.0)));
+                       (glm::vec3(10.0 * Time::deltaTime(), 0.0, 0.0)));
     Uniform uniform("viewProjection", camera.getViewProjectionMatrix());
     shader.reset(uniform);
   }

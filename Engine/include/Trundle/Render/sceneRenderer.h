@@ -51,8 +51,6 @@ public:
   void end();
   void submit(const RenderingTask& task);
 
-  double deltaTime();
-
   friend class OpenGL::SceneRenderer;
 
 private:
@@ -72,11 +70,6 @@ private:
 
   // Custom virtual pointer to allow for value semantic polymorphism.
   std::shared_ptr<SceneRendererConcept> vptr;
-
-  // Frame data
-  // TODO: Should move this at some point to a better class
-  std::chrono::high_resolution_clock::time_point frameStartTimestamp;
-  std::chrono::duration<double> lastFrameDuration;
 };
 //===----------------------------------------------------------------------===//
 
