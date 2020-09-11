@@ -149,24 +149,24 @@ void Application::run() {
 bool Application::onKeyPress(KeyPressEvent&) {
   if (Input::isKeyPressed(GLFW_KEY_W)) {
     camera.setPosition(camera.getPosition() +
-                       (glm::vec3(0.0, 10.0 * sceneRenderer.deltaTime(), 0.0)));
+                       (glm::vec3(0.0, 10.0 * Time::deltaTime(), 0.0)));
     Uniform uniform("viewProjection", camera.getViewProjectionMatrix());
     shader.reset(uniform);
   } else if (Input::isKeyPressed(GLFW_KEY_A)) {
     camera.setPosition(
         camera.getPosition() +
-        (glm::vec3(-10.0 * sceneRenderer.deltaTime(), 0.0, 0.0)));
+        (glm::vec3(-10.0 * Time::deltaTime(), 0.0, 0.0)));
     Uniform uniform("viewProjection", camera.getViewProjectionMatrix());
     shader.reset(uniform);
   } else if (Input::isKeyPressed(GLFW_KEY_S)) {
     camera.setPosition(
         camera.getPosition() +
-        (glm::vec3(0.0, -10.0 * sceneRenderer.deltaTime(), 0.0)));
+        (glm::vec3(0.0, -10.0 * Time::deltaTime(), 0.0)));
     Uniform uniform("viewProjection", camera.getViewProjectionMatrix());
     shader.reset(uniform);
   } else if (Input::isKeyPressed(GLFW_KEY_D)) {
     camera.setPosition(camera.getPosition() +
-                       (glm::vec3(10.0 * sceneRenderer.deltaTime(), 0.0, 0.0)));
+                       (glm::vec3(10.0 * Time::deltaTime(), 0.0, 0.0)));
     Uniform uniform("viewProjection", camera.getViewProjectionMatrix());
     shader.reset(uniform);
   }
