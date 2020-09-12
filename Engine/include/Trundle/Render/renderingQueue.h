@@ -21,9 +21,9 @@
 //===----------------------------------------------------------------------===//
 #pragma once
 
-#include <Trundle/Render/Shader.h>
 #include <Trundle/Render/buffer.h>
 #include <Trundle/Render/renderer.h>
+#include <Trundle/Render/shader.h>
 #include <Trundle/common.h>
 
 namespace Trundle {
