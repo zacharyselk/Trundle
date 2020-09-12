@@ -1,0 +1,13 @@
+extraction:
+  cpp:
+    configure:
+      command:
+        - mkdir cmake3.18
+        - wget -qO- https://github.com/Kitware/CMake/releases/download/v3.18.1/cmake-3.18.1-Linux-x86_64.tar.gz | tar xpoz -C cmake3.18 --strip-components 1
+        - mkdir build
+        - cd build
+        - ls ../
+        - ls ../cmake3.18/
+        - ls ../cmake3.18/bin/
+        - ../cmake3.18/bin/cmake .. -DLGTM_BUILD=ON
+        - ../cmake3.18/bin/cmake --build .

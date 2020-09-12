@@ -34,6 +34,10 @@ if(UNIX)
   set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
 endif()
 
+if(LGTM_BUILD)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lglew")
+endif()
+
 # GLM path
 set(TRUNDLE_GLM_DIR CACHE PATH "Path to GLM source directory")
 if (NOT TRUNDLE_GLM_DIR)
