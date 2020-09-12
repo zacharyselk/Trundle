@@ -45,6 +45,10 @@ install:
 
 before_script:
   - env
+  - which clang
+  - which clang++
+  - which ld
+  - which lld
   - rm -rf build || echo "No build exists yet"
   - mkdir build
   - cd build
