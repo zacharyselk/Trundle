@@ -17,6 +17,7 @@ addons:
 
 install:
   - mkdir -p $HOME/.cache
+  - export CMAKE_EXTRA_FLAGS=""
 
   # Download CMake 3.18 binaries
   - mkdir -p $HOME/.cache/cmake3.18
@@ -28,7 +29,7 @@ install:
   # Download llvm 10.0 binaries
   - mkdir -p $HOME/.cache/llvm10.0
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then curl -L https://github.com/llvm/llvm-project/releases/download/llvmorg-10.0.0/clang+llvm-10.0.0-x86_64-apple-darwin.tar.xz | tar xpoz -C $HOME/.cache/llvm10.0 --strip-components 1; fi
-  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then export PATH=$HOME/.cache/llvm10.0/bin:$PATH; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then export PATH=$HOME/.cache/llvm10.0/bin:$PATH; - export CMAKE_EXTRA_FLAGS="$CMAKE_EXTRA_FLAGS -DCMAKE_LINKER=$HOME/.cache/llvm10.0/bin/lld" fi
 
   # GLFW Dependancies
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get install -y libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev; fi
@@ -43,9 +44,10 @@ install:
 
 
 before_script:
+  - rm -rf build || echo "No build exists yet"
   - mkdir build
   - cd build
-  - cmake ..
+  - cmake .. $CMAKE_EXTRA_FLAGS
   - pwd
 
 script:
