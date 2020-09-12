@@ -35,7 +35,7 @@ endif()
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-set(CMAKE_VERBOSE_MAKEFILE true)
+#set(CMAKE_VERBOSE_MAKEFILE true)
 
 # Setting common directories
 set(TRUNDLE_BUILD_DIR CACHE PATH "The build directory for the Trundle superbuild")
