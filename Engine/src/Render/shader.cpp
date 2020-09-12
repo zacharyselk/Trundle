@@ -30,8 +30,7 @@ Shader::Shader(const Renderer& r, const std::string& vertexShader,
     break;
 
   case RenderingAPI::OpenGLAPI:
-    vptr =
-        std::make_shared<OpenGL::Shader>(vertexShader, fragmentShader);
+    vptr = std::make_shared<OpenGL::Shader>(vertexShader, fragmentShader);
     break;
 
   default:
@@ -42,16 +41,16 @@ Shader::Shader(const Renderer& r, const std::string& vertexShader,
 //===----------------------------------------------------------------------===//
 
 //===-- Uniform -----------------------------------------------------------===//
-Uniform::Uniform(const Renderer& r, const std::string& str, const glm::mat4& mat)
-    : vptr(nullptr), name(str), matrix(mat) {
+Uniform::Uniform(const Renderer& r, const std::string& uniformName,
+                 const uniform_t& uniformData)
+    : vptr(nullptr) {
   switch (r.getAPI()) {
   // TODO: Implement.
   case RenderingAPI::None:
     break;
 
   case RenderingAPI::OpenGLAPI:
-    vptr =
-        std::make_shared<OpenGL::Uniform>(str, mat);
+    vptr = std::make_shared<OpenGL::Uniform>(uniformName, uniformData);
     break;
 
   default:

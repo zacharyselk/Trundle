@@ -37,11 +37,7 @@ public:
   move() const override final;
   virtual void bind() const override final;
   virtual void unbind() const override final;
-  // virtual void
-  // reset(const std::vector<Uniform>& uniformList) const override final;
   virtual uint32_t getId() const override final;
-
-  //void submitUniform(const Uniform& uniform) const;
 
   friend class Trundle::Shader;
 
@@ -59,19 +55,15 @@ private:
 //===----------------------------------------------------------------------===//
 class Uniform : public Trundle::Uniform::UniformConcept {
 public:
-  Uniform(const std::string& str, const glm::mat4& mat);
+  Uniform(const std::string& uniformName, const uniform_t& uniformData);
   virtual ~Uniform();
 
-  //virtual std::shared_ptr<const Trundle::Shader::UniformConcept>
-  //move() const override final;
   virtual void bind(uint32_t shaderId) const override final;
   virtual void unbind() const override final;
 
-  //friend class Trundle::Uniform;
-
 private:
   const std::string name;
-  const glm::mat4 matrix;
+  const uniform_t data;
 };
 
 } // namespace Trundle::OpenGL

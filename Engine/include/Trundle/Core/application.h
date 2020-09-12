@@ -81,6 +81,7 @@ private:
 
   OrthographicCamera camera;
   Renderer renderer;
+  Shader colorShader;
 };
 
 // Defined by the driver as an entry point into the engine.

@@ -57,7 +57,7 @@ Application::Application() : camera(), renderer(RenderingAPI::OpenGLAPI) {
   unsigned int indices[3] = {0, 1, 2};
   float vertices[7 * 3] = {-0.125f, -0.125f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
                            0.125f,  -0.125f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-                           0.0f,  0.125f,  0.0f, 1.0f, 1.0f, 0.0f, 1.0f};
+                           0.0f,    0.125f,  0.0f, 1.0f, 1.0f, 0.0f, 1.0f};
 
   BufferLayout layout{{Trundle::Rendering::Float3, "position"},
                       {Trundle::Rendering::Float4, "color"}};
@@ -88,6 +88,22 @@ Application::Application() : camera(), renderer(RenderingAPI::OpenGLAPI) {
           gl_Position = viewProjection * transform * vec4(in_position, 1.0);
         }
       )";
+  std::string colorVs = R"(
+        #version 330 core
+        layout(location = 0) in vec3 in_position;
+
+        uniform mat4 viewProjection;
+        uniform mat4 transform;
+        uniform vec4 color;
+
+        out vec3 v_position;
+        out vec4 v_color;
+        void main(){
+          v_position = in_position;
+          v_color = color;
+          gl_Position = viewProjection * transform * vec4(in_position, 1.0);
+        }
+      )";
   std::string fs = R"(
         #version 330 core
         layout(location = 0) out vec4 color;
@@ -103,6 +119,7 @@ Application::Application() : camera(), renderer(RenderingAPI::OpenGLAPI) {
   // TODO: make this assignmnet better.
   shader = std::move(Shader(renderer, vs, fs));
   shader.bind();
+  colorShader = std::move(Shader(renderer, colorVs, fs));
 }
 
 Application::~Application() {}
@@ -130,7 +147,6 @@ void Application::run() {
                               camera.getViewProjectionMatrix());
     Uniform translationUniform(renderer, "transform", trianglePos);
     std::vector<Uniform> uniforms = {projectionUniform, translationUniform};
-    // shader.reset(uniforms);
 
     guiLayer->begin();
     for (Layer* layer : layerStack) {
@@ -138,13 +154,15 @@ void Application::run() {
     }
     guiLayer->end();
 
-    // Uniform blue( renderer, "color", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+    colorShader.bind();
+    Uniform blue(renderer, "color", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
     for (int i = 0; i < 10; ++i) {
       for (int j = 0; j < 10; ++j) {
         Uniform transform(
             renderer, "transform",
             glm::translate(glm::mat4(1.0f), glm::vec3(0.5 * i, 0.5 * j, 0.0f)));
-        sceneRenderer.submit(vertexArray, shader, {transform});
+        sceneRenderer.submit(vertexArray, colorShader,
+                             {projectionUniform, transform, blue});
       }
     }
 
