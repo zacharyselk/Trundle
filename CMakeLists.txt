@@ -9,6 +9,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # Debug
 #set(CMAKE_VERBOSE_MAKEFILE true)
 
+option(LGTM_BUILD "" OFF)
+
 # Platform specific flags
 if(WIN32)
   message(DEBUG "Detected Windows OS as the build environment")
@@ -124,6 +126,7 @@ ExternalProject_Add(driver
   SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Driver"
   CMAKE_CACHE_ARGS
     -DCMAKE_INSTALL_PREFIX:PATH=${TRUNDLE_BUILD_DIR}
+    -DLGTM_BUILD:BOOL=${LGTM_BUILD}
   INSTALL_COMMAND cmake -E echo "Skipping install step."
   DEPENDS engine
 )
