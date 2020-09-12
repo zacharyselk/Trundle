@@ -9,5 +9,5 @@ extraction:
         - ls ../
         - ls ../cmake3.18/
         - ls ../cmake3.18/bin/
-        - ../cmake3.18/bin/cmake ..
+        - ../cmake3.18/bin/cmake .. -DLGTM_BUILD=ON
         - ../cmake3.18/bin/cmake --build .
