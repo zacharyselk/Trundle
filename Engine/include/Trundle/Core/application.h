@@ -80,6 +80,7 @@ private:
   SceneRenderer sceneRenderer;
 
   OrthographicCamera camera;
+  Renderer renderer;
 };
 
 // Defined by the driver as an entry point into the engine.

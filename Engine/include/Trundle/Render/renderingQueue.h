@@ -21,6 +21,7 @@
 //===----------------------------------------------------------------------===//
 #pragma once
 
+#include <Trundle/Render/Shader.h>
 #include <Trundle/Render/buffer.h>
 #include <Trundle/Render/renderer.h>
 #include <Trundle/common.h>
@@ -32,9 +33,13 @@ namespace Trundle {
 //===----------------------------------------------------------------------===//
 class RenderingTask {
 public:
-  RenderingTask(const VertexArray& a) : array(a) {}
+  RenderingTask(const VertexArray& a, const Shader& s,
+                const std::vector<Uniform>& u)
+      : array(a), shader(s), uniforms(u) {}
 
-  VertexArray array;
+  const VertexArray array;
+  const Shader shader;
+  const std::vector<Uniform> uniforms;
 };
 
 //===-- RenderingQueue ----------------------------------------------------===//

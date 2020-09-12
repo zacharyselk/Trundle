@@ -45,11 +45,14 @@ void SceneRenderer::start() {
   vptr->start();
 }
 
-void SceneRenderer::end() {
-  vptr->end();
-}
+void SceneRenderer::end() { vptr->end(); }
 
 void SceneRenderer::submit(const RenderingTask& task) { vptr->submit(task); }
+
+void SceneRenderer::submit(const VertexArray& a, const Shader& s,
+                           const std::vector<Uniform>& u) {
+  submit(std::forward<RenderingTask>(RenderingTask(a, s, u)));
+}
 //===----------------------------------------------------------------------===//
 
 } // namespace Trundle

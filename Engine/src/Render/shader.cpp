@@ -22,7 +22,7 @@ namespace Trundle {
 
 //===-- Shader ------------------------------------------------------------===//
 Shader::Shader(const Renderer& r, const std::string& vertexShader,
-               const std::string& fragmentShader, const Uniform& uniform)
+               const std::string& fragmentShader)
     : vptr(nullptr) {
   switch (r.getAPI()) {
   // TODO: Implement.
@@ -31,7 +31,7 @@ Shader::Shader(const Renderer& r, const std::string& vertexShader,
 
   case RenderingAPI::OpenGLAPI:
     vptr =
-        std::make_shared<OpenGL::Shader>(vertexShader, fragmentShader, uniform);
+        std::make_shared<OpenGL::Shader>(vertexShader, fragmentShader);
     break;
 
   default:
@@ -39,5 +39,26 @@ Shader::Shader(const Renderer& r, const std::string& vertexShader,
     exit(1);
   }
 }
+//===----------------------------------------------------------------------===//
+
+//===-- Uniform -----------------------------------------------------------===//
+Uniform::Uniform(const Renderer& r, const std::string& str, const glm::mat4& mat)
+    : vptr(nullptr), name(str), matrix(mat) {
+  switch (r.getAPI()) {
+  // TODO: Implement.
+  case RenderingAPI::None:
+    break;
+
+  case RenderingAPI::OpenGLAPI:
+    vptr =
+        std::make_shared<OpenGL::Uniform>(str, mat);
+    break;
+
+  default:
+    Log::Error("Unknown graphics API");
+    exit(1);
+  }
+}
+//===----------------------------------------------------------------------===//
 
 } // namespace Trundle
