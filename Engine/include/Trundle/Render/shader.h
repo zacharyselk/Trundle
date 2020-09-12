@@ -63,7 +63,7 @@ public:
   friend class Trundle::Uniform;
 
 protected:
-  uint32_t getId() const { vptr->getId(); }
+  uint32_t getId() const { return vptr->getId(); }
 
 private:
   // Virtual base class for polymorphism.
