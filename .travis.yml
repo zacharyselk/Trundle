@@ -15,10 +15,6 @@ addons:
       - lcov
 
 install:
-  # Update brew
-  #- if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew update; fi
-  #- if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew install tree wget; fi
-
   - mkdir -p $HOME/.cache
 
   # Download CMake 3.18 binaries
@@ -47,6 +43,7 @@ before_script:
   - pwd
 
 script:
+  - clang++ --version
   - cmake --build .
 
 after_failure:
