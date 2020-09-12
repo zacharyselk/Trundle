@@ -27,9 +27,9 @@ install:
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then export PATH=$HOME/.cache/cmake3.18/CMake.app/Contents/bin:$PATH; fi
 
   # Download llvm 10.0 binaries
-  - mkdir -p $HOME/.cache/llvm10.0
-  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then curl -L https://github.com/llvm/llvm-project/releases/download/llvmorg-10.0.0/clang+llvm-10.0.0-x86_64-apple-darwin.tar.xz | tar xpoz -C $HOME/.cache/llvm10.0 --strip-components 1; fi
-  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then export PATH=$HOME/.cache/llvm10.0/bin:$PATH; export CMAKE_EXTRA_FLAGS="$CMAKE_EXTRA_FLAGS -DCMAKE_LINKER=$HOME/.cache/llvm10.0/bin/lld"; fi
+  # - mkdir -p $HOME/.cache/llvm10.0
+  # - if [ "$TRAVIS_OS_NAME" = "osx" ]; then curl -L https://github.com/llvm/llvm-project/releases/download/llvmorg-10.0.0/clang+llvm-10.0.0-x86_64-apple-darwin.tar.xz | tar xpoz -C $HOME/.cache/llvm10.0 --strip-components 1; fi
+  # - if [ "$TRAVIS_OS_NAME" = "osx" ]; then export PATH=$HOME/.cache/llvm10.0/bin:$PATH; export CMAKE_EXTRA_FLAGS="$CMAKE_EXTRA_FLAGS -DCMAKE_LINKER=$HOME/.cache/llvm10.0/bin/lld"; fi
 
   # GLFW Dependancies
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get install -y libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev; fi
@@ -45,10 +45,6 @@ install:
 
 before_script:
   - env
-  - which clang
-  - which clang++
-  - which ld
-  - which lld
   - rm -rf build || echo "No build exists yet"
   - mkdir build
   - cd build
