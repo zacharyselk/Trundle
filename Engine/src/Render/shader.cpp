@@ -38,6 +38,11 @@ Shader::Shader(const Renderer& r, const std::string& vertexShader,
     exit(1);
   }
 }
+
+Shader Shader::create(const Renderer& r, const std::string& vertexShader,
+                      const std::string& fragmentShader) {
+  return Shader(r, vertexShader, fragmentShader);
+}
 //===----------------------------------------------------------------------===//
 
 //===-- Uniform -----------------------------------------------------------===//

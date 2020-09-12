@@ -56,6 +56,9 @@ public:
   void bind() const { vptr->bind(); }
   void unbind() const { vptr->unbind(); }
 
+  static Shader create(const Renderer& r, const std::string& vertexShader,
+                       const std::string& fragmentShader);
+
   friend class OpenGL::Shader;
   friend class Trundle::Uniform;
 

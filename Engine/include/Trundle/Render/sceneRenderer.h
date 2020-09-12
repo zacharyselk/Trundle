@@ -53,6 +53,8 @@ public:
   void submit(const VertexArray& a, const Shader& s,
               const std::vector<Uniform>& u);
 
+  static SceneRenderer create(const Renderer& r);
+
   friend class OpenGL::SceneRenderer;
 
 private:

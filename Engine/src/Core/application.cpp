@@ -50,8 +50,7 @@ Application::Application() : camera(), renderer(RenderingAPI::OpenGLAPI) {
       std::bind(&Application::onEvent, this, std::placeholders::_1));
 
   // Temporary.
-  // TODO: make this assignmnet better.
-  sceneRenderer = std::move(SceneRenderer(renderer));
+  sceneRenderer = SceneRenderer::create(renderer);
 
   // Triangle.
   unsigned int indices[3] = {0, 1, 2};
@@ -62,15 +61,10 @@ Application::Application() : camera(), renderer(RenderingAPI::OpenGLAPI) {
   BufferLayout layout{{Trundle::Rendering::Float3, "position"},
                       {Trundle::Rendering::Float4, "color"}};
 
-  // TODO: make this assignmnet better.
-  auto vertexBuffer =
-      std::move(VertexBuffer(renderer, vertices, layout, sizeof(vertices)));
-  std::vector<VertexBuffer> vertexBuffers = {vertexBuffer};
+  VertexBuffer vertexBuffer(renderer, vertices, layout, sizeof(vertices));
 
-  auto indexBuffer = std::move(IndexBuffer(renderer, indices, 3));
-
-  // TODO: make this assignmnet better.
-  vertexArray = std::move(VertexArray(renderer, vertexBuffers, indexBuffer));
+  IndexBuffer indexBuffer(renderer, indices, 3);
+  vertexArray = VertexArray::create(renderer, indexBuffer, vertexBuffer);
 
   std::string vs = R"(
         #version 330 core
@@ -112,14 +106,10 @@ Application::Application() : camera(), renderer(RenderingAPI::OpenGLAPI) {
         void main(){
           color = v_color*0.5 + vec4(v_position * 0.5 + 0.5, 1.0) * 0.5;
         }
-        )";
+      )";
 
-  Uniform uniform(renderer, "viewProjection", camera.getViewProjectionMatrix());
-
-  // TODO: make this assignmnet better.
-  shader = std::move(Shader(renderer, vs, fs));
-  shader.bind();
-  colorShader = std::move(Shader(renderer, colorVs, fs));
+  shader = Shader::create(renderer, vs, fs);
+  colorShader = Shader::create(renderer, colorVs, fs);
 }
 
 Application::~Application() {}
@@ -127,26 +117,10 @@ Application::~Application() {}
 void Application::run() {
   glm::mat4 trianglePos(1.0f);
   int count = 0;
-  float increment = 1.5f;
+  float speed = 1.5f;
   while (running) {
     sceneRenderer.clear();
     sceneRenderer.start();
-
-    // camera.setPosition(camera.getPosition() + (glm::vec3{0.01f} *
-    // sceneRenderer.deltaTime()));
-    // camera.setRotation(camera.getRotation() +
-    //                    10.0f * Time::deltaTime());
-    if (count % 60 == 0) {
-      increment *= -1;
-    }
-    count += increment / 1.5f + 0.0001;
-    trianglePos = glm::translate(trianglePos,
-                                 glm::vec3(increment * Time::deltaTime(),
-                                           increment * Time::deltaTime(), 0));
-    Uniform projectionUniform(renderer, "viewProjection",
-                              camera.getViewProjectionMatrix());
-    Uniform translationUniform(renderer, "transform", trianglePos);
-    std::vector<Uniform> uniforms = {projectionUniform, translationUniform};
 
     guiLayer->begin();
     for (Layer* layer : layerStack) {
@@ -154,7 +128,17 @@ void Application::run() {
     }
     guiLayer->end();
 
-    colorShader.bind();
+    if (++count % 60 == 0) {
+      speed *= -1;
+    }
+    trianglePos =
+        glm::translate(trianglePos, glm::vec3(speed * Time::deltaTime(),
+                                              speed * Time::deltaTime(), 0));
+
+    Uniform triangleTransform(renderer, "transform", trianglePos);
+    Uniform projection(renderer, "viewProjection",
+                       camera.getViewProjectionMatrix());
+
     Uniform blue(renderer, "color", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
     for (int i = 0; i < 10; ++i) {
       for (int j = 0; j < 10; ++j) {
@@ -162,13 +146,13 @@ void Application::run() {
             renderer, "transform",
             glm::translate(glm::mat4(1.0f), glm::vec3(0.5 * i, 0.5 * j, 0.0f)));
         sceneRenderer.submit(vertexArray, colorShader,
-                             {projectionUniform, transform, blue});
+                             {projection, transform, blue});
       }
     }
 
-    sceneRenderer.submit(vertexArray, shader, uniforms);
-    sceneRenderer.end();
+    sceneRenderer.submit(vertexArray, shader, {triangleTransform, projection});
 
+    sceneRenderer.end();
     window->onUpdate();
   }
 }
@@ -179,25 +163,21 @@ bool Application::onKeyPress(KeyPressEvent&) {
                        (glm::vec3(0.0, 10.0 * Time::deltaTime(), 0.0)));
     Uniform uniform(renderer, "viewProjection",
                     camera.getViewProjectionMatrix());
-    // shader.reset(uniform);
   } else if (Input::isKeyPressed(GLFW_KEY_A)) {
     camera.setPosition(camera.getPosition() +
                        (glm::vec3(-10.0 * Time::deltaTime(), 0.0, 0.0)));
     Uniform uniform(renderer, "viewProjection",
                     camera.getViewProjectionMatrix());
-    // shader.reset(uniform);
   } else if (Input::isKeyPressed(GLFW_KEY_S)) {
     camera.setPosition(camera.getPosition() +
                        (glm::vec3(0.0, -10.0 * Time::deltaTime(), 0.0)));
     Uniform uniform(renderer, "viewProjection",
                     camera.getViewProjectionMatrix());
-    // shader.reset(uniform);
   } else if (Input::isKeyPressed(GLFW_KEY_D)) {
     camera.setPosition(camera.getPosition() +
                        (glm::vec3(10.0 * Time::deltaTime(), 0.0, 0.0)));
     Uniform uniform(renderer, "viewProjection",
                     camera.getViewProjectionMatrix());
-    // shader.reset(uniform);
   }
 
   return true;

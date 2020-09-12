@@ -53,6 +53,10 @@ void SceneRenderer::submit(const VertexArray& a, const Shader& s,
                            const std::vector<Uniform>& u) {
   submit(std::forward<RenderingTask>(RenderingTask(a, s, u)));
 }
+
+SceneRenderer SceneRenderer::create(const Renderer& r) {
+  return SceneRenderer(r);
+}
 //===----------------------------------------------------------------------===//
 
 } // namespace Trundle

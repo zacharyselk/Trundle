@@ -50,5 +50,6 @@ void SceneRenderer::end() const {
 void SceneRenderer::submit(const RenderingTask& task) const {
   queue.push(task);
 }
+//===----------------------------------------------------------------------===//
 
 } // namespace Trundle::OpenGL
