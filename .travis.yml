@@ -3,7 +3,7 @@ os:
   - linux
   - osx
 
-compiler: clang
+compiler: gcc
 
 cache:
 - directories:
@@ -37,13 +37,13 @@ install:
 
 
 before_script:
+  - export CC=/
   - mkdir build
   - cd build
   - cmake ..
   - pwd
 
 script:
-  - clang++ --version
   - cmake --build .
 
 after_failure:
