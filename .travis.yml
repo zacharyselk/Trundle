@@ -25,6 +25,9 @@ install:
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then curl -L https://github.com/Kitware/CMake/releases/download/v3.18.1/cmake-3.18.1-Darwin-x86_64.tar.gz | tar xpoz -C $HOME/.cache/cmake3.18 --strip-components 1; fi
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then export PATH=$HOME/.cache/cmake3.18/CMake.app/Contents/bin:$PATH; fi
 
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then cd $HOME/.cache; git clone https://github.com/llvm/llvm-project; mkdir llvm-project/build; cd llvm-project/build; cmake ../llvm -DLLVM_ENABLE_PROJECTS=clang -GNinja; cmake --build .; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then export PATH=$HOME/.cache/llvm/build/bin:$PATH; cd $HOME; fi
+
   # GLFW Dependancies
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get install -y libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev; fi
 
