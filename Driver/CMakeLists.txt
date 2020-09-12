@@ -35,7 +35,7 @@ if(UNIX)
 endif()
 
 if(LGTM_BUILD)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lglew")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lGLEW")
 endif()
 
 # GLM path
