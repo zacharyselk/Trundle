@@ -38,7 +38,6 @@ install:
 
 
 before_script:
-  - export CC=/
   - mkdir build
   - cd build
   - cmake ..
