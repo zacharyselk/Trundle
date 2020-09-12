@@ -1,0 +1,14 @@
+extraction:
+  cpp:
+    configure:
+      command:
+        - mkdir build
+        - cd build
+        - cmake ..
+
+index:
+  cpp:
+    configure:
+      command:
+        - cd build
+        - cmake --build .
