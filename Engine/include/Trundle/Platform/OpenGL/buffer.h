@@ -67,8 +67,8 @@ private:
 //===----------------------------------------------------------------------===//
 class VertexArray : public Trundle::VertexArray::VertexArrayConcept {
 public:
-  VertexArray(const std::vector<Trundle::VertexBuffer>& vertexBuffers,
-              const Trundle::IndexBuffer& indexBuffers);
+  VertexArray(const Trundle::IndexBuffer& indexBuffers,
+              const std::vector<Trundle::VertexBuffer>& vertexBuffers);
   virtual ~VertexArray();
 
   void bind() const override final;

@@ -32,7 +32,8 @@ namespace Trundle {
 
 Application* Application::instance = nullptr;
 
-Application::Application() : camera(0, 1280, 0, 720) {
+Application::Application()
+    : camera(0, 1280, 0, 720), renderer(RenderingAPI::OpenGLAPI) {
   instance = this;
 
   // Create window context and object. Window::create() also will initalize
@@ -51,9 +52,7 @@ Application::Application() : camera(0, 1280, 0, 720) {
       std::bind(&Application::onEvent, this, std::placeholders::_1));
 
   // Temporary.
-  Renderer renderer(RenderingAPI::OpenGLAPI);
-  // TODO: make this assignmnet better.
-  sceneRenderer = std::move(SceneRenderer(renderer));
+  sceneRenderer = SceneRenderer::create(renderer);
 
   // Triangle.
   Triangle triangle(100, 50);
@@ -87,15 +86,10 @@ Application::Application() : camera(0, 1280, 0, 720) {
   BufferLayout layout{{Trundle::Rendering::Float3, "position"},
                       {Trundle::Rendering::Float4, "color"}};
 
-  // TODO: make this assignmnet better.
-  auto vertexBuffer =
-      std::move(VertexBuffer(renderer, vertices, layout, sizeof(vertices)));
-  std::vector<VertexBuffer> vertexBuffers = {vertexBuffer};
+  VertexBuffer vertexBuffer(renderer, vertices, layout, sizeof(vertices));
 
-  auto indexBuffer = std::move(IndexBuffer(renderer, indices, 3));
-
-  // TODO: make this assignmnet better.
-  vertexArray = std::move(VertexArray(renderer, vertexBuffers, indexBuffer));
+  IndexBuffer indexBuffer(renderer, indices, 3);
+  vertexArray = VertexArray::create(renderer, indexBuffer, vertexBuffer);
 
   // Square
   float squareVertices[4 * 7] = {0.0f,   0.0f,   0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
@@ -104,16 +98,14 @@ Application::Application() : camera(0, 1280, 0, 720) {
                                  0.0f,   100.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f};
   uint32_t squareIndices[6] = {0, 1, 2, 2, 3, 0};
 
-  // TODO: make this assignmnet better.
-  auto squareVertexBuffer = std::move(
-      VertexBuffer(renderer, squareVertices, layout, sizeof(squareVertices)));
+  auto squareVertexBuffer = VertexBuffer::create(
+      renderer, squareVertices, layout, sizeof(squareVertices));
   std::vector<VertexBuffer> squareVertexBuffers = {squareVertexBuffer};
 
   auto squareIndexBuffer = std::move(IndexBuffer(renderer, squareIndices, 6));
 
-  // TODO: make this assignmnet better.
   squareVertexArray =
-      std::move(VertexArray(renderer, squareVertexBuffers, squareIndexBuffer));
+      VertexArray::create(renderer, squareIndexBuffer, squareVertexBuffers);
 
   std::string vs = R"(
         #version 330 core
@@ -131,6 +123,22 @@ Application::Application() : camera(0, 1280, 0, 720) {
           gl_Position = viewProjection * transform * vec4(in_position, 1.0);
         }
       )";
+  std::string colorVs = R"(
+        #version 330 core
+        layout(location = 0) in vec3 in_position;
+
+        uniform mat4 viewProjection;
+        uniform mat4 transform;
+        uniform vec4 color;
+
+        out vec3 v_position;
+        out vec4 v_color;
+        void main(){
+          v_position = in_position;
+          v_color = color;
+          gl_Position = viewProjection * transform * vec4(in_position, 1.0);
+        }
+      )";
   std::string fs = R"(
         #version 330 core
         layout(location = 0) out vec4 color;
@@ -140,13 +148,10 @@ Application::Application() : camera(0, 1280, 0, 720) {
           //color = v_color*0.5 + vec4(v_position * 0.5 + 0.5, 1.0) * 0.5;
           color = v_color;
         }
-        )";
+      )";
 
-  Uniform uniform("viewProjection", camera.getViewProjectionMatrix());
-
-  // TODO: make this assignmnet better.
-  shader = std::move(Shader(renderer, vs, fs, uniform));
-  shader.bind();
+  shader = Shader::create(renderer, vs, fs);
+  colorShader = Shader::create(renderer, colorVs, fs);
 }
 
 Application::~Application() {}
@@ -154,62 +159,87 @@ Application::~Application() {}
 void Application::run() {
   glm::mat4 trianglePos(1.0f);
   int count = 0;
-  float speed = 350.0f;
+  float speed = 150.0f;
   while (running) {
     sceneRenderer.clear();
     sceneRenderer.start();
 
-    // camera.setPosition(camera.getPosition() + (glm::vec3{0.01f} *
-    // sceneRenderer.deltaTime()));
-    // camera.setRotation(camera.getRotation() +
-    //                    10.0f * Time::deltaTime());
-    if (++count % 60 == 0) {
-      speed *= -1;
-    }
-    trianglePos =
-        glm::translate(trianglePos, glm::vec3(speed * Time::deltaTime(),
-                                              speed * Time::deltaTime(), 0));
-    Uniform projectionUniform("viewProjection",
-                              camera.getViewProjectionMatrix());
-    Uniform translationUniform("transform", trianglePos);
-    std::vector<Uniform> uniforms = {projectionUniform, translationUniform};
-    shader.reset(uniforms);
+    // <<<<<<< HEAD
+    // =======
+    //     // camera.setPosition(camera.getPosition() + (glm::vec3{0.01f} *
+    //     // sceneRenderer.deltaTime()));
+    //     // camera.setRotation(camera.getRotation() +
+    //     //                    10.0f * Time::deltaTime());
+    //     if (++count % 60 == 0) {
+    //       speed *= -1;
+    //     }
+    //     trianglePos =
+    //         glm::translate(trianglePos, glm::vec3(speed * Time::deltaTime(),
+    //                                               speed * Time::deltaTime(),
+    //                                               0));
+    //     Uniform projectionUniform("viewProjection",
+    //                               camera.getViewProjectionMatrix());
+    //     Uniform translationUniform("transform", trianglePos);
+    //     std::vector<Uniform> uniforms = {projectionUniform,
+    //     translationUniform}; shader.reset(uniforms);
 
+    // >>>>>>> origin/master
     guiLayer->begin();
     for (Layer* layer : layerStack) {
       layer->onUpdate();
     }
     guiLayer->end();
 
-    sceneRenderer.submit(vertexArray);
-    sceneRenderer.end();
+    if (++count % 60 == 0) {
+      speed *= -1;
+    }
+    trianglePos =
+        glm::translate(trianglePos, glm::vec3(speed * Time::deltaTime(),
+                                              speed * Time::deltaTime(), 0));
 
+    Uniform triangleTransform(renderer, "transform", trianglePos);
+    Uniform projection(renderer, "viewProjection",
+                       camera.getViewProjectionMatrix());
+
+    Uniform blue(renderer, "color", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+    for (int i = 0; i < 10; ++i) {
+      for (int j = 0; j < 10; ++j) {
+        Uniform transform(
+            renderer, "transform",
+            glm::translate(glm::mat4(1.0f), glm::vec3(0.5 * i, 0.5 * j, 0.0f)));
+        sceneRenderer.submit(vertexArray, colorShader,
+                             {projection, transform, blue});
+      }
+    }
+
+    sceneRenderer.submit(vertexArray, shader, {triangleTransform, projection});
+
+    sceneRenderer.end();
     window->onUpdate();
   }
 }
 
 bool Application::onKeyPress(KeyPressEvent&) {
-  Log::Debug("Hello");
   if (Input::isKeyPressed(GLFW_KEY_W)) {
     camera.setPosition(camera.getPosition() +
-                       (glm::vec3(0.0, 500.0 * Time::deltaTime(), 0.0)));
-    Uniform uniform("viewProjection", camera.getViewProjectionMatrix());
-    shader.reset(uniform);
+                       (glm::vec3(0.0, 100.0 * Time::deltaTime(), 0.0)));
+    Uniform uniform(renderer, "viewProjection",
+                    camera.getViewProjectionMatrix());
   } else if (Input::isKeyPressed(GLFW_KEY_A)) {
     camera.setPosition(camera.getPosition() +
-                       (glm::vec3(-500.0 * Time::deltaTime(), 0.0, 0.0)));
-    Uniform uniform("viewProjection", camera.getViewProjectionMatrix());
-    shader.reset(uniform);
+                       (glm::vec3(-100.0 * Time::deltaTime(), 0.0, 0.0)));
+    Uniform uniform(renderer, "viewProjection",
+                    camera.getViewProjectionMatrix());
   } else if (Input::isKeyPressed(GLFW_KEY_S)) {
     camera.setPosition(camera.getPosition() +
-                       (glm::vec3(0.0, -500.0 * Time::deltaTime(), 0.0)));
-    Uniform uniform("viewProjection", camera.getViewProjectionMatrix());
-    shader.reset(uniform);
+                       (glm::vec3(0.0, -100.0 * Time::deltaTime(), 0.0)));
+    Uniform uniform(renderer, "viewProjection",
+                    camera.getViewProjectionMatrix());
   } else if (Input::isKeyPressed(GLFW_KEY_D)) {
     camera.setPosition(camera.getPosition() +
-                       (glm::vec3(500.0 * Time::deltaTime(), 0.0, 0.0)));
-    Uniform uniform("viewProjection", camera.getViewProjectionMatrix());
-    shader.reset(uniform);
+                       (glm::vec3(100.0 * Time::deltaTime(), 0.0, 0.0)));
+    Uniform uniform(renderer, "viewProjection",
+                    camera.getViewProjectionMatrix());
   }
 
   return true;

@@ -16,6 +16,7 @@
 //
 //===----------------------------------------------------------------------===//
 #include <Trundle/Platform/OpenGL/shader.h>
+#include <Trundle/Util/common.h>
 
 #include <type_traits>
 
@@ -28,7 +29,7 @@ namespace Trundle::OpenGL {
 
 //===-- Shader ------------------------------------------------------------===//
 Shader::Shader(const std::string& vertexShader,
-               const std::string& fragmentShader, const Uniform& uniform)
+               const std::string& fragmentShader)
     : id(glCreateProgram()) {
   uint32_t vs = compile(GL_VERTEX_SHADER, vertexShader);
   uint32_t fs = compile(GL_FRAGMENT_SHADER, fragmentShader);
@@ -42,7 +43,6 @@ Shader::Shader(const std::string& vertexShader,
   glDeleteShader(fs);
 
   bind();
-  submitUniform(uniform);
 }
 
 Shader::~Shader() { glDeleteProgram(id); }
@@ -61,18 +61,7 @@ void Shader::bind() const { glUseProgram(id); }
 
 void Shader::unbind() const { glUseProgram(0); }
 
-void Shader::reset(const std::vector<Uniform>& uniformList) const {
-  bind(); // Not sure if this is strictly necessary
-  for (const auto& uniform : uniformList) {
-    submitUniform(uniform);
-  }
-}
-
-void Shader::submitUniform(const Uniform& uniform) const {
-  GLint loc = glGetUniformLocation(id, uniform.name.c_str());
-  assert(loc != -1 && "Error: Uniform location not found!");
-  glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(uniform.matrix));
-}
+uint32_t Shader::getId() const { return id; }
 
 uint32_t Shader::compile(unsigned int type, const std::string& src) {
   unsigned int srcId = glCreateShader(type);
@@ -95,5 +84,36 @@ uint32_t Shader::compile(unsigned int type, const std::string& src) {
 
   return srcId;
 }
+//===----------------------------------------------------------------------===//
+
+//===-- Uniform -----------------------------------------------------------===//
+Uniform::Uniform(const std::string& uniformName, const uniform_t& uniformData)
+    : name(uniformName), data(uniformData) {}
+
+// TODO: Implement
+Uniform::~Uniform() {}
+
+void Uniform::bind(uint32_t shaderId) const {
+  GLint loc = glGetUniformLocation(shaderId, name.c_str());
+  assert(loc != -1 && "Error: Uniform location not found!");
+  std::visit(
+      common::visitors{
+          [&](const glm::vec3& uniform) {
+            glUniform3f(loc, uniform.x, uniform.y, uniform.z);
+          },
+          [&](const glm::vec4& uniform) {
+            glUniform4f(loc, uniform.x, uniform.y, uniform.z, uniform.w);
+          },
+          [&](const glm::mat4& uniform) {
+            glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(uniform));
+          },
+      },
+      data);
+}
+
+// TODO: Not sure if this should be implemented or just removed because unforms
+//       automatically become unbound when a program is unbound.
+void Uniform::unbind() const {}
+//===----------------------------------------------------------------------===//
 
 } // namespace Trundle::OpenGL

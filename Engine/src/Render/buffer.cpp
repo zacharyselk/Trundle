@@ -1,5 +1,4 @@
-//===-- buffer.cpp
-//---------------------------------------------------------===//
+//===-- buffer.cpp --------------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -33,6 +32,7 @@ LayoutElement::LayoutElement(const LayoutElement& elem, const uint32_t& offset)
     : LayoutElement(elem) {
   this->offset = offset;
 }
+//===----------------------------------------------------------------------===//
 
 //===-- BufferLayout ------------------------------------------------------===//
 BufferLayout::BufferLayout(const std::initializer_list<LayoutElement>& l)
@@ -61,6 +61,7 @@ std::vector<LayoutElement>::const_iterator BufferLayout::begin() const {
 std::vector<LayoutElement>::const_iterator BufferLayout::end() const {
   return layout->end();
 }
+//===----------------------------------------------------------------------===//
 
 //===-- IndexBuffer -------------------------------------------------------===//
 IndexBuffer::IndexBuffer(const Renderer& r, uint32_t* indices, uint32_t count)
@@ -79,6 +80,12 @@ IndexBuffer::IndexBuffer(const Renderer& r, uint32_t* indices, uint32_t count)
     exit(1);
   }
 }
+
+IndexBuffer IndexBuffer::create(const Renderer& r, uint32_t* indices,
+                                uint32_t count) {
+  return IndexBuffer(r, indices, count);
+}
+//===----------------------------------------------------------------------===//
 
 //===-- VertexBuffer ------------------------------------------------------===//
 VertexBuffer::VertexBuffer(const Renderer& r, float* vertices,
@@ -99,10 +106,15 @@ VertexBuffer::VertexBuffer(const Renderer& r, float* vertices,
   }
 }
 
+VertexBuffer VertexBuffer::create(const Renderer& r, float* vertices,
+                                  const BufferLayout& layout, uint32_t size) {
+  return VertexBuffer(r, vertices, layout, size);
+}
+//===----------------------------------------------------------------------===//
+
 //===-- VertexArray -------------------------------------------------------===//
-VertexArray::VertexArray(const Renderer& r,
-                         const std::vector<VertexBuffer>& vertexBuffers,
-                         const IndexBuffer& indexBuffer)
+VertexArray::VertexArray(const Renderer& r, const IndexBuffer& indexBuffer,
+                         const std::vector<VertexBuffer>& vertexBuffers)
     : vptr(nullptr) {
   switch (r.getAPI()) {
   // TODO: Implement.
@@ -110,7 +122,7 @@ VertexArray::VertexArray(const Renderer& r,
     break;
 
   case RenderingAPI::OpenGLAPI:
-    vptr = std::make_shared<OpenGL::VertexArray>(vertexBuffers, indexBuffer);
+    vptr = std::make_shared<OpenGL::VertexArray>(indexBuffer, vertexBuffers);
     break;
 
   default:
@@ -118,5 +130,18 @@ VertexArray::VertexArray(const Renderer& r,
     exit(1);
   }
 }
+
+VertexArray
+VertexArray::create(const Renderer& r, const IndexBuffer& indexBuffer,
+                    const std::vector<VertexBuffer>& vertexBuffers) {
+  return VertexArray(r, indexBuffer, vertexBuffers);
+}
+
+VertexArray VertexArray::create(const Renderer& r,
+                                const IndexBuffer& indexBuffer,
+                                const VertexBuffer& vertexBuffers) {
+  return VertexArray(r, indexBuffer, {vertexBuffers});
+}
+//===----------------------------------------------------------------------===//
 
 } // namespace Trundle

@@ -97,6 +97,9 @@ public:
 
   size_t size() const { return vptr->size(); }
 
+  static IndexBuffer create(const Renderer& r, uint32_t* indices,
+                            uint32_t count);
+
   friend class OpenGL::IndexBuffer;
 
 private:
@@ -122,7 +125,6 @@ public:
   VertexBuffer() = default;
   VertexBuffer(const Renderer& r, float* vertices, const BufferLayout& layout,
                uint32_t size);
-  // VertexBuffer(VertexBuffer&&) = default;
   VertexBuffer& operator=(const VertexBuffer& buf) noexcept {
     vptr = buf.vptr;
     return *this;
@@ -132,6 +134,9 @@ public:
 
   void bind() const { vptr->bind(); }
   void unbind() const { vptr->unbind(); }
+
+  static VertexBuffer create(const Renderer& r, float* vertices,
+                             const BufferLayout& layout, uint32_t size);
 
   friend class OpenGL::VertexBuffer;
 
@@ -158,8 +163,12 @@ class VertexArray {
 public:
   VertexArray() = default;
   // TODO: We only need to pass around the buffer vptrs
-  VertexArray(const Renderer& r, const std::vector<VertexBuffer>& vertexBuffers,
-              const IndexBuffer& indexBuffer);
+  VertexArray(const Renderer& r, const IndexBuffer& indexBuffer,
+              const std::vector<VertexBuffer>& vertexBuffers);
+  VertexArray(const Renderer& r, const IndexBuffer& indexBuffer,
+              const VertexBuffer& vertexBuffer)
+      : VertexArray(r, indexBuffer, std::vector<VertexBuffer>({vertexBuffer})) {
+  }
   VertexArray(VertexArray&&) = default;
   VertexArray(const VertexArray& array) { vptr = array.vptr; }
   VertexArray& operator=(const VertexArray& array) noexcept {
@@ -175,6 +184,11 @@ public:
   const std::shared_ptr<IndexBuffer>& getIndexBuffer() const {
     return vptr->getIndexBuffer();
   }
+
+  static VertexArray create(const Renderer& r, const IndexBuffer& indexBuffer,
+                            const std::vector<VertexBuffer>& vertexBuffers);
+  static VertexArray create(const Renderer& r, const IndexBuffer& indexBuffer,
+                            const VertexBuffer& vertexBuffer);
 
   friend class OpenGL::VertexArray;
 
