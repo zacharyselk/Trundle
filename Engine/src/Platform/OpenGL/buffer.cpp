@@ -58,8 +58,8 @@ void VertexBuffer::unbind() const { glBindBuffer(GL_ARRAY_BUFFER, 0); }
 
 //===-- VertexArray -------------------------------------------------------===//
 VertexArray::VertexArray(
-    const std::vector<Trundle::VertexBuffer>& vertexBuffers,
-    const Trundle::IndexBuffer& indexBuffer)
+    const Trundle::IndexBuffer& indexBuffer,
+    const std::vector<Trundle::VertexBuffer>& vertexBuffers)
     : vertexBuffers(
           std::make_shared<std::vector<Trundle::VertexBuffer>>(vertexBuffers)),
       indexBuffer(std::make_shared<Trundle::IndexBuffer>(indexBuffer)) {

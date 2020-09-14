@@ -30,18 +30,14 @@ namespace Trundle::OpenGL {
 //===----------------------------------------------------------------------===//
 class Shader : public Trundle::Shader::ShaderConcept {
 public:
-  Shader(const std::string& vertexShader, const std::string& fragmentShader,
-         const Uniform& uniform);
+  Shader(const std::string& vertexShader, const std::string& fragmentShader);
   virtual ~Shader();
 
   virtual std::shared_ptr<const Trundle::Shader::ShaderConcept>
   move() const override final;
   virtual void bind() const override final;
   virtual void unbind() const override final;
-  virtual void
-  reset(const std::vector<Uniform>& uniformList) const override final;
-
-  void submitUniform(const Uniform& uniform) const;
+  virtual uint32_t getId() const override final;
 
   friend class Trundle::Shader;
 
@@ -52,6 +48,22 @@ private:
 
   // Compiles shader text.
   uint32_t compile(uint32_t type, const std::string& src);
+};
+
+//===-- Uniform -----------------------------------------------------------===//
+// OpenGL implementation for the uniform api.
+//===----------------------------------------------------------------------===//
+class Uniform : public Trundle::Uniform::UniformConcept {
+public:
+  Uniform(const std::string& uniformName, const uniform_t& uniformData);
+  virtual ~Uniform();
+
+  virtual void bind(uint32_t shaderId) const override final;
+  virtual void unbind() const override final;
+
+private:
+  const std::string name;
+  const uniform_t data;
 };
 
 } // namespace Trundle::OpenGL

@@ -38,6 +38,9 @@ void SceneRenderer::end() const {
   while (!queue.empty()) {
     auto task = queue.front();
     task.array.bind();
+    for (const auto& uniform : task.uniforms) {
+      uniform.bind(task.shader);
+    }
     glDrawElements(GL_TRIANGLES, task.array.getIndexBuffer()->size(),
                    GL_UNSIGNED_INT, nullptr);
     queue.pop();
@@ -47,5 +50,6 @@ void SceneRenderer::end() const {
 void SceneRenderer::submit(const RenderingTask& task) const {
   queue.push(task);
 }
+//===----------------------------------------------------------------------===//
 
 } // namespace Trundle::OpenGL

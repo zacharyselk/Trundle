@@ -34,18 +34,10 @@ namespace Trundle {
 // Forward declare the backend implementations.
 namespace OpenGL {
 class Shader;
-}
+class Uniform;
+} // namespace OpenGL
 
-//===-- Uniform -----------------------------------------------------------===//
-// A struct that defines a uniform by name and with a data type.
-// TODO: Currently using a fixed size matrix, need to use a std::variant
-//===----------------------------------------------------------------------===//
-struct Uniform {
-  Uniform(std::string str, glm::mat4 mat) : name(str), matrix(mat) {}
-
-  std::string name;
-  glm::mat4 matrix;
-};
+class Uniform;
 
 //===-- Shader ------------------------------------------------------------===//
 // API for a shader.
@@ -55,7 +47,7 @@ public:
   Shader() = default;
   Shader(const Shader&) = default;
   Shader(const Renderer& r, const std::string& vertexShader,
-         const std::string& fragmentShader, const Uniform& uniform);
+         const std::string& fragmentShader);
   Shader& operator=(const Shader& shader) noexcept {
     vptr = shader.vptr;
     return *this;
@@ -63,20 +55,15 @@ public:
 
   void bind() const { vptr->bind(); }
   void unbind() const { vptr->unbind(); }
-  // TODO: Make this work with a camera object or something
-  // TODO: Remove move() function
-  void reset(const Uniform& uniform) noexcept {
-    vptr = vptr->move();
-    std::vector<Uniform> uniformList = {uniform};
-    vptr->reset(uniformList);
-  }
 
-  void reset(const std::vector<Uniform>& uniformList) noexcept {
-    vptr = vptr->move();
-    vptr->reset(uniformList);
-  }
+  static Shader create(const Renderer& r, const std::string& vertexShader,
+                       const std::string& fragmentShader);
 
   friend class OpenGL::Shader;
+  friend class Trundle::Uniform;
+
+protected:
+  uint32_t getId() const { return vptr->getId(); }
 
 private:
   // Virtual base class for polymorphism.
@@ -87,12 +74,44 @@ private:
     virtual std::shared_ptr<const ShaderConcept> move() const = 0;
     virtual void bind() const = 0;
     virtual void unbind() const = 0;
-    // TODO: Use StackAllocated data structure
-    virtual void reset(const std::vector<Uniform>&) const = 0;
+    virtual uint32_t getId() const = 0;
   };
 
   // Custom virtual pointer to allow for value semantic polymorphism.
   std::shared_ptr<const ShaderConcept> vptr;
+};
+
+//===-- Uniform -----------------------------------------------------------===//
+// A struct that defines a uniform by name and with a data type.
+// TODO: Currently using a fixed size matrix, need to use a std::variant
+//===----------------------------------------------------------------------===//
+using uniform_t = std::variant<glm::vec3, glm::vec4, glm::mat4>;
+class Uniform {
+public:
+  Uniform(const Renderer& r, const std::string& uniformName,
+          const uniform_t& uniformData);
+
+  // Bind the uniform to a shader.
+  void bind(const Shader& shader) const {
+    shader.bind();
+    vptr->bind(shader.getId());
+  }
+  void unbind() const { vptr->unbind(); }
+
+  friend class OpenGL::Uniform;
+
+private:
+  // Virtual base class for polymorphism.
+  class UniformConcept {
+  public:
+    virtual ~UniformConcept() = default;
+
+    virtual void bind(uint32_t shaderId) const = 0;
+    virtual void unbind() const = 0;
+  };
+
+  // Custom virtual pointer to allow for value semantic polymorphism.
+  std::shared_ptr<const UniformConcept> vptr;
 };
 
 } // namespace Trundle

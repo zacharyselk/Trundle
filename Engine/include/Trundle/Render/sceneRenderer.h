@@ -50,6 +50,10 @@ public:
   // TODO: end will have no idea when frame is over when we start multithreading
   void end();
   void submit(const RenderingTask& task);
+  void submit(const VertexArray& a, const Shader& s,
+              const std::vector<Uniform>& u);
+
+  static SceneRenderer create(const Renderer& r);
 
   friend class OpenGL::SceneRenderer;
 
