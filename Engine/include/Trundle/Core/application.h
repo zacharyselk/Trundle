@@ -76,6 +76,7 @@ private:
   ImGuiLayer* guiLayer;
 
   VertexArray vertexArray;
+  VertexArray squareVertexArray;
   Shader shader;
   SceneRenderer sceneRenderer;
 

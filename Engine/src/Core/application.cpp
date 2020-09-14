@@ -23,6 +23,7 @@
 #include <Trundle/Render/renderer.h>
 #include <Trundle/Render/renderingQueue.h>
 #include <Trundle/Render/shader.h>
+#include <Trundle/Util/primitives.h>
 
 // Temp
 #include <Trundle/Core/input.h>
@@ -31,7 +32,8 @@ namespace Trundle {
 
 Application* Application::instance = nullptr;
 
-Application::Application() : camera(), renderer(RenderingAPI::OpenGLAPI) {
+Application::Application()
+    : camera(0, 1280, 0, 720), renderer(RenderingAPI::OpenGLAPI) {
   instance = this;
 
   // Create window context and object. Window::create() also will initalize
@@ -53,10 +55,33 @@ Application::Application() : camera(), renderer(RenderingAPI::OpenGLAPI) {
   sceneRenderer = SceneRenderer::create(renderer);
 
   // Triangle.
+  Triangle triangle(100, 50);
+  triangle.setPosition(50, 50);
   unsigned int indices[3] = {0, 1, 2};
-  float vertices[7 * 3] = {-0.125f, -0.125f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-                           0.125f,  -0.125f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-                           0.0f,    0.125f,  0.0f, 1.0f, 1.0f, 0.0f, 1.0f};
+  // float vertices[7 * 3] = {-0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+  //                          0.5f,  -0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+  //                          0.0f,  0.5f,  0.0f, 1.0f, 1.0f, 0.0f, 1.0f};
+  float vertices[7 * 3] = {triangle.vertices[0][0],
+                           triangle.vertices[0][1],
+                           triangle.vertices[0][2],
+                           1.0f,
+                           1.0f,
+                           0.0f,
+                           1.0f,
+                           triangle.vertices[1][0],
+                           triangle.vertices[1][1],
+                           triangle.vertices[1][2],
+                           1.0f,
+                           1.0f,
+                           0.0f,
+                           1.0f,
+                           triangle.vertices[2][0],
+                           triangle.vertices[2][1],
+                           triangle.vertices[2][2],
+                           1.0f,
+                           1.0f,
+                           0.0f,
+                           1.0f};
 
   BufferLayout layout{{Trundle::Rendering::Float3, "position"},
                       {Trundle::Rendering::Float4, "color"}};
@@ -65,6 +90,22 @@ Application::Application() : camera(), renderer(RenderingAPI::OpenGLAPI) {
 
   IndexBuffer indexBuffer(renderer, indices, 3);
   vertexArray = VertexArray::create(renderer, indexBuffer, vertexBuffer);
+
+  // Square
+  float squareVertices[4 * 7] = {0.0f,   0.0f,   0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+                                 100.0f, 0.0f,   0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+                                 100.0f, 100.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+                                 0.0f,   100.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f};
+  uint32_t squareIndices[6] = {0, 1, 2, 2, 3, 0};
+
+  auto squareVertexBuffer = VertexBuffer::create(
+      renderer, squareVertices, layout, sizeof(squareVertices));
+  std::vector<VertexBuffer> squareVertexBuffers = {squareVertexBuffer};
+
+  auto squareIndexBuffer = std::move(IndexBuffer(renderer, squareIndices, 6));
+
+  squareVertexArray =
+      VertexArray::create(renderer, squareIndexBuffer, squareVertexBuffers);
 
   std::string vs = R"(
         #version 330 core
@@ -104,7 +145,8 @@ Application::Application() : camera(), renderer(RenderingAPI::OpenGLAPI) {
         in vec3 v_position;
         in vec4 v_color;
         void main(){
-          color = v_color*0.5 + vec4(v_position * 0.5 + 0.5, 1.0) * 0.5;
+          //color = v_color*0.5 + vec4(v_position * 0.5 + 0.5, 1.0) * 0.5;
+          color = v_color;
         }
       )";
 
@@ -117,11 +159,31 @@ Application::~Application() {}
 void Application::run() {
   glm::mat4 trianglePos(1.0f);
   int count = 0;
-  float speed = 1.5f;
+  float speed = 150.0f;
   while (running) {
     sceneRenderer.clear();
     sceneRenderer.start();
 
+    // <<<<<<< HEAD
+    // =======
+    //     // camera.setPosition(camera.getPosition() + (glm::vec3{0.01f} *
+    //     // sceneRenderer.deltaTime()));
+    //     // camera.setRotation(camera.getRotation() +
+    //     //                    10.0f * Time::deltaTime());
+    //     if (++count % 60 == 0) {
+    //       speed *= -1;
+    //     }
+    //     trianglePos =
+    //         glm::translate(trianglePos, glm::vec3(speed * Time::deltaTime(),
+    //                                               speed * Time::deltaTime(),
+    //                                               0));
+    //     Uniform projectionUniform("viewProjection",
+    //                               camera.getViewProjectionMatrix());
+    //     Uniform translationUniform("transform", trianglePos);
+    //     std::vector<Uniform> uniforms = {projectionUniform,
+    //     translationUniform}; shader.reset(uniforms);
+
+    // >>>>>>> origin/master
     guiLayer->begin();
     for (Layer* layer : layerStack) {
       layer->onUpdate();
@@ -160,22 +222,22 @@ void Application::run() {
 bool Application::onKeyPress(KeyPressEvent&) {
   if (Input::isKeyPressed(GLFW_KEY_W)) {
     camera.setPosition(camera.getPosition() +
-                       (glm::vec3(0.0, 10.0 * Time::deltaTime(), 0.0)));
+                       (glm::vec3(0.0, 100.0 * Time::deltaTime(), 0.0)));
     Uniform uniform(renderer, "viewProjection",
                     camera.getViewProjectionMatrix());
   } else if (Input::isKeyPressed(GLFW_KEY_A)) {
     camera.setPosition(camera.getPosition() +
-                       (glm::vec3(-10.0 * Time::deltaTime(), 0.0, 0.0)));
+                       (glm::vec3(-100.0 * Time::deltaTime(), 0.0, 0.0)));
     Uniform uniform(renderer, "viewProjection",
                     camera.getViewProjectionMatrix());
   } else if (Input::isKeyPressed(GLFW_KEY_S)) {
     camera.setPosition(camera.getPosition() +
-                       (glm::vec3(0.0, -10.0 * Time::deltaTime(), 0.0)));
+                       (glm::vec3(0.0, -100.0 * Time::deltaTime(), 0.0)));
     Uniform uniform(renderer, "viewProjection",
                     camera.getViewProjectionMatrix());
   } else if (Input::isKeyPressed(GLFW_KEY_D)) {
     camera.setPosition(camera.getPosition() +
-                       (glm::vec3(10.0 * Time::deltaTime(), 0.0, 0.0)));
+                       (glm::vec3(100.0 * Time::deltaTime(), 0.0, 0.0)));
     Uniform uniform(renderer, "viewProjection",
                     camera.getViewProjectionMatrix());
   }
