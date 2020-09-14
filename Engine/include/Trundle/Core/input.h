@@ -28,22 +28,25 @@
 #include <GLFW/glfw3.h>
 #include <Trundle/Core/application.h>
 
-
 namespace Trundle {
 
 //===-- Input -------------------------------------------------------------===//
-//
+// A static singleton that manages which keys are currently pressed.
 //===----------------------------------------------------------------------===//
 class Input {
 public:
-  static bool isKeyPressed(int keycode) {
-    Application* app = Application::get();
-    GLFWwindow* window =
-        static_cast<GLFWwindow*>(app->getWindow().getNativeWindow());
-    int status = glfwGetKey(window, keycode);
+  static bool isKeyPressed(int keycode);
 
-    return status == GLFW_PRESS;
-  }
+  static void keyDown(int keycode);
+  static void keyUp(int keycode);
+
+  static void handleKeysDown(std::function<void(int)> func);
+
+private:
+  Input() = default;
+
+  // TODO: Find and use the actual amount of keycodes
+  static std::array<bool, 200> keysDown;
 };
 
 } // namespace Trundle

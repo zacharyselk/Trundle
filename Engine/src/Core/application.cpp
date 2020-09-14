@@ -159,31 +159,26 @@ Application::~Application() {}
 void Application::run() {
   glm::mat4 trianglePos(1.0f);
   int count = 0;
-  float speed = 150.0f;
+  float speed = 200.0f;
+
+  std::function<void(int)> handleKeyDown =
+      std::bind(&Application::keyDown, this, std::placeholders::_1);
+
   while (running) {
+    Input::handleKeysDown(handleKeyDown);
     sceneRenderer.clear();
     sceneRenderer.start();
 
-    // <<<<<<< HEAD
-    // =======
-    //     // camera.setPosition(camera.getPosition() + (glm::vec3{0.01f} *
-    //     // sceneRenderer.deltaTime()));
-    //     // camera.setRotation(camera.getRotation() +
-    //     //                    10.0f * Time::deltaTime());
-    //     if (++count % 60 == 0) {
-    //       speed *= -1;
-    //     }
-    //     trianglePos =
-    //         glm::translate(trianglePos, glm::vec3(speed * Time::deltaTime(),
-    //                                               speed * Time::deltaTime(),
-    //                                               0));
-    //     Uniform projectionUniform("viewProjection",
-    //                               camera.getViewProjectionMatrix());
-    //     Uniform translationUniform("transform", trianglePos);
-    //     std::vector<Uniform> uniforms = {projectionUniform,
-    //     translationUniform}; shader.reset(uniforms);
+    if (++count % 120 == 0) {
+      speed *= -1;
+    }
+    trianglePos =
+        glm::translate(trianglePos, glm::vec3(speed * Time::deltaTime(),
+                                              speed * Time::deltaTime(), 0));
+    Uniform projectionUniform(renderer, "viewProjection",
+                              camera.getViewProjectionMatrix());
+    Uniform translationUniform(renderer, "transform", trianglePos);
 
-    // >>>>>>> origin/master
     guiLayer->begin();
     for (Layer* layer : layerStack) {
       layer->onUpdate();
@@ -206,41 +201,52 @@ void Application::run() {
       for (int j = 0; j < 10; ++j) {
         Uniform transform(
             renderer, "transform",
-            glm::translate(glm::mat4(1.0f), glm::vec3(0.5 * i, 0.5 * j, 0.0f)));
+            glm::translate(glm::mat4(1.0f), glm::vec3(110 * i, 110 * j, 0.0f)));
         sceneRenderer.submit(vertexArray, colorShader,
                              {projection, transform, blue});
       }
     }
 
-    sceneRenderer.submit(vertexArray, shader, {triangleTransform, projection});
+    sceneRenderer.submit(vertexArray, shader,
+                         {projectionUniform, translationUniform});
 
     sceneRenderer.end();
     window->onUpdate();
   }
 }
 
-bool Application::onKeyPress(KeyPressEvent&) {
-  if (Input::isKeyPressed(GLFW_KEY_W)) {
-    camera.setPosition(camera.getPosition() +
-                       (glm::vec3(0.0, 100.0 * Time::deltaTime(), 0.0)));
-    Uniform uniform(renderer, "viewProjection",
-                    camera.getViewProjectionMatrix());
-  } else if (Input::isKeyPressed(GLFW_KEY_A)) {
-    camera.setPosition(camera.getPosition() +
-                       (glm::vec3(-100.0 * Time::deltaTime(), 0.0, 0.0)));
-    Uniform uniform(renderer, "viewProjection",
-                    camera.getViewProjectionMatrix());
-  } else if (Input::isKeyPressed(GLFW_KEY_S)) {
-    camera.setPosition(camera.getPosition() +
-                       (glm::vec3(0.0, -100.0 * Time::deltaTime(), 0.0)));
-    Uniform uniform(renderer, "viewProjection",
-                    camera.getViewProjectionMatrix());
-  } else if (Input::isKeyPressed(GLFW_KEY_D)) {
-    camera.setPosition(camera.getPosition() +
-                       (glm::vec3(100.0 * Time::deltaTime(), 0.0, 0.0)));
-    Uniform uniform(renderer, "viewProjection",
-                    camera.getViewProjectionMatrix());
+void Application::keyDown(int keycode) {
+  glm::vec3 pos(0.0f, 0.0f, 0.0f);
+  float movement = 300.0f * Time::deltaTime();
+
+  switch (keycode) {
+  case GLFW_KEY_W:
+    pos.y = movement;
+    break;
+
+  case GLFW_KEY_A:
+    pos.x = -movement;
+    break;
+
+  case GLFW_KEY_S:
+    pos.y = -movement;
+    break;
+
+  case GLFW_KEY_D:
+    pos.x = movement;
+    break;
+
+  default:
+    return;
   }
+
+  camera.setPosition(camera.getPosition() + pos);
+  Uniform uniform(renderer, "viewProjection", camera.getViewProjectionMatrix());
+  sceneRenderer.submit(vertexArray, shader, {uniform});
+}
+
+bool Application::onKeyPress(KeyPressEvent& event) {
+  Input::keyDown(event.getKeyCode());
 
   return true;
 }

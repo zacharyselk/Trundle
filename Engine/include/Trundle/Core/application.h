@@ -49,6 +49,7 @@ public:
   // Handles what to do when the window is closed.
   bool onWindowClose(WindowCloseEvent&);
 
+  void keyDown(int keycode);
   bool onKeyPress(KeyPressEvent&);
 
   // Despatch the apropriot function corrisponding which event what recived.
@@ -67,10 +68,9 @@ public:
 
 private:
   static Application* instance;
-
-  LayerStack layerStack;
   bool running{true};
 
+  LayerStack layerStack;
   std::unique_ptr<Window> window;
   // std::unique_ptr<ImGuiLayer> guiLayer;
   ImGuiLayer* guiLayer;
@@ -79,7 +79,6 @@ private:
   VertexArray squareVertexArray;
   Shader shader;
   SceneRenderer sceneRenderer;
-
   OrthographicCamera camera;
   Renderer renderer;
   Shader colorShader;

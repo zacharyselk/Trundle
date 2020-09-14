@@ -1,5 +1,6 @@
 set(core_source_files
   application.cpp
+  input.cpp
   layerStack.cpp
   time.cpp
 )
