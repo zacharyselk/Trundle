@@ -22,6 +22,7 @@
 #pragma once
 
 #include <Trundle/Render/renderingQueue.h>
+#include <Trundle/Util/primitives.h>
 #include <Trundle/common.h>
 
 namespace Trundle {
@@ -30,11 +31,13 @@ namespace OpenGL {
 class SceneRenderer;
 }
 
+class Triangle;
+
 //===-- SceneRenderer -----------------------------------------------------===//
 // API that is used to hold the tasks needed to render a scene, then render
 // them.
 //===----------------------------------------------------------------------===//
-class SceneRenderer {
+class TRUNDLE_API SceneRenderer {
 public:
   SceneRenderer() = default;
   SceneRenderer(const Renderer& r);
@@ -52,6 +55,7 @@ public:
   void submit(const RenderingTask& task);
   void submit(const VertexArray& a, const Shader& s,
               const std::vector<Uniform>& u);
+  void submit(Triangle& t);
 
   static SceneRenderer create(const Renderer& r);
 
@@ -74,6 +78,7 @@ private:
 
   // Custom virtual pointer to allow for value semantic polymorphism.
   std::shared_ptr<SceneRendererConcept> vptr;
+  Renderer renderer;
 };
 //===----------------------------------------------------------------------===//
 

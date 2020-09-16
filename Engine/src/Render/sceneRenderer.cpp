@@ -22,7 +22,7 @@
 namespace Trundle {
 
 //===-- SceneRenderer -----------------------------------------------------===//
-SceneRenderer::SceneRenderer(const Renderer& r) : vptr(nullptr) {
+SceneRenderer::SceneRenderer(const Renderer& r) : vptr(nullptr), renderer(r) {
   switch (r.getAPI()) {
   // TODO: Implement.
   case RenderingAPI::None:
@@ -52,6 +52,39 @@ void SceneRenderer::submit(const RenderingTask& task) { vptr->submit(task); }
 void SceneRenderer::submit(const VertexArray& a, const Shader& s,
                            const std::vector<Uniform>& u) {
   submit(std::forward<RenderingTask>(RenderingTask(a, s, u)));
+}
+
+// TODO: Make const
+void SceneRenderer::submit(Triangle& t) {
+  // TODO: Remove
+  glm::mat4 view(1.0);
+
+  std::cout << "--------------\n";
+  std::vector<Uniform> uniforms;
+  for (const auto& attrib : t.attributes) {
+    // const uniform_t val(attrib.second);
+    // const std::string str(attrib.first);
+    // Uniform uniform(renderer, str, val);
+    uniforms.emplace_back(renderer, attrib.first, attrib.second);
+    std::cout << attrib.first << "\n";
+  }
+  std::cout << "--------------\n";
+
+  // TODO: Remove
+  uniforms.emplace_back(renderer, "viewProjection", view);
+
+  Uniform t1(renderer, "viewProjection", view);
+  // Uniform t2(renderer, "position", glm::vec3(0, 0, 0));
+  Uniform t3(renderer, "color", glm::vec4(0.0f, 0.f, 1.0f, 1.0f));
+
+  // IndexBuffer ib = t.getIndexBuffer(renderer);
+  // VertexBuffer vb = t.getVertexBuffer(renderer);
+  // VertexArray vertexArray(ib, vb);
+  VertexArray vertexArray(renderer, t.getIndexBuffer(renderer),
+                          t.getVertexBuffer(renderer));
+  // RenderingTask task(vertexArray, t.shader, uniforms);
+  RenderingTask task(vertexArray, t.shader, {t1, t3});
+  submit(task);
 }
 
 SceneRenderer SceneRenderer::create(const Renderer& r) {

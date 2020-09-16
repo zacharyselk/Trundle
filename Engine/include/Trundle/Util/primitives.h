@@ -17,25 +17,56 @@
 //===----------------------------------------------------------------------===//
 //
 // A collection of helper classes to build and maintian primative shapes.
+// TODO: Create abstract Primitive class.
 //
 //===----------------------------------------------------------------------===//
 #pragma once
+
+#include <Trundle/Core/core.h>
+#include <Trundle/Render/buffer.h>
+#include <Trundle/Render/sceneRenderer.h>
+#include <Trundle/Render/shader.h>
+#include <Trundle/common.h>
 
 #include <glm/glm.hpp>
 
 namespace Trundle {
 
+// Temporary
+template <typename T> struct Coord2d {
+  Coord2d(T x, T y) : x(x), y(y) {}
+  T x;
+  T y;
+};
+
 //===-- Triangle ----------------------------------------------------------===//
 // Holds a representaion of a triangle.
 //===----------------------------------------------------------------------===//
-struct Triangle {
-  Triangle(float base, float height);
+class TRUNDLE_API Triangle {
+public:
+  Triangle(float base = 1.0, float height = 1.0);
   Triangle(glm::vec3 verts[3]);
 
   void setPosition(float x, float y, float z = 0.0f);
+  void set(const std::string& variable, glm::vec4 values);
+  void setWidth(float w);
+  void setHeight(float h);
+  void setShader(const Shader& s);
+
+  IndexBuffer getIndexBuffer(const Renderer& r);
+  VertexBuffer getVertexBuffer(const Renderer& r);
 
   glm::vec3 center;
   glm::vec3 vertices[3];
+
+  friend class SceneRenderer;
+
+private:
+  // TODO: Change vec4 to variant
+  std::unordered_map<std::string, glm::vec4> attributes;
+  Shader shader;
+
+  void calculateVertices();
 };
 
 //===-- Quad --------------------------------------------------------------===//

@@ -50,6 +50,17 @@ void SceneRenderer::end() const {
 void SceneRenderer::submit(const RenderingTask& task) const {
   queue.push(task);
 }
+
+// void SceneRenderer::submit(const Triangle& t) const {
+//   std::vector<Uniform> uniforms;
+//   for (const auto& attrib : t.attributes) {
+//     uniforms.emplace(renderer, attrib.first, attrib.second);
+//   }
+
+//   VertexArray vertexArray(t.getIndexBuffer(), t.getVertexBuffer());
+//   RenderingTask task(vertexArray, t.shader, uniforms);
+//   submit(task);
+// }
 //===----------------------------------------------------------------------===//
 
 } // namespace Trundle::OpenGL

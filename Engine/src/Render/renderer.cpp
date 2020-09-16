@@ -20,6 +20,7 @@
 namespace Trundle {
 
 //===-- Renderer ----------------------------------------------------------===//
+Renderer::Renderer() : api(None) {}
 Renderer::Renderer(RenderingAPI api) : api(api) {}
 
 } // namespace Trundle

@@ -21,6 +21,7 @@
 //===----------------------------------------------------------------------===//
 #pragma once
 
+#include <Trundle/Core/core.h>
 #include <Trundle/Core/log.h>
 #include <Trundle/Render/camera.h>
 #include <Trundle/Render/renderer.h>
@@ -42,7 +43,7 @@ class Uniform;
 //===-- Shader ------------------------------------------------------------===//
 // API for a shader.
 //===----------------------------------------------------------------------===//
-class Shader {
+class TRUNDLE_API Shader {
 public:
   Shader() = default;
   Shader(const Shader&) = default;

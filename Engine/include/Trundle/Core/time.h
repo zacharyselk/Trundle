@@ -21,6 +21,7 @@
 //===----------------------------------------------------------------------===//
 #pragma once
 
+#include <Trundle/Core/core.h>
 #include <Trundle/common.h>
 
 namespace Trundle {
@@ -29,7 +30,7 @@ namespace Trundle {
 // Static timing class that manages the timing elements of the engine such as
 // the frame delta time.
 //===----------------------------------------------------------------------===//
-class Time {
+class TRUNDLE_API Time {
 public:
   static void startFrame();
   static double deltaTime();

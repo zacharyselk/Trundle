@@ -25,13 +25,29 @@
 
 #include <Trundle/Core/core.h>
 #include <Trundle/Events/event.h>
+#include <Trundle/Render/renderer.h>
+#include <Trundle/Render/sceneRenderer.h>
 #include <Trundle/common.h>
 
 namespace Trundle {
 
 class TRUNDLE_API Layer {
+protected:
+  // TODO: Gen with reflection code
+  std::string name;
+  Renderer renderer;
+  SceneRenderer sceneRenderer;
+  VertexArray vertexArray;
+  VertexBuffer vertexBuffer;
+  IndexBuffer indexBuffer;
+  // Shader shader;
+
 public:
-  Layer(const std::string& name = std::string("Layer")) : name(name) {}
+  Layer(const std::string& name = std::string("Layer"),
+        const Renderer& r = OpenGLAPI)
+      : name(name), renderer(r.getAPI()) {
+    sceneRenderer = SceneRenderer::create(renderer);
+  }
   virtual ~Layer() {}
 
   // A set of actions that can be performed on a layer
@@ -42,10 +58,6 @@ public:
 
   // Reflective functions
   inline const std::string& getName() { return name; }
-
-protected:
-  // TODO: Gen with reflection code
-  std::string name;
 };
 
 } // namespace Trundle

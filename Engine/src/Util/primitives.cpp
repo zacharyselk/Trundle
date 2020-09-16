@@ -22,9 +22,7 @@ namespace Trundle {
 //===-- Triangle ----------------------------------------------------------===//
 Triangle::Triangle(float base, float height)
     : center(base / 2.0f, height / 2.0f, 0.0f) {
-  vertices[0] = glm::vec3(0.0f, 0.0f, 0.0f);        // Bottom left.
-  vertices[1] = glm::vec3(base, 0.0f, 0.0f);        // Bottom right.
-  vertices[2] = glm::vec3(center[0], height, 0.0f); // Top
+  calculateVertices();
 }
 
 Triangle::Triangle(glm::vec3 verts[3])
@@ -44,6 +42,47 @@ void Triangle::setPosition(float x, float y, float z) {
   vertices[2] += diff;
   center = pos;
 }
+
+void Triangle::set(const std::string& variable, glm::vec4 values) {
+  attributes[variable] = values;
+}
+
+void Triangle::setWidth(float w) {
+  center[0] = w / 2.0;
+  calculateVertices();
+}
+
+void Triangle::setHeight(float h) {
+  center[1] = h / 2.0;
+  calculateVertices();
+}
+
+void Triangle::setShader(const Shader& s) { shader = s; }
+
+void Triangle::calculateVertices() {
+  vertices[0] = glm::vec3(0.0f, 0.0f, 0.0f);               // Bottom left.
+  vertices[1] = glm::vec3(center[0] * 2, 0.0f, 0.0f);      // Bottom right.
+  vertices[2] = glm::vec3(center[0], center[1] * 2, 0.0f); // Top
+
+  // TODO: Handle rotation
+}
+
+IndexBuffer Triangle::getIndexBuffer(const Renderer& r) {
+  uint32_t indices[3] = {0, 1, 2};
+  return IndexBuffer(r, indices, 3);
+}
+
+VertexBuffer Triangle::getVertexBuffer(const Renderer& r) {
+  // float verts[3 * 3] = {vertices[0][0], vertices[0][1], vertices[0][2],
+  //                       vertices[1][0], vertices[1][1], vertices[1][2],
+  //                       vertices[2][0], vertices[2][1], vertices[2][2]};
+  float verts[3 * 3] = {
+      -0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f,
+  };
+  BufferLayout layout{{Trundle::Rendering::Float3, "position"}};
+  return VertexBuffer(r, verts, layout, sizeof(verts));
+}
+
 //===----------------------------------------------------------------------===//
 
 //===-- Quad --------------------------------------------------------------===//

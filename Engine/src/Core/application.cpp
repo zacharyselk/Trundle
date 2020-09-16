@@ -202,13 +202,13 @@ void Application::run() {
         Uniform transform(
             renderer, "transform",
             glm::translate(glm::mat4(1.0f), glm::vec3(110 * i, 110 * j, 0.0f)));
-        sceneRenderer.submit(vertexArray, colorShader,
-                             {projection, transform, blue});
+        // sceneRenderer.submit(vertexArray, colorShader,
+        //  {projection, transform, blue});
       }
     }
 
-    sceneRenderer.submit(vertexArray, shader,
-                         {projectionUniform, translationUniform});
+    // sceneRenderer.submit(vertexArray, shader,
+    //  {projectionUniform, translationUniform});
 
     sceneRenderer.end();
     window->onUpdate();
