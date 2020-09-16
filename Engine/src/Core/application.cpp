@@ -181,7 +181,7 @@ void Application::run() {
 
     guiLayer->begin();
     for (Layer* layer : layerStack) {
-      layer->onUpdate();
+      layer->onUpdate(sceneRenderer);
     }
     guiLayer->end();
 

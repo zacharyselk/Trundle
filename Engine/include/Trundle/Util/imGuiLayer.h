@@ -24,6 +24,7 @@
 
 #include <Trundle/Core/core.h>
 #include <Trundle/Core/layer.h>
+#include <Trundle/Render/sceneRenderer.h>
 #include <Trundle/common.h>
 
 struct ImVec4;
@@ -37,7 +38,7 @@ public:
 
   void onAttach() override final;
   void onDetach() override final;
-  void onUpdate() override final;
+  void onUpdate(SceneRenderer&) override final;
   void onEvent(Event& event) override final;
   void begin();
   void end();

@@ -62,15 +62,15 @@ public:
     triangle.set("color", glm::vec4(0.0, 1.0, 0.0, 1.0));
   }
 
-  void onUpdate() override final {
-    sceneRenderer.clear();
-    sceneRenderer.start();
+  void onUpdate(Trundle::SceneRenderer& sceneRenderer) {
+    // sceneRenderer.clear();
+    // sceneRenderer.start();
 
     position.x += 0.01 * Trundle::Time::deltaTime();
     triangle.set("position", position);
     sceneRenderer.submit(triangle);
 
-    sceneRenderer.end();
+    // sceneRenderer.end();
   }
 
   void onEvent(Trundle::Event& event) override final {

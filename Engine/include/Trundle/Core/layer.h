@@ -53,7 +53,7 @@ public:
   // A set of actions that can be performed on a layer
   virtual void onAttach() {}
   virtual void onDetach() {}
-  virtual void onUpdate() {}
+  virtual void onUpdate(SceneRenderer&) {}
   virtual void onEvent(Event& event) {}
 
   // Reflective functions

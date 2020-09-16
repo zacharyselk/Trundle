@@ -94,7 +94,7 @@ void ImGuiLayer::onAttach() {
 
 void ImGuiLayer::onDetach() {}
 
-void ImGuiLayer::onUpdate() {
+void ImGuiLayer::onUpdate(SceneRenderer&) {
   Log::Trace("Running onUpdate from imGuiLayer");
   if (!initalized) {
     Log::Warn("Trying to run onUpade on unintalized ImGuiLayer");
