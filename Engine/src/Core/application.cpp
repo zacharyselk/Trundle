@@ -51,107 +51,7 @@ Application::Application()
   window->setEventCallback(
       std::bind(&Application::onEvent, this, std::placeholders::_1));
 
-  // Temporary.
   sceneRenderer = SceneRenderer::create(renderer);
-
-  // Triangle.
-  Triangle triangle(100, 50);
-  triangle.setPosition(50, 50);
-  unsigned int indices[3] = {0, 1, 2};
-  // float vertices[7 * 3] = {-0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-  //                          0.5f,  -0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-  //                          0.0f,  0.5f,  0.0f, 1.0f, 1.0f, 0.0f, 1.0f};
-  float vertices[7 * 3] = {triangle.vertices[0][0],
-                           triangle.vertices[0][1],
-                           triangle.vertices[0][2],
-                           1.0f,
-                           1.0f,
-                           0.0f,
-                           1.0f,
-                           triangle.vertices[1][0],
-                           triangle.vertices[1][1],
-                           triangle.vertices[1][2],
-                           1.0f,
-                           1.0f,
-                           0.0f,
-                           1.0f,
-                           triangle.vertices[2][0],
-                           triangle.vertices[2][1],
-                           triangle.vertices[2][2],
-                           1.0f,
-                           1.0f,
-                           0.0f,
-                           1.0f};
-
-  BufferLayout layout{{Trundle::Rendering::Float3, "position"},
-                      {Trundle::Rendering::Float4, "color"}};
-
-  VertexBuffer vertexBuffer(renderer, vertices, layout, sizeof(vertices));
-
-  IndexBuffer indexBuffer(renderer, indices, 3);
-  vertexArray = VertexArray::create(renderer, indexBuffer, vertexBuffer);
-
-  // Square
-  float squareVertices[4 * 7] = {0.0f,   0.0f,   0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
-                                 100.0f, 0.0f,   0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
-                                 100.0f, 100.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
-                                 0.0f,   100.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f};
-  uint32_t squareIndices[6] = {0, 1, 2, 2, 3, 0};
-
-  auto squareVertexBuffer = VertexBuffer::create(
-      renderer, squareVertices, layout, sizeof(squareVertices));
-  std::vector<VertexBuffer> squareVertexBuffers = {squareVertexBuffer};
-
-  auto squareIndexBuffer = std::move(IndexBuffer(renderer, squareIndices, 6));
-
-  squareVertexArray =
-      VertexArray::create(renderer, squareIndexBuffer, squareVertexBuffers);
-
-  std::string vs = R"(
-        #version 330 core
-        layout(location = 0) in vec3 in_position;
-        layout(location = 1) in vec4 in_color;
-
-        uniform mat4 viewProjection;
-        uniform mat4 transform;
-
-        out vec3 v_position;
-        out vec4 v_color;
-        void main(){
-          v_position = in_position;
-          v_color = in_color;
-          gl_Position = viewProjection * transform * vec4(in_position, 1.0);
-        }
-      )";
-  std::string colorVs = R"(
-        #version 330 core
-        layout(location = 0) in vec3 in_position;
-
-        uniform mat4 viewProjection;
-        uniform mat4 transform;
-        uniform vec4 color;
-
-        out vec3 v_position;
-        out vec4 v_color;
-        void main(){
-          v_position = in_position;
-          v_color = color;
-          gl_Position = viewProjection * transform * vec4(in_position, 1.0);
-        }
-      )";
-  std::string fs = R"(
-        #version 330 core
-        layout(location = 0) out vec4 color;
-        in vec3 v_position;
-        in vec4 v_color;
-        void main(){
-          //color = v_color*0.5 + vec4(v_position * 0.5 + 0.5, 1.0) * 0.5;
-          color = v_color;
-        }
-      )";
-
-  shader = Shader::create(renderer, vs, fs);
-  colorShader = Shader::create(renderer, colorVs, fs);
 }
 
 Application::~Application() {}
@@ -169,46 +69,11 @@ void Application::run() {
     sceneRenderer.clear();
     sceneRenderer.start();
 
-    if (++count % 120 == 0) {
-      speed *= -1;
-    }
-    trianglePos =
-        glm::translate(trianglePos, glm::vec3(speed * Time::deltaTime(),
-                                              speed * Time::deltaTime(), 0));
-    Uniform projectionUniform(renderer, "viewProjection",
-                              camera.getViewProjectionMatrix());
-    Uniform translationUniform(renderer, "transform", trianglePos);
-
     guiLayer->begin();
     for (Layer* layer : layerStack) {
       layer->onUpdate(sceneRenderer);
     }
     guiLayer->end();
-
-    if (++count % 60 == 0) {
-      speed *= -1;
-    }
-    trianglePos =
-        glm::translate(trianglePos, glm::vec3(speed * Time::deltaTime(),
-                                              speed * Time::deltaTime(), 0));
-
-    Uniform triangleTransform(renderer, "transform", trianglePos);
-    Uniform projection(renderer, "viewProjection",
-                       camera.getViewProjectionMatrix());
-
-    Uniform blue(renderer, "color", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
-    for (int i = 0; i < 10; ++i) {
-      for (int j = 0; j < 10; ++j) {
-        Uniform transform(
-            renderer, "transform",
-            glm::translate(glm::mat4(1.0f), glm::vec3(110 * i, 110 * j, 0.0f)));
-        // sceneRenderer.submit(vertexArray, colorShader,
-        //  {projection, transform, blue});
-      }
-    }
-
-    // sceneRenderer.submit(vertexArray, shader,
-    //                      {projectionUniform, translationUniform});
 
     sceneRenderer.end();
     window->onUpdate();

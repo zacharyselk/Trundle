@@ -25,34 +25,10 @@
 
 class ExampleLayer : public Trundle::Layer {
 public:
-  const std::string vs = R"(
-        #version 330 core
-        layout(location = 0) in vec3 position;
-
-        uniform mat4 viewProjection;
-        uniform vec4 color;
-
-        out vec3 v_position;
-        out vec4 v_color;
-        void main(){
-          v_position = position;
-          v_color = color;
-          gl_Position = viewProjection * vec4(position, 1.0);
-        }
-      )";
-  const std::string fs = R"(
-        #version 330 core
-        layout(location = 0) out vec4 color;
-        in vec3 v_position;
-        in vec4 v_color;
-        void main(){
-          //color = v_color*0.5 + vec4(v_position * 0.5 + 0.5, 1.0) * 0.5;
-          color = v_color;
-        }
-      )";
-
   ExampleLayer() : Layer("HelloLayer") {
-    Trundle::Shader shader(renderer, vs, fs);
+    // Trundle::Shader shader(renderer, vs, fs);
+    Trundle::Shader shader(renderer, "Driver/assets/basic.vs",
+                           "Driver/assets/basic.fs");
     position.x = 0;
     position.y = 0;
 
