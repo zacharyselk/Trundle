@@ -36,7 +36,7 @@ protected:
   // TODO: Gen with reflection code
   std::string name;
   Renderer renderer;
-  SceneRenderer sceneRenderer;
+  // SceneRenderer sceneRenderer;
   VertexArray vertexArray;
   VertexBuffer vertexBuffer;
   IndexBuffer indexBuffer;
@@ -46,7 +46,7 @@ public:
   Layer(const std::string& name = std::string("Layer"),
         const Renderer& r = OpenGLAPI)
       : name(name), renderer(r.getAPI()) {
-    sceneRenderer = SceneRenderer::create(renderer);
+    // sceneRenderer = SceneRenderer::create(renderer);
   }
   virtual ~Layer() {}
 

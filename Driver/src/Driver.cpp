@@ -20,6 +20,7 @@
 //
 //===----------------------------------------------------------------------===//
 #include <Trundle.h>
+#include <iostream>
 #include <sstream>
 
 class ExampleLayer : public Trundle::Layer {
@@ -58,19 +59,13 @@ public:
     triangle.setWidth(1);
     triangle.setHeight(1);
     triangle.setShader(shader);
-    triangle.set("position", position);
     triangle.set("color", glm::vec4(0.0, 1.0, 0.0, 1.0));
   }
 
   void onUpdate(Trundle::SceneRenderer& sceneRenderer) {
-    // sceneRenderer.clear();
-    // sceneRenderer.start();
-
-    position.x += 0.01 * Trundle::Time::deltaTime();
-    triangle.set("position", position);
+    position.x += 0.1 * Trundle::Time::deltaTime();
+    triangle.setPosition(position.x, position.y);
     sceneRenderer.submit(triangle);
-
-    // sceneRenderer.end();
   }
 
   void onEvent(Trundle::Event& event) override final {
@@ -79,8 +74,7 @@ public:
 
 private:
   Trundle::Triangle triangle;
-  // Trundle::Coord2d<float> position;
-  glm::vec4 position;
+  glm::vec3 position;
 };
 
 class Game : public Trundle::Application {

@@ -208,7 +208,7 @@ void Application::run() {
     }
 
     // sceneRenderer.submit(vertexArray, shader,
-    //  {projectionUniform, translationUniform});
+    //                      {projectionUniform, translationUniform});
 
     sceneRenderer.end();
     window->onUpdate();

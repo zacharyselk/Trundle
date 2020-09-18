@@ -22,5 +22,6 @@ namespace Trundle {
 //===-- Renderer ----------------------------------------------------------===//
 Renderer::Renderer() : api(None) {}
 Renderer::Renderer(RenderingAPI api) : api(api) {}
+Renderer::Renderer(const Renderer& renderer) : api(renderer.api) {}
 
 } // namespace Trundle

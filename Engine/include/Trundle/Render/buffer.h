@@ -87,12 +87,17 @@ class IndexBuffer {
 public:
   IndexBuffer() = default;
   IndexBuffer(const Renderer& r, uint32_t* indices, uint32_t count);
+  // IndexBuffer(IndexBuffer&&) = default;
+  IndexBuffer(const IndexBuffer& buf) { vptr = buf.vptr; }
   IndexBuffer& operator=(const IndexBuffer& buf) noexcept {
     vptr = buf.vptr;
     return *this;
   }
 
-  void bind() const { vptr->bind(); }
+  void bind() const {
+    assert(vptr && "Error: Trying to bind null IndexBuffer");
+    vptr->bind();
+  }
   void unbind() const { vptr->unbind(); }
 
   size_t size() const { return vptr->size(); }
@@ -125,6 +130,8 @@ public:
   VertexBuffer() = default;
   VertexBuffer(const Renderer& r, float* vertices, const BufferLayout& layout,
                uint32_t size);
+  // VertexBuffer(VertexBuffer&&) = default;
+  VertexBuffer(const VertexBuffer& buf) { vptr = buf.vptr; }
   VertexBuffer& operator=(const VertexBuffer& buf) noexcept {
     vptr = buf.vptr;
     return *this;
@@ -132,7 +139,10 @@ public:
 
   const BufferLayout& getLayout() const { return vptr->getLayout(); }
 
-  void bind() const { vptr->bind(); }
+  void bind() const {
+    assert(vptr && "Error: Trying to bind null VertexBuffer");
+    vptr->bind();
+  }
   void unbind() const { vptr->unbind(); }
 
   static VertexBuffer create(const Renderer& r, float* vertices,
@@ -176,7 +186,10 @@ public:
     return *this;
   }
 
-  void bind() const { vptr->bind(); }
+  void bind() const {
+    assert(vptr && "Error: Trying to bind null VertexArray");
+    vptr->bind();
+  }
   void unbind() const { vptr->unbind(); }
   const std::shared_ptr<std::vector<VertexBuffer>>& getVertexBuffers() const {
     return vptr->getVertexBuffers();

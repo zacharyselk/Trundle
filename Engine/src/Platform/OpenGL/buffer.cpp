@@ -24,16 +24,20 @@
 namespace Trundle::OpenGL {
 
 //===-- IndexBuffer -------------------------------------------------------===//
-IndexBuffer::IndexBuffer(uint32_t* indices, uint32_t count) : count(count) {
+IndexBuffer::IndexBuffer(uint32_t* indices, uint32_t count)
+    : count(count), id(0) {
   glGenBuffers(1, &id);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices,
                GL_STATIC_DRAW);
 }
 
-IndexBuffer::~IndexBuffer() { glDeleteBuffers(1, &id); }
+IndexBuffer::~IndexBuffer() {} // { glDeleteBuffers(1, &id); }
 
-void IndexBuffer::bind() const { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id); }
+void IndexBuffer::bind() const {
+  assert(id && "Error: Trying to bind an unitialized Index Buffer!");
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
+}
 
 void IndexBuffer::unbind() const { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); }
 
@@ -42,17 +46,20 @@ size_t IndexBuffer::size() const { return count; }
 //===-- VertexBuffer ------------------------------------------------------===//
 VertexBuffer::VertexBuffer(float* vertices, const BufferLayout& layout,
                            uint32_t size)
-    : layout(layout) {
+    : layout(layout), id(0) {
   glGenBuffers(1, &id);
   glBindBuffer(GL_ARRAY_BUFFER, id);
   glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
 }
 
-VertexBuffer::~VertexBuffer() { glDeleteBuffers(1, &id); }
+VertexBuffer::~VertexBuffer() {} // { glDeleteBuffers(1, &id); }
 
 const BufferLayout& VertexBuffer::getLayout() const { return layout; }
 
-void VertexBuffer::bind() const { glBindBuffer(GL_ARRAY_BUFFER, id); }
+void VertexBuffer::bind() const {
+  assert(id && "Error: Trying to bind an unitialized Vertex Buffer!");
+  glBindBuffer(GL_ARRAY_BUFFER, id);
+}
 
 void VertexBuffer::unbind() const { glBindBuffer(GL_ARRAY_BUFFER, 0); }
 
@@ -60,8 +67,8 @@ void VertexBuffer::unbind() const { glBindBuffer(GL_ARRAY_BUFFER, 0); }
 VertexArray::VertexArray(
     const Trundle::IndexBuffer& indexBuffer,
     const std::vector<Trundle::VertexBuffer>& vertexBuffers)
-    : vertexBuffers(
-          std::make_shared<std::vector<Trundle::VertexBuffer>>(vertexBuffers)),
+    : id(0), vertexBuffers(std::make_shared<std::vector<Trundle::VertexBuffer>>(
+                 vertexBuffers)),
       indexBuffer(std::make_shared<Trundle::IndexBuffer>(indexBuffer)) {
   // OpenGL 4.5
   // glCreateVertexArrays(1, &id);
@@ -85,9 +92,12 @@ VertexArray::VertexArray(
   this->indexBuffer->bind();
 }
 
-VertexArray::~VertexArray() { glDeleteBuffers(1, &id); }
+VertexArray::~VertexArray() {} //{ glDeleteBuffers(1, &id); }
 
-void VertexArray::bind() const { glBindVertexArray(id); }
+void VertexArray::bind() const {
+  assert(id && "Error: Trying to bind an unitialized Vertex Array!");
+  glBindVertexArray(id);
+}
 
 void VertexArray::unbind() const { glBindVertexArray(0); }
 

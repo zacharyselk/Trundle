@@ -42,8 +42,9 @@ public:
   SceneRenderer() = default;
   SceneRenderer(const Renderer& r);
   SceneRenderer(SceneRenderer&&) = default;
-  SceneRenderer& operator=(const SceneRenderer& renderer) noexcept {
-    vptr = renderer.vptr;
+  SceneRenderer& operator=(const SceneRenderer& sceneRenderer) noexcept {
+    vptr = sceneRenderer.vptr;
+    renderer = sceneRenderer.renderer;
     return *this;
   }
 
@@ -55,7 +56,7 @@ public:
   void submit(const RenderingTask& task);
   void submit(const VertexArray& a, const Shader& s,
               const std::vector<Uniform>& u);
-  void submit(Triangle& t);
+  void submit(const Triangle& t);
 
   static SceneRenderer create(const Renderer& r);
 

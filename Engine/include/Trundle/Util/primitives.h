@@ -47,14 +47,14 @@ public:
   Triangle(float base = 1.0, float height = 1.0);
   Triangle(glm::vec3 verts[3]);
 
-  void setPosition(float x, float y, float z = 0.0f);
-  void set(const std::string& variable, glm::vec4 values);
+  void setPosition(float x, float y);
+  void set(const std::string& variable, uniform_t values);
   void setWidth(float w);
   void setHeight(float h);
   void setShader(const Shader& s);
 
-  IndexBuffer getIndexBuffer(const Renderer& r);
-  VertexBuffer getVertexBuffer(const Renderer& r);
+  IndexBuffer getIndexBuffer(const Renderer& r) const;
+  VertexBuffer getVertexBuffer(const Renderer& r) const;
 
   glm::vec3 center;
   glm::vec3 vertices[3];
@@ -63,8 +63,9 @@ public:
 
 private:
   // TODO: Change vec4 to variant
-  std::unordered_map<std::string, glm::vec4> attributes;
+  std::unordered_map<std::string, uniform_t> attributes;
   Shader shader;
+  float width, height;
 
   void calculateVertices();
 };

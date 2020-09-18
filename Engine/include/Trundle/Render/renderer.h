@@ -37,6 +37,7 @@ class TRUNDLE_API Renderer {
 public:
   Renderer();
   Renderer(RenderingAPI api);
+  Renderer(const Renderer& renderer);
 
   RenderingAPI getAPI() const { return api; }
 

@@ -20,8 +20,8 @@
 namespace Trundle {
 
 //===-- Triangle ----------------------------------------------------------===//
-Triangle::Triangle(float base, float height)
-    : center(base / 2.0f, height / 2.0f, 0.0f) {
+Triangle::Triangle(float w, float h)
+    : center(w / 2.0f, h / 2.0f, 0.0f), width(w), height(h) {
   calculateVertices();
 }
 
@@ -34,53 +34,52 @@ Triangle::Triangle(glm::vec3 verts[3])
   vertices[2] = verts[2];
 }
 
-void Triangle::setPosition(float x, float y, float z) {
-  glm::vec3 pos(x, y, z);
-  glm::vec3 diff = center - pos;
-  vertices[0] += diff;
-  vertices[1] += diff;
-  vertices[2] += diff;
-  center = pos;
-}
-
-void Triangle::set(const std::string& variable, glm::vec4 values) {
+void Triangle::set(const std::string& variable, uniform_t values) {
   attributes[variable] = values;
 }
 
 void Triangle::setWidth(float w) {
-  center[0] = w / 2.0;
+  width = w;
   calculateVertices();
 }
 
 void Triangle::setHeight(float h) {
-  center[1] = h / 2.0;
+  height = h;
   calculateVertices();
 }
 
 void Triangle::setShader(const Shader& s) { shader = s; }
 
+void Triangle::setPosition(float x, float y) {
+  center[0] = x;
+  center[1] = y;
+  calculateVertices();
+}
+
 void Triangle::calculateVertices() {
-  vertices[0] = glm::vec3(0.0f, 0.0f, 0.0f);               // Bottom left.
-  vertices[1] = glm::vec3(center[0] * 2, 0.0f, 0.0f);      // Bottom right.
-  vertices[2] = glm::vec3(center[0], center[1] * 2, 0.0f); // Top
+  vertices[0] = glm::vec3(center[0] - (width / 2), center[1] - (height / 2),
+                          0.0f); // Bottom left.
+  vertices[1] = glm::vec3(center[0] + (width / 2), center[1] - (height / 2),
+                          0.0f); // Bottom right.
+  vertices[2] = glm::vec3(center[0], center[1] + (height / 2), 0.0f); // Top
 
   // TODO: Handle rotation
 }
 
-IndexBuffer Triangle::getIndexBuffer(const Renderer& r) {
+IndexBuffer Triangle::getIndexBuffer(const Renderer& r) const {
   uint32_t indices[3] = {0, 1, 2};
-  return IndexBuffer(r, indices, 3);
+  IndexBuffer buf(r, indices, 3);
+  return buf;
 }
 
-VertexBuffer Triangle::getVertexBuffer(const Renderer& r) {
-  // float verts[3 * 3] = {vertices[0][0], vertices[0][1], vertices[0][2],
-  //                       vertices[1][0], vertices[1][1], vertices[1][2],
-  //                       vertices[2][0], vertices[2][1], vertices[2][2]};
-  float verts[3 * 3] = {
-      -0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f,
-  };
+VertexBuffer Triangle::getVertexBuffer(const Renderer& r) const {
+  float verts[3 * 3] = {vertices[0][0], vertices[0][1], vertices[0][2],
+                        vertices[1][0], vertices[1][1], vertices[1][2],
+                        vertices[2][0], vertices[2][1], vertices[2][2]};
+
   BufferLayout layout{{Trundle::Rendering::Float3, "position"}};
-  return VertexBuffer(r, verts, layout, sizeof(verts));
+  VertexBuffer buf(r, verts, layout, sizeof(verts));
+  return buf;
 }
 
 //===----------------------------------------------------------------------===//

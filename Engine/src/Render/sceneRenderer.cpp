@@ -26,9 +26,12 @@ SceneRenderer::SceneRenderer(const Renderer& r) : vptr(nullptr), renderer(r) {
   switch (r.getAPI()) {
   // TODO: Implement.
   case RenderingAPI::None:
+    assert(0 && "Error: Rendering API for SceneRenderer is None");
     break;
 
   case RenderingAPI::OpenGLAPI:
+    assert(renderer.getAPI() == RenderingAPI::OpenGLAPI &&
+           "Error: Missmatch between this renderer and child renderer");
     vptr = std::make_shared<Trundle::OpenGL::SceneRenderer>();
     break;
 
@@ -55,35 +58,23 @@ void SceneRenderer::submit(const VertexArray& a, const Shader& s,
 }
 
 // TODO: Make const
-void SceneRenderer::submit(Triangle& t) {
+void SceneRenderer::submit(const Triangle& t) {
   // TODO: Remove
+  assert(renderer.getAPI() != RenderingAPI::None &&
+         "Error: Trying to submit a triangle to the None Rendering API");
   glm::mat4 view(1.0);
 
-  std::cout << "--------------\n";
   std::vector<Uniform> uniforms;
-  for (const auto& attrib : t.attributes) {
-    // const uniform_t val(attrib.second);
-    // const std::string str(attrib.first);
-    // Uniform uniform(renderer, str, val);
+  for (auto& attrib : t.attributes) {
     uniforms.emplace_back(renderer, attrib.first, attrib.second);
-    std::cout << attrib.first << "\n";
   }
-  std::cout << "--------------\n";
 
   // TODO: Remove
   uniforms.emplace_back(renderer, "viewProjection", view);
 
-  Uniform t1(renderer, "viewProjection", view);
-  // Uniform t2(renderer, "position", glm::vec3(0, 0, 0));
-  Uniform t3(renderer, "color", glm::vec4(0.0f, 0.f, 1.0f, 1.0f));
-
-  // IndexBuffer ib = t.getIndexBuffer(renderer);
-  // VertexBuffer vb = t.getVertexBuffer(renderer);
-  // VertexArray vertexArray(ib, vb);
   VertexArray vertexArray(renderer, t.getIndexBuffer(renderer),
                           t.getVertexBuffer(renderer));
-  // RenderingTask task(vertexArray, t.shader, uniforms);
-  RenderingTask task(vertexArray, t.shader, {t1, t3});
+  RenderingTask task(vertexArray, t.shader, uniforms);
   submit(task);
 }
 
