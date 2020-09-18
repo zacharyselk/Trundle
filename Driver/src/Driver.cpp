@@ -20,17 +20,37 @@
 //
 //===----------------------------------------------------------------------===//
 #include <Trundle.h>
+#include <iostream>
 #include <sstream>
 
 class ExampleLayer : public Trundle::Layer {
 public:
-  ExampleLayer() : Layer("HelloLayer") {}
+  ExampleLayer() : Layer("HelloLayer") {
+    // Trundle::Shader shader(renderer, vs, fs);
+    Trundle::Shader shader(renderer, "Driver/assets/basic.vs",
+                           "Driver/assets/basic.fs");
+    position.x = 0;
+    position.y = 0;
 
-  void onUpdate() override final {}
+    triangle.setWidth(1);
+    triangle.setHeight(1);
+    triangle.setShader(shader);
+    triangle.set("color", glm::vec4(0.0, 1.0, 0.0, 1.0));
+  }
+
+  void onUpdate(Trundle::SceneRenderer& sceneRenderer) {
+    position.x += 0.1 * Trundle::Time::deltaTime();
+    triangle.setPosition(position.x, position.y);
+    sceneRenderer.submit(triangle);
+  }
 
   void onEvent(Trundle::Event& event) override final {
     Trundle::Log::Info(event.toString());
   }
+
+private:
+  Trundle::Triangle triangle;
+  glm::vec3 position;
 };
 
 class Game : public Trundle::Application {

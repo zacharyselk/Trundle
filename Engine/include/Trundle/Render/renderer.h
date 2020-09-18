@@ -22,6 +22,8 @@
 //===----------------------------------------------------------------------===//
 #pragma once
 
+#include <Trundle/Core/core.h>
+
 namespace Trundle {
 
 enum RenderingAPI { None = 0, OpenGLAPI = 1 };
@@ -31,9 +33,11 @@ enum RenderingAPI { None = 0, OpenGLAPI = 1 };
 // rendering.
 // TODO: Rename to RenderingContext.
 //===----------------------------------------------------------------------===//
-class Renderer {
+class TRUNDLE_API Renderer {
 public:
+  Renderer();
   Renderer(RenderingAPI api);
+  Renderer(const Renderer& renderer);
 
   RenderingAPI getAPI() const { return api; }
 

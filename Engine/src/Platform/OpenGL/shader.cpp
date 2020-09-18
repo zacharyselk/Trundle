@@ -17,8 +17,9 @@
 //===----------------------------------------------------------------------===//
 #include <Trundle/Platform/OpenGL/shader.h>
 #include <Trundle/Util/common.h>
+#include <Trundle/Util/file.h>
 
-#include <type_traits>
+//#include <type_traits>
 
 #include <GL/gl3w.h>
 #include <GLFW/glfw3.h>
@@ -31,8 +32,21 @@ namespace Trundle::OpenGL {
 Shader::Shader(const std::string& vertexShader,
                const std::string& fragmentShader)
     : id(glCreateProgram()) {
-  uint32_t vs = compile(GL_VERTEX_SHADER, vertexShader);
-  uint32_t fs = compile(GL_FRAGMENT_SHADER, fragmentShader);
+  uint32_t vs, fs;
+
+  // Compile the vertex shader.
+  if (Trundle::isFilePath(vertexShader)) {
+    vs = compile(GL_VERTEX_SHADER, Trundle::readFile(vertexShader));
+  } else {
+    vs = compile(GL_VERTEX_SHADER, vertexShader);
+  }
+
+  // Compile the fragment shader.
+  if (Trundle::isFilePath(fragmentShader)) {
+    fs = compile(GL_FRAGMENT_SHADER, Trundle::readFile(fragmentShader));
+  } else {
+    fs = compile(GL_FRAGMENT_SHADER, fragmentShader);
+  }
 
   glAttachShader(id, vs);
   glAttachShader(id, fs);

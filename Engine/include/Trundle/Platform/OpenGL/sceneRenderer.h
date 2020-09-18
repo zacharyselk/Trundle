@@ -37,6 +37,7 @@ public:
   virtual void start() const override final;
   virtual void end() const override final;
   virtual void submit(const RenderingTask& task) const override final;
+  // virtual void submit(const Triangle& t) const override final;
 };
 
 } // namespace Trundle::OpenGL

@@ -23,3 +23,6 @@
 
 #include <Trundle/Core/gateway.h>
 #include <Trundle/Core/log.h>
+#include <Trundle/Core/time.h>
+#include <Trundle/Render/sceneRenderer.h>
+#include <Trundle/Util/primitives.h>

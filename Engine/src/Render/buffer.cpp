@@ -69,6 +69,7 @@ IndexBuffer::IndexBuffer(const Renderer& r, uint32_t* indices, uint32_t count)
   switch (r.getAPI()) {
   // TODO: Implement.
   case RenderingAPI::None:
+    assert(0 && "Error: Rendering API for IndexBuffer is None");
     break;
 
   case RenderingAPI::OpenGLAPI:
@@ -94,6 +95,7 @@ VertexBuffer::VertexBuffer(const Renderer& r, float* vertices,
   switch (r.getAPI()) {
   // TODO: Implement.
   case RenderingAPI::None:
+    assert(0 && "Error: Rendering API for VertexBuffer is None");
     break;
 
   case RenderingAPI::OpenGLAPI:
@@ -119,6 +121,7 @@ VertexArray::VertexArray(const Renderer& r, const IndexBuffer& indexBuffer,
   switch (r.getAPI()) {
   // TODO: Implement.
   case RenderingAPI::None:
+    assert(0 && "Error: Rendering API for VertexArray is None");
     break;
 
   case RenderingAPI::OpenGLAPI:
