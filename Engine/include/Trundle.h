@@ -22,7 +22,10 @@
 #pragma once
 
 #include <Trundle/Core/gateway.h>
+#include <Trundle/Core/input.h>
 #include <Trundle/Core/log.h>
 #include <Trundle/Core/time.h>
 #include <Trundle/Render/sceneRenderer.h>
 #include <Trundle/Util/primitives.h>
+#include <glm/gtc/type_ptr.hpp>
+#include <imgui.h>

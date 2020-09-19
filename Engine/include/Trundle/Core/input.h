@@ -21,11 +21,11 @@
 //===----------------------------------------------------------------------===//
 #pragma once
 
+#include <Trundle/Core/core.h>
+#include <Trundle/Core/keyCode.h>
 #include <Trundle/common.h>
 
 // Temp
-#include <GL/gl3w.h>
-#include <GLFW/glfw3.h>
 #include <Trundle/Core/application.h>
 
 namespace Trundle {
@@ -33,20 +33,22 @@ namespace Trundle {
 //===-- Input -------------------------------------------------------------===//
 // A static singleton that manages which keys are currently pressed.
 //===----------------------------------------------------------------------===//
-class Input {
+class TRUNDLE_API Input {
 public:
-  static bool isKeyPressed(int keycode);
+  static bool isKeyPressed(KeyCode::Key keycode);
 
-  static void keyDown(int keycode);
-  static void keyUp(int keycode);
+  static void setKeyDown(KeyCode::Key keycode);
+  static void setKeyUp(KeyCode::Key keycode);
 
-  static void handleKeysDown(std::function<void(int)> func);
+  static void handleKeysDown(std::function<void(KeyCode::Key)> func);
+  static bool isKeyDown(KeyCode::Key keycode);
+  static bool isKeyUp(KeyCode::Key keycode);
 
 private:
   Input() = default;
 
   // TODO: Find and use the actual amount of keycodes
-  static std::array<bool, 200> keysDown;
+  static std::array<bool, 400> keysDown;
 };
 
 } // namespace Trundle
