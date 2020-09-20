@@ -23,6 +23,7 @@
 #pragma once
 
 #include <Trundle/Core/core.h>
+#include <Trundle/Core/keyCode.h>
 #include <Trundle/Core/layer.h>
 #include <Trundle/Core/layerStack.h>
 #include <Trundle/Core/window.h>
@@ -49,8 +50,9 @@ public:
   // Handles what to do when the window is closed.
   bool onWindowClose(WindowCloseEvent&);
 
-  void keyDown(int keycode);
+  void keyDown(KeyCode::Key keycode);
   bool onKeyPress(KeyPressEvent&);
+  bool onKeyRelease(KeyReleaseEvent& event);
 
   // Despatch the apropriot function corrisponding which event what recived.
   void onEvent(Event& event);

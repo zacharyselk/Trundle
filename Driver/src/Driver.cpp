@@ -1,4 +1,4 @@
-//===-- imGuiLayer.h ------------------------------------------------------===//
+//===-- Driver.cpp --------------------------------------------------------===//
 //
 // Copyright 2020 Zachary Selk
 //
@@ -23,10 +23,11 @@
 #include <iostream>
 #include <sstream>
 
+using namespace Trundle;
+
 class ExampleLayer : public Trundle::Layer {
 public:
-  ExampleLayer() : Layer("HelloLayer") {
-    // Trundle::Shader shader(renderer, vs, fs);
+  ExampleLayer() : Layer("HelloLayer"), color(0.0, 1.0, 1.0, 1.0) {
     Trundle::Shader shader(renderer, "Driver/assets/basic.vs",
                            "Driver/assets/basic.fs");
     position.x = 0;
@@ -35,13 +36,28 @@ public:
     triangle.setWidth(1);
     triangle.setHeight(1);
     triangle.setShader(shader);
-    triangle.set("color", glm::vec4(0.0, 1.0, 0.0, 1.0));
+    triangle.set("color", color);
   }
 
   void onUpdate(Trundle::SceneRenderer& sceneRenderer) {
-    position.x += 0.1 * Trundle::Time::deltaTime();
+    handleKeyPress();
     triangle.setPosition(position.x, position.y);
     sceneRenderer.submit(triangle);
+  }
+
+  void handleKeyPress() {
+    if (Input::isKeyDown(KeyCode::W)) {
+      position.y += movement * Time::deltaTime();
+    }
+    if (Input::isKeyDown(KeyCode::S)) {
+      position.y -= movement * Time::deltaTime();
+    }
+    if (Input::isKeyDown(KeyCode::A)) {
+      position.x -= movement * Time::deltaTime();
+    }
+    if (Input::isKeyDown(KeyCode::D)) {
+      position.x += movement * Time::deltaTime();
+    }
   }
 
   void onEvent(Trundle::Event& event) override final {
@@ -51,6 +67,8 @@ public:
 private:
   Trundle::Triangle triangle;
   glm::vec3 position;
+  glm::vec4 color;
+  float movement = 0.5f;
 };
 
 class Game : public Trundle::Application {

@@ -23,6 +23,7 @@
 #include <Trundle/Render/renderer.h>
 #include <Trundle/Render/renderingQueue.h>
 #include <Trundle/Render/shader.h>
+#include <Trundle/Util/input.h>
 #include <Trundle/Util/primitives.h>
 
 // Temp
@@ -57,21 +58,16 @@ Application::Application()
 Application::~Application() {}
 
 void Application::run() {
-  glm::mat4 trianglePos(1.0f);
-  int count = 0;
-  float speed = 200.0f;
-
-  std::function<void(int)> handleKeyDown =
-      std::bind(&Application::keyDown, this, std::placeholders::_1);
-
+  // std::function<void(KeyCode::Key)> handleKeyDown =
+  //     std::bind(&Application::keyDown, this, std::placeholders::_1);
   while (running) {
-    Input::handleKeysDown(handleKeyDown);
     sceneRenderer.clear();
     sceneRenderer.start();
 
     guiLayer->begin();
     for (Layer* layer : layerStack) {
       layer->onUpdate(sceneRenderer);
+      layer->onImGuiRender();
     }
     guiLayer->end();
 
@@ -80,39 +76,13 @@ void Application::run() {
   }
 }
 
-void Application::keyDown(int keycode) {
-  glm::vec3 pos(0.0f, 0.0f, 0.0f);
-  float movement = 300.0f * Time::deltaTime();
-
-  switch (keycode) {
-  case GLFW_KEY_W:
-    pos.y = movement;
-    break;
-
-  case GLFW_KEY_A:
-    pos.x = -movement;
-    break;
-
-  case GLFW_KEY_S:
-    pos.y = -movement;
-    break;
-
-  case GLFW_KEY_D:
-    pos.x = movement;
-    break;
-
-  default:
-    return;
-  }
-
-  camera.setPosition(camera.getPosition() + pos);
-  Uniform uniform(renderer, "viewProjection", camera.getViewProjectionMatrix());
-  sceneRenderer.submit(vertexArray, shader, {uniform});
+bool Application::onKeyPress(KeyPressEvent& event) {
+  Input::setKeyDown(GLToTrundle(event.getKeyCode()));
+  return true;
 }
 
-bool Application::onKeyPress(KeyPressEvent& event) {
-  Input::keyDown(event.getKeyCode());
-
+bool Application::onKeyRelease(KeyReleaseEvent& event) {
+  Input::setKeyUp(GLToTrundle(event.getKeyCode()));
   return true;
 }
 
@@ -127,6 +97,8 @@ void Application::onEvent(Event& event) {
       std::bind(&Application::onWindowClose, this, std::placeholders::_1));
   dispatcher.dispatch<KeyPressEvent>(
       std::bind(&Application::onKeyPress, this, std::placeholders::_1));
+  dispatcher.dispatch<KeyReleaseEvent>(
+      std::bind(&Application::onKeyRelease, this, std::placeholders::_1));
 
   for (auto it = layerStack.end(); it != layerStack.begin();) {
     --it;

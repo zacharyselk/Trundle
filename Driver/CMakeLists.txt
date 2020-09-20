@@ -46,6 +46,14 @@ if (NOT TRUNDLE_GLM_DIR)
   message(WARNING "TRUNDLE_GLM_DIR not set, defaulting to ${TRUNDLE_GLM_DIR}")
 endif()
 
+# ImGui path
+set(TRUNDLE_IMGUI_DIR CACHE PATH "Path to ImGui source directory")
+if (NOT TRUNDLE_IMGUI_DIR)
+  # TODO: Check if default path exists
+  set(TRUNDLE_IMGUI_DIR "${TRUNDLE_BUILD_DIR}/ImGui")
+  message(WARNING "TRUNDLE_IMGUI_DIR not set, defaulting to ${TRUNDLE_IMGUI_DIR}")
+endif()
+
 add_subdirectory(src)
 
 # Find and link the engine library and include files
@@ -55,6 +63,21 @@ target_include_directories(driver PRIVATE "${TRUNDLE_INCLUDE_DIR}")
 
 # GLM
 target_include_directories(driver PRIVATE "${TRUNDLE_GLM_DIR}")
+
+# ImGui
+file(GLOB IMGUI_SRC
+  "${TRUNDLE_IMGUI_DIR}/*.c"
+  "${TRUNDLE_IMGUI_DIR}/*.cpp"
+  "${TRUNDLE_IMGUI_DIR}/*.cc"
+)
+file(GLOB IMGUI_INCLUDE
+  "${TRUNDL_IMGUI_DIR}/*.h"
+  "${TRUNDL_IMGUI_DIR}/*.hpp"
+)
+target_sources(driver PRIVATE ${IMGUI_SRC})
+target_include_directories(driver PRIVATE "${TRUNDLE_IMGUI_DIR}")
+#target_sources(driver PRIVATE "${TRUNDLE_IMGUI_DIR}/examples/imgui_impl_glfw.cpp")
+#target_sources(driver PRIVATE "${TRUNDLE_IMGUI_DIR}/examples/imgui_impl_opengl3.cpp")
 
 # Deal with Visual Studio putting the exe in stupid places
 if(MSVC)

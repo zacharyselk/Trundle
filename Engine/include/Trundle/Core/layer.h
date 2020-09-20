@@ -55,6 +55,7 @@ public:
   virtual void onDetach() {}
   virtual void onUpdate(SceneRenderer&) {}
   virtual void onEvent(Event& event) {}
+  virtual void onImGuiRender() {}
 
   // Reflective functions
   inline const std::string& getName() { return name; }
