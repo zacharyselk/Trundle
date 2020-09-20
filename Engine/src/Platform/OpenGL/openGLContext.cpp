@@ -23,6 +23,7 @@
 
 namespace Trundle {
 
+#if defined(TRUNDLE_OS_WINDOWS) || defined(TRUNDLE_OS_LINUX)
 void GLAPIENTRY MessageCallback(GLenum source, GLenum type, GLuint id,
                                 GLenum severity, GLsizei length,
                                 const GLchar* message, const void* userParam) {
@@ -52,6 +53,7 @@ void GLAPIENTRY MessageCallback(GLenum source, GLenum type, GLuint id,
           (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""), type,
           severityStr.c_str(), message);
 }
+#endif
 
 //===-- OpenGLContext -----------------------------------------------------===//
 OpenGLContext::OpenGLContext(GLFWwindow* window) : windowHandle(window) {
@@ -69,10 +71,13 @@ bool OpenGLContext::init() {
     return false;
   }
 
+  // DebugMessageCallback is not supported on MacOS
+#if defined(TRUNDLE_OS_WINDOWS) || defined(TRUNDLE_OS_LINUX)
   // Enable debug output
   glEnable(GL_DEBUG_OUTPUT);
   glDebugMessageCallback(MessageCallback, 0);
-
+#endif
+  
   return true;
 }
 
