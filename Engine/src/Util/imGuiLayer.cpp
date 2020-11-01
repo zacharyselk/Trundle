@@ -24,8 +24,8 @@
 #include <GL/gl3w.h>
 #include <GLFW/glfw3.h> // Important: Include glfw3.h after OpenGL definitions.
 
-#include <examples/imgui_impl_glfw.h>
-#include <examples/imgui_impl_opengl3.h>
+#include <backends/imgui_impl_glfw.h>
+#include <backends/imgui_impl_opengl3.h>
 
 namespace Trundle {
 
