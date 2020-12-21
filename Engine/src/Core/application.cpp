@@ -44,8 +44,8 @@ Application::Application()
   // Create the GUI layer that is placed on the render stack as a overlay
   // layer.
   // TODO: Use shared pointer.
-  guiLayer = new ImGuiLayer;
-  pushOverlay(guiLayer);
+  //guiLayer = new ImGuiLayer;
+  //pushOverlay(guiLayer);
 
   // Bind onEvent to be called back from the window when it recieves an
   // event (ie. key press, mouse movement, etc).
@@ -64,12 +64,12 @@ void Application::run() {
     sceneRenderer.clear();
     sceneRenderer.start();
 
-    guiLayer->begin();
+    //guiLayer->begin();
     for (Layer* layer : layerStack) {
       layer->onUpdate(sceneRenderer);
       layer->onImGuiRender();
     }
-    guiLayer->end();
+    //guiLayer->end();
 
     sceneRenderer.end();
     window->onUpdate();
