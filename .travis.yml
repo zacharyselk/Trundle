@@ -1,0 +1,55 @@
+language: cpp
+os: 
+  - linux
+  - osx
+dist: bionic
+osx_image: xcode12
+
+compiler: clang
+
+cache:
+- directories:
+  - $HOME/.cache
+
+addons:
+  apt:
+    packages:
+      - lcov
+
+install:
+  - mkdir -p $HOME/.cache
+
+  # Download CMake 3.18 binaries
+  - mkdir -p $HOME/.cache/cmake3.18
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then wget -qO- https://github.com/Kitware/CMake/releases/download/v3.18.1/cmake-3.18.1-Linux-x86_64.tar.gz | tar xpoz -C $HOME/.cache/cmake3.18 --strip-components 1; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then export PATH=$HOME/.cache/cmake3.18/bin:$PATH; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then curl -L https://github.com/Kitware/CMake/releases/download/v3.18.1/cmake-3.18.1-Darwin-x86_64.tar.gz | tar xpoz -C $HOME/.cache/cmake3.18 --strip-components 1; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then export PATH=$HOME/.cache/cmake3.18/CMake.app/Contents/bin:$PATH; fi
+
+  # GLFW Dependancies
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get install -y libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev; fi
+
+  # OpenGL Dependancies
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get install -y libgl1-mesa-dev; fi
+
+  # Other
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get install -y tree; fi
+
+  - export CODECOV_TOKEN="55c385c2-a6b7-44ae-a868-d1377ef5e11f"
+
+
+before_script:
+  - env
+  - mkdir build
+  - cd build
+  - cmake ..
+  - pwd
+
+script:
+  - cmake --build .
+
+after_failure:
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then tree ../..; fi
+
+after_success:
+  - echo "Finished"
