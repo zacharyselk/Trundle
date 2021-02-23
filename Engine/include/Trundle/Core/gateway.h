@@ -54,9 +54,9 @@ int main(int argc, char** argv, char** envp) {
 
 #else
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv, char** envp) {
   Trundle::Log::Debug("Starting the Engine");
-  Trundle::Application* app = Trundle::CreateApplication(&argc, argv);
+  Trundle::Application* app = Trundle::CreateApplication(&argc, argv, envp);
   //app->run();
   //delete app;
   Trundle::Log::Debug("Application Closed");
