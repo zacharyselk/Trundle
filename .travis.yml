@@ -48,6 +48,9 @@ before_script:
 script:
   - cmake --build .
 
+test:
+  - ctest -C Debug
+
 after_failure:
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then tree ../..; fi
 
