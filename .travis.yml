@@ -42,7 +42,7 @@ before_script:
   - env
   - mkdir build
   - cd build
-  - cmake ..
+  - cmake ../Engine
   - pwd
 
 script:
