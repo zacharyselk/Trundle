@@ -47,8 +47,6 @@ before_script:
 
 script:
   - cmake --build .
-
-test:
   - ctest -C Debug
 
 after_failure:
