@@ -13,6 +13,7 @@ build: off
 before_build:
   - ps: |
       ls
+      rm -Recurse -Force build
       mkdir build
       ls
       cd build
