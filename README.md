@@ -1,3 +1,4 @@
+[![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/zacharyselk/Trundle.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/zacharyselk/Trundle/context:cpp)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c1f4810974d4455680dd2a861df375d0)](https://app.codacy.com/manual/zacharyselk/Trundle?utm_source=github.com&utm_medium=referral&utm_content=zacharyselk/Trundle&utm_campaign=Badge_Grade_Dashboard)
 
 # Trundle
