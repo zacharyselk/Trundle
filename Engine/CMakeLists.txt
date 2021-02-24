@@ -58,7 +58,6 @@ option(BUILD_TESTS "Build with tests" ON)
 
 
 ## Globals
-message("${CMAKE_CURRENT_SOURCE_DIR}")
 set(TRUNDLE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 
