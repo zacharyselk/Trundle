@@ -1,4 +1,4 @@
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c1f4810974d4455680dd2a861df375d0)](https://app.codacy.com/manual/zacharyselk/Trundle?utm_source=github.com&utm_medium=referral&utm_content=zacharyselk/Trundle&utm_campaign=Badge_Grade_Dashboard)
+[![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/zacharyselk/Trundle.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/zacharyselk/Trundle/context:cpp)
 
 # Trundle
 This is a simple game engine built with c++17, created to learn about different aspects of games engines, because what better way to learn than by doing.
@@ -29,7 +29,7 @@ $ git clone --recursive https://github.com/zacharyselk/Trundle.git
 Then use CMake to compile the project
 ```sh
 $ mkdir build && cd build
-$ cmake ..
+$ cmake ../Engine
 $ cmake --build .
 ```
 This will build the sample `Driver` in `build/bin/` by default. To change the build location use `$ cmake .. --DCMAKE_INSTALL_PREFIX=<path>`
