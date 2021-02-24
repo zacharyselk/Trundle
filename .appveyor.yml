@@ -12,15 +12,9 @@ build: off
 
 before_build:
   - ps: |
-      git submodule update --init --recursive
       mkdir build
       cd build
-      $env:generator="Visual Studio 16 2019"
-      # if ($env:PLATFORM -eq "x64") {
-      #     $env:generator="$env:generator Win64"
-      # }
-      echo generator="$env:generator"
-      cmake ../Engine -G "$env:generator"
+      cmake ../Engine -G "Visual Studio 16 2019"
 
 build_script:
   - cmake --build .
