@@ -7,6 +7,9 @@ configuration:
 image:
   - Visual Studio 2019
 
+# Dont build with Visual Studio project
+build: off
+
 before_build:
   - ps: |
       git submodule update --init --recursive
@@ -18,6 +21,7 @@ before_build:
       # }
       echo generator="$env:generator"
       cmake ../Engine -G "$env:generator"
+
 build_script:
   - cmake --build .
 
