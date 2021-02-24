@@ -12,7 +12,9 @@ build: off
 
 before_build:
   - ps: |
+      ls
       mkdir build
+      ls
       cd build
       cmake ../Engine -G "Visual Studio 16 2019"
 
