@@ -29,7 +29,7 @@ $ git clone --recursive https://github.com/zacharyselk/Trundle.git
 Then use CMake to compile the project
 ```sh
 $ mkdir build && cd build
-$ cmake ..
+$ cmake ../Engine
 $ cmake --build .
 ```
 This will build the sample `Driver` in `build/bin/` by default. To change the build location use `$ cmake .. --DCMAKE_INSTALL_PREFIX=<path>`
