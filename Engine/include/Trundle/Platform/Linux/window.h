@@ -70,7 +70,7 @@ public:
   ///
   /// Gets the current status of v-sync for the window.
   /// @return True if v-sync is enabled, false otherwise.verride final;
-  bool isVSync() const
+  bool isVSync() const;
 
   /// @brief Getter for the raw window handler.
   ///
