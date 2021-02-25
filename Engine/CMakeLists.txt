@@ -52,15 +52,14 @@ if(NOT GIT_FOUND)
 endif()
 
 
-
 ## Options
 option(BUILD_TESTS "Build with tests" ON)
-option(LOG_LEVEL "Logging verbosity" "3")
+option(HEADLESS_TEST "Run tests headlessly" OFF)
+set(LOG_LEVEL "3" CACHE STRING "Logging verbosity")
 
 
 ## Globals
 set(TRUNDLE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
-
 
 
 FetchContent_Declare(

@@ -38,7 +38,10 @@ namespace Trundle {
 class TRUNDLE_API Application {
 public:
   /// @brief Default constructor.
-  Application();
+  ///
+  /// @param[in] runHeadless Sets whether or not the application should be run
+  ///                        headlessly
+  Application(bool runHeadless=false);
 
   /// @brief Default destructor.
   ~Application();
@@ -64,6 +67,7 @@ private:
   static Application* instance;
   Ref<Window> window;
   bool running{true};
+  bool headless{false};
 };
 
 // Defined by the driver as an entry point into the engine.

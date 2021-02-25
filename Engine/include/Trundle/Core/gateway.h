@@ -24,10 +24,20 @@
 
 #include <Trundle/Core/application.h>
 #include <Trundle/Core/log.h>
+#include <Trundle/Core/util.h>
 #include <Trundle/common.h>
+
+#include <sstream>
 
 #if defined(TESTING_BUILD)
 #include <gtest/gtest.h>
+
+// TODO: Remove this.
+#if defined(RUN_HEADLESS)
+extern bool HEADLESS = true;
+#else
+extern bool HEADLESS = false;
+#endif
 #endif
 
 /// @brief An external hook that allows the application code to be run by the

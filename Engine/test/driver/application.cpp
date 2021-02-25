@@ -26,7 +26,12 @@
 
 class TestApplication : public Trundle::Application {
 public:
-  TestApplication() { printf("Engine Start\n"); }
+  TestApplication()
+   : Trundle::Application(HEADLESS) 
+  { 
+      printf("Engine Start\n"); 
+  }
+
   ~TestApplication() { printf("Engine Closing\n"); }
 
   void SetUp() { }

@@ -25,6 +25,10 @@ target_include_directories(
     application  PRIVATE "${TRUNDLE_INCLUDE_DIR}"
 )
 
+if (${TEST_HEADLESS})
+  target_compile_definitions(application PRIVATE "RUN_HEADLESS")
+endif()
+
 gtest_add_tests(
     application
     ""
