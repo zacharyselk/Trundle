@@ -26,14 +26,18 @@
 #include <Trundle/Core/log.h>
 #include <Trundle/common.h>
 
+#if defined(TESTING_BUILD)
+#include <gtest/gtest.h>
+#endif
+
 /// @brief An external hook that allows the application code to be run by the
 ///        Engine.
 /// 
 /// CreateApplication must be defined by the application driver in order for any
 /// user code to be hooked into the Engine.
-/// @param argc[in] The standard argc that is passed to main.
-/// @param argv[in] The standard argv that is passed to main.
-/// @param envp[in] The standard envp that is passed to main.
+/// @param[in] argc The standard argc that is passed to main.
+/// @param[in] argv The standard argv that is passed to main.
+/// @param[in] envp The standard envp that is passed to main.
 /// @return A pointer to an @ref Application object that will be run by the
 ///         Engine.
 extern Trundle::Application* Trundle::CreateApplication(int* argc, char** argv,
@@ -44,23 +48,35 @@ extern Trundle::Application* Trundle::CreateApplication(int* argc, char** argv,
 #if defined(_WIN32)
 
 int main(int argc, char** argv, char** envp) {
+#if defined(TESTING_BUILD)
+  ::testing::InitGoogleTest(&argc, argv); 
+  return RUN_ALL_TESTS();
+#else
   Trundle::Log::Debug("Starting Engine\n");
   Trundle::Application* app = Trundle::CreateApplication(&argc, argv, envp);
-  //app->run();
-  //delete app;
+  app->run();
+  delete app;
   Trundle::Log::Debug("Application Closed\n");
-  std::cout << Trundle::Log::Color::white;
+
+  return 0;
+#endif
 }
 
 #else
 
 int main(int argc, char** argv, char** envp) {
+#if defined(TESTING_BUILD)
+  ::testing::InitGoogleTest(&argc, argv); 
+  return RUN_ALL_TESTS();
+#else
   Trundle::Log::Debug("Starting the Engine");
   Trundle::Application* app = Trundle::CreateApplication(&argc, argv, envp);
-  //app->run();
-  //delete app;
+  app->run();
+  delete app;
   Trundle::Log::Debug("Application Closed");
-  std::cout << Trundle::Log::Color::white;
+
+  return 0;
+#endif
 }
 
 #endif

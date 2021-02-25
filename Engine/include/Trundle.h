@@ -22,3 +22,4 @@
 #pragma once
 
 #include <Trundle/Core/gateway.h>
+#include <Trundle/Core/log.h>

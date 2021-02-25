@@ -1,0 +1,96 @@
+//===-- window.cpp --------------------------------------------------------===//
+//
+// Copyright 2021 Zachary Selk
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+//===----------------------------------------------------------------------===//
+#include <Trundle/Core/log.h>
+#include <Trundle/Platform/Linux/window.h>
+
+namespace Trundle {
+
+// A static flag for keeping track of the status of GLFW.
+static bool GLFWInitalized{false};
+
+// Error callback for GLFW to print what error was thrown.
+static void GLFWErrorCallback(int error, const char* description) {
+  std::stringstream ss;
+  ss << "GLFW Error " << error << ": " << description;
+  Log::Error(ss.str());
+}
+
+// Creates a new Linux window when create is called.
+Window* Window::create(const WindowProperties& properties) {
+  return new LinuxWindow(properties);
+}
+
+LinuxWindow::LinuxWindow(const WindowProperties& properties) {
+  init(properties);
+}
+
+LinuxWindow::~LinuxWindow() { shutdown(); }
+
+void LinuxWindow::init(const WindowProperties& properties) {
+  // Copy settings from properties.
+  data.title = properties.title;
+  data.width = properties.width;
+  data.height = properties.height;
+
+  std::stringstream ss;
+  ss << "Creating window " << properties.title << " with size "
+     << properties.width << "x" << properties.height;
+  Log::Trace(ss.str());
+
+  // Try initalizing glfw if not done so already.
+  // NOTE: Make sure this is handled properly when multi-threading.
+  if (!GLFWInitalized) {
+    int success = glfwInit();
+    assert(success && "GLFW could not initalize a window");
+    glfwSetErrorCallback(GLFWErrorCallback);
+    GLFWInitalized = true;
+  }
+
+  // Must be compatible with OpenGL 3.3 core.
+  // TODO: Change this when more backends are supported.
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+  window = glfwCreateWindow(data.width, data.height, data.title.c_str(),
+                            nullptr, nullptr);
+
+  glfwSetWindowUserPointer(window, &data);
+}
+
+void LinuxWindow::shutdown() { glfwDestroyWindow(window); }
+
+void LinuxWindow::onUpdate() {
+  // Check for events.
+  glfwPollEvents();
+}
+
+void LinuxWindow::setVSync(bool enable) {
+  if (enable) {
+    glfwSwapInterval(1);
+  } else {
+    glfwSwapInterval(0);
+  }
+  data.vSync = enable;
+}
+
+bool LinuxWindow::isVSync() const { return data.vSync; }
+
+void* LinuxWindow::getNativeWindow() const { return (void*)window; }
+
+} // namespace Trundle

@@ -24,6 +24,9 @@ Application* Application::instance = nullptr;
 
 Application::Application() {
   instance = this;
+
+  // Create a new window object.
+  window = Ref<Window>(Window::create());
 }
 
 Application::~Application() {}
