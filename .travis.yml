@@ -42,7 +42,7 @@ before_script:
   - env
   - mkdir build
   - cd build
-  - cmake ../Engine
+  - cmake ../Engine -DTEST_HEADLESS=On
   - pwd
 
 script:
