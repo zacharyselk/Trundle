@@ -37,10 +37,10 @@ public:
   /// @brief Default constructor
   ///
   /// @param[in] properties The properties for the new window.
-  WindowsWindow(const WindowProperties& properties);
+  LinuxWindow(const WindowProperties& properties);
 
   /// @brief Default virtual destructor.
-  virtual ~WindowsWindow();
+  virtual ~LinuxWindow();
 
   /// @brief Updates the window.
   ///

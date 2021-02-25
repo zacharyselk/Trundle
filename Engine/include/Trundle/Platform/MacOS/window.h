@@ -37,10 +37,10 @@ public:
   /// @brief Default constructor
   ///
   /// @param[in] properties The properties for the new window.
-  WindowsWindow(const WindowProperties& properties);
+  MacOSWindow(const WindowProperties& properties);
 
   /// @brief Default virtual destructor.
-  virtual ~WindowsWindow();
+  virtual ~MacOSWindow();
 
   /// @brief Updates the window.
   ///
