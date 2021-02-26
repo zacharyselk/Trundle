@@ -27,8 +27,8 @@
 #include <Trundle/common.h>
 #include <Trundle/Core/util.h>
 
-#if !defined(TRUNDLE_LEVEL)
-#define TRUNDLE_LEVEL 3
+#if !defined(TRUNDLE_LOGGING_LEVEL)
+#define TRUNDLE_LOGGING_LEVEL 3
 #endif
 
 namespace Trundle {
@@ -38,13 +38,13 @@ namespace details {
 /// @brief The levels that a logged message can be so that the log may be
 ///        filtered as nessisary.
 enum LogLevel {
-  Trace = 1,
-  Info = 2,
-  Debug = 3,
-  Warn = 4,
-  Error = 5,
-  Critical = 6,
-  None = 7
+  None=0,
+  Critical=1,
+  Error=2,
+  Warn=3,
+  Info=4,
+  Debug=5,
+  Trace=6
 };
 
 } // namespace details
@@ -66,7 +66,7 @@ const std::string reset("\033[0m");
 // Default the logging level to an environment variable passed in by the
 // compiler.
 // TODO: This should be made into a runtime option.
-constexpr int LoggingLevel = TRUNDLE_LEVEL;
+constexpr int LoggingLevel = TRUNDLE_LOGGING_LEVEL;
 
 /// @brief Logs a message to the terminal.
 ///
@@ -83,34 +83,34 @@ template <typename T> void Log(const details::LogLevel&, const T& msg) {
 /// output when the @ref LoggingLevel is set to "Trace".
 /// @param[in] msg The message to be output.
 template <typename T> void Trace(const T& msg) {
-  if constexpr (LoggingLevel <= details::LogLevel::Trace) {
+  if constexpr (LoggingLevel >= details::LogLevel::Trace) {
     std::cout << Color::white << "[TRACE]   ";
     Log(details::LogLevel::Trace, msg);
-  }
-}
-
-/// @brief Logs an info message to the terminal.
-///
-/// An info message provides information that about the current state of the
-/// Engine and settings that the Engine sets verbosity of information and is
-/// only output when the @ref LoggingLevel is set to "Info" or "Trace".
-/// @param[in] msg The message to be output.
-template <typename T> void Info(const T& msg) {
-  if constexpr (LoggingLevel <= details::LogLevel::Info) {
-    std::cout << Color::green << "[INFO]    ";
-    Log(details::LogLevel::Info, msg);
   }
 }
 
 /// @brief Logs a debug message to the terminal.
 ///
 /// A debug message provides information that may aid in debugging and is only
-/// output when the @ref LoggingLevel is set to "Debug", "Info", or "Trace".
+/// output when the @ref LoggingLevel is set to "Debug" or "Trace".
 /// @param[in] msg The message to be output.
 template <typename T> void Debug(const T& msg) {
-  if constexpr (LoggingLevel <= details::LogLevel::Debug) {
+  if constexpr (LoggingLevel >= details::LogLevel::Debug) {
     std::cout << Color::orange << "[DEBUG]   ";
     Log(details::LogLevel::Debug, msg);
+  }
+}
+
+/// @brief Logs an info message to the terminal.
+///
+/// An info message provides information that about the current state of the
+/// Engine and settings that the Engine sets and is only output when the 
+/// @ref LoggingLevel is set to "Info", "Debug", or "Trace".
+/// @param[in] msg The message to be output.
+template <typename T> void Info(const T& msg) {
+  if constexpr (LoggingLevel >= details::LogLevel::Info) {
+    std::cout << Color::green << "[INFO]    ";
+    Log(details::LogLevel::Info, msg);
   }
 }
 
@@ -118,10 +118,10 @@ template <typename T> void Debug(const T& msg) {
 ///
 /// A warning message provides information that a non-terminating issue has
 /// occured and is only output when the @ref LoggingLevel is set to "Warn", 
-/// "Debug", "Info", or "Trace".
+/// "Info", "Debug", or "Trace".
 /// @param[in] msg The message to be output.
 template <typename T> void Warn(const T& msg) {
-  if constexpr (LoggingLevel <= details::LogLevel::Warn) {
+  if constexpr (LoggingLevel >= details::LogLevel::Warn) {
     std::cout << Color::yellow << "[WARNING] ";
     Log(details::LogLevel::Warn, msg);
   }
@@ -131,10 +131,10 @@ template <typename T> void Warn(const T& msg) {
 ///
 /// An error message provides information that a recoverable or partially
 /// recoverable issue has occured and is only output when the @ref LoggingLevel 
-/// is set to "Error", "Warn", "Info", or "Trace".
+/// is set to "Error", "Info", "Warn", or "Trace".
 /// @param[in] msg The message to be output.
 template <typename T> void Error(const T& msg) {
-  if constexpr (LoggingLevel <= details::LogLevel::Error) {
+  if constexpr (LoggingLevel >= details::LogLevel::Error) {
     std::cout << Color::red << "[ERROR]   ";
     Log(details::LogLevel::Error, msg);
   }
@@ -144,10 +144,10 @@ template <typename T> void Error(const T& msg) {
 ///
 /// A critical message provides information that a non recoverable issue has 
 /// occured and is only output when the @ref LoggingLevel is set to "Critical",
-/// "Error", "Warn", "Info", or "Trace".
+/// "Error", "Info", "Warn", or "Trace".
 /// @param[in] msg The message to be output.
 template <typename T> void Critical(const T& msg) {
-  if constexpr (LoggingLevel <= details::LogLevel::Critical) {
+  if constexpr (LoggingLevel >= details::LogLevel::Critical) {
     std::cout << Color::cyan << "[CRITICAL] ";
     Log(details::LogLevel::Critical, msg);
   }

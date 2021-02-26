@@ -22,7 +22,9 @@
 //===----------------------------------------------------------------------===//
 #pragma once
 
+#include <Trundle/Core/pointer.h>
 #include <Trundle/Core/util.h>
+#include <Trundle/Core/window.h>
 #include <Trundle/common.h>
 
 namespace Trundle {
@@ -36,7 +38,10 @@ namespace Trundle {
 class TRUNDLE_API Application {
 public:
   /// @brief Default constructor.
-  Application();
+  ///
+  /// @param[in] runHeadless Sets whether or not the application should be run
+  ///                        headlessly
+  Application(bool runHeadless=false);
 
   /// @brief Default destructor.
   ~Application();
@@ -56,11 +61,13 @@ public:
   inline static Application* get() { return instance; }
 
   // Returns a pointer to the window.
-  //inline Window& getWindow() { return *window; }
+  inline Ref<Window> getWindow() { return window; }
 
 private:
   static Application* instance;
+  Ref<Window> window;
   bool running{true};
+  bool headless{false};
 };
 
 // Defined by the driver as an entry point into the engine.
@@ -70,9 +77,9 @@ private:
 /// This function is used as a stub so that the user can dictate how the
 /// @ref Application is initalized. In turn this function is called by the
 /// Engine on startup to create the @ref Application.
-/// @param argc[in] The number of arguments passed.
-/// @param argv[in] A list of the arguments passed.
-/// @param envp[in] A list of the environment variables.
+/// @param[in] argc The number of arguments passed.
+/// @param[in] argv A list of the arguments passed.
+/// @param[in] envp A list of the environment variables.
 /// @return A pointer to the created @ref Application.
 Application* CreateApplication(int* argc, char** argv, char** envp);
 

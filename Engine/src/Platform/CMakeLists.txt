@@ -1,0 +1,10 @@
+# Platform specific compilation
+if(APPLE)
+  add_subdirectory(MacOS)
+elseif(UNIX)
+  add_subdirectory(Linux)
+elseif(WIN32)
+  add_subdirectory(Windows)
+else()
+  message(FATAL_ERROR "Error: Unknown platform, aborting.")
+endif()

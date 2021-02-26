@@ -22,8 +22,14 @@ namespace Trundle {
 
 Application* Application::instance = nullptr;
 
-Application::Application() {
+Application::Application(bool runHeadless)
+  : headless(runHeadless) {
   instance = this;
+
+  // Create a new window object.
+  if (!headless) {
+    window = Ref<Window>(Window::create());
+  }
 }
 
 Application::~Application() {}

@@ -21,6 +21,8 @@
 //===----------------------------------------------------------------------===//
 #pragma once
 
+#include <memory>
+
 // On Windows we need to decorate all API classes (classes that will be used
 // by the driver) so that dynamic linking is functional. This is only needed
 // on windows however, so every other OS evaluates TRUNDLE_API to be an empty

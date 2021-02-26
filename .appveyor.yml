@@ -14,7 +14,7 @@ before_build:
   - ps: |
       mkdir build
       cd build
-      cmake ../Engine -G "Visual Studio 16 2019"
+      cmake ../Engine -G "Visual Studio 16 2019" -DTEST_HEADLESS=On
 
 build_script:
   - cmake --build .

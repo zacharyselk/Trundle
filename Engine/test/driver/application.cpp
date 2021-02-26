@@ -24,72 +24,26 @@
 #include <iostream>
 #include <sstream>
 
-using namespace Trundle;
+class TestApplication : public Trundle::Application {
+public:
+  TestApplication()
+   : Trundle::Application(HEADLESS) 
+  { 
+      printf("Engine Start\n"); 
+  }
 
-// class ExampleLayer : public Trundle::Layer {
-// public:
-//   ExampleLayer() : Layer("HelloLayer"), color(0.0, 1.0, 1.0, 1.0) {
-//     Trundle::Shader shader(renderer, "Driver/assets/basic.vs",
-//                            "Driver/assets/basic.fs");
-//     position.x = 0;
-//     position.y = 0;
+  ~TestApplication() { printf("Engine Closing\n"); }
 
-//     triangle.setWidth(1);
-//     triangle.setHeight(1);
-//     triangle.setShader(shader);
-//     triangle.set("color", color);
-//   }
-
-//   void onUpdate(Trundle::SceneRenderer& sceneRenderer) {
-//     handleKeyPress();
-//     triangle.setPosition(position.x, position.y);
-//     sceneRenderer.submit(triangle);
-//   }
-
-//   void handleKeyPress() {
-//     if (Input::isKeyDown(KeyCode::W)) {
-//       position.y += movement * Time::deltaTime();
-//     }
-//     if (Input::isKeyDown(KeyCode::S)) {
-//       position.y -= movement * Time::deltaTime();
-//     }
-//     if (Input::isKeyDown(KeyCode::A)) {
-//       position.x -= movement * Time::deltaTime();
-//     }
-//     if (Input::isKeyDown(KeyCode::D)) {
-//       position.x += movement * Time::deltaTime();
-//     }
-//   }
-
-//   void onEvent(Trundle::Event& event) override final {
-//     Trundle::Log::Info(event.toString());
-//   }
-
-// private:
-//   Trundle::Triangle triangle;
-//   glm::vec3 position;
-//   glm::vec4 color;
-//   float movement = 0.5f;
-// };
-
-// class Game : public Trundle::Application {
-// public:
-//   Game() { pushLayer(new ExampleLayer); }
-
-//   ~Game() {}
-// };
-
-// Trundle::Application* Trundle::CreateApplication() { return new Game(); }
-
-TEST(application, testDriver) {
-    ASSERT_TRUE(true);
-    ASSERT_FALSE(false);
-}
+  void SetUp() { }
+  void TearDown() { }
+};
 
 Trundle::Application* Trundle::CreateApplication(int *argc, char** argv, 
                                                  char** envp) {
-    std::cout << "Hello Engine\n";
-    ::testing::InitGoogleTest(argc, argv); 
-    RUN_ALL_TESTS();
-    return nullptr;
+  return new TestApplication();
+}
+
+TEST(Application, initialization) {
+  Trundle::Application* app = new TestApplication();
+  ASSERT_TRUE(app->get() != nullptr);
 }

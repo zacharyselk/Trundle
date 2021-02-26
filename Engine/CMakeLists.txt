@@ -52,14 +52,14 @@ if(NOT GIT_FOUND)
 endif()
 
 
-
 ## Options
 option(BUILD_TESTS "Build with tests" ON)
+option(HEADLESS_TEST "Run tests headlessly" OFF)
+set(LOG_LEVEL "3" CACHE STRING "Logging verbosity")
 
 
 ## Globals
 set(TRUNDLE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
-
 
 
 FetchContent_Declare(
@@ -97,6 +97,9 @@ FetchContent_MakeAvailable(glm)
 add_library(engine SHARED)
 set_target_properties(engine PROPERTIES VERSION 1.0.0 SOVERSION 1)
 target_compile_definitions(engine PRIVATE "TRUNDLE_BUILD_LIB")
+target_compile_definitions(engine PRIVATE "TRUNDLE_LOGGING_LEVEL=${LOG_LEVEL}")
+
+target_link_libraries(engine PRIVATE glfw)
 
 # Add all the Engine header files from Engine/include
 target_include_directories(engine PRIVATE
