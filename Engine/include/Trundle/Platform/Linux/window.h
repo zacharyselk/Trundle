@@ -26,7 +26,7 @@
 
 namespace Trundle {
 
-//===----------------------------------------------------------------------===//
+//===-- LinuxWindow -------------------------------------------------------===//
 /// @brief A representation of a window from Linux.
 ///
 /// An object that is used to interface with a window from the operating
@@ -52,13 +52,13 @@ public:
   ///
   /// Simple getter for the window width.
   /// @return The width of the window.
-  uint32_t getWidth() override final { return data.width; }
+  uint32_t getWidth() override final;
 
   /// @brief Returns the height of the window.
   ///
   /// Simple getter for the window height.
   /// @return The height of the window.
-  uint32_t getHeight() override final { return data.height; }
+  uint32_t getHeight() override final;
 
   /// @brief Setter for v-sync.
   ///
@@ -93,12 +93,16 @@ private:
     std::string title;
     uint32_t width, height;
     bool vSync;
+
+    EventCallback callback;
   };
 
   // The window's user pointer
   WindowData data;
   // A raw pointer to the windows
   GLFWwindow* window;
+  // The event handler callback.
+  EventCallback callback;
 };
 
 } // namespace Trundle
