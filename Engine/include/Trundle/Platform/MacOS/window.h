@@ -60,6 +60,14 @@ public:
   /// @return The height of the window.
   uint32_t getHeight() override final;
 
+  /// @brief Sets a callback to handle @ref Event\ s that occure.
+  ///
+  /// This function alls callbacks to be used which in turn allows for events
+  /// to be handled without the need for polling.
+  /// @param[in] callback The callback function for which will be used on
+  ///                     events handled by the window.
+  virtual void setEventCallback(const EventCallback& callback);
+
   /// @brief Setter for v-sync.
   ///
   /// An interface used to enable and disable vSync for the window.
