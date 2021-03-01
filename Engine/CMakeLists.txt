@@ -55,7 +55,7 @@ endif()
 ## Options
 option(BUILD_TESTS "Build with tests" ON)
 option(HEADLESS_TEST "Run tests headlessly" OFF)
-set(LOG_LEVEL "3" CACHE STRING "Logging verbosity")
+set(LOG_LEVEL "4" CACHE STRING "Logging verbosity")
 
 
 ## Globals

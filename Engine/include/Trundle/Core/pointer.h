@@ -25,7 +25,7 @@
 
 namespace Trundle {
 
-//===----------------------------------------------------------------------===//
+//===-- Ref ---------------------------------------------------------------===//
 /// @brief A reference pointer to a peice of data.
 ///
 /// Allows for multiple refrences to a particualr peice of data which is
@@ -34,7 +34,7 @@ namespace Trundle {
 template <typename T>
 using Ref = std::shared_ptr<T>;
 
-//===----------------------------------------------------------------------===//
+//===-- Own ---------------------------------------------------------------===//
 /// @brief A owning pointer to a peice of data.
 ///
 /// The owning pointer is the only pointer that may point to a piece of data.
@@ -43,7 +43,7 @@ using Ref = std::shared_ptr<T>;
 template <typename T>
 using Own = std::unique_ptr<T>;
 
-//===----------------------------------------------------------------------===//
+//===-- View --------------------------------------------------------------===//
 /// @brief A pointer that can view the data of a refrence pointer.
 ///
 /// A viewing pointer is only allowed to view a piece of data and cannot

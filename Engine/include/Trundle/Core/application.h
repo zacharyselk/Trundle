@@ -25,11 +25,13 @@
 #include <Trundle/Core/pointer.h>
 #include <Trundle/Core/util.h>
 #include <Trundle/Core/window.h>
+#include <Trundle/Events/event.h>
+#include <Trundle/Events/windowEvent.h>
 #include <Trundle/common.h>
 
 namespace Trundle {
 
-//===----------------------------------------------------------------------===//
+//===-- Application -------------------------------------------------------===//
 /// @brief A base class for the main application running in the Engine.
 ///
 /// @ref Application is used as a base class so that user code may be linked
@@ -40,20 +42,26 @@ public:
   /// @brief Default constructor.
   ///
   /// @param[in] runHeadless Sets whether or not the application should be run
-  ///                        headlessly
+  ///                        headlessly.
   Application(bool runHeadless=false);
 
   /// @brief Default destructor.
   ~Application();
 
-  /// @brief Main game loop of the Engine
+  /// @brief Main game loop of the Engine.
   ///
   /// Defines the game loop for the Engine. The game loop is a loop that is
   /// run on each tick or frame of the game and consits of a logic calcualtion
   /// phase and a rendering phase.
   void run();
 
-  /// @brief A getter for the singleton instance of the @ref Application
+  /// @brief Default event callback.
+  ///
+  /// Default event handler that dispatches the events to appropriot functions.
+  /// @param[in,out] event The event to handle.
+  void onEvent(Event &event);
+
+  /// @brief A getter for the singleton instance of the @ref Application.
   ///
   /// As @ref Application defines how the program is run, it is implemented as
   /// a singleton and @ref get returns a pointer to the singleton instance.
@@ -68,6 +76,10 @@ private:
   Ref<Window> window;
   bool running{true};
   bool headless{false};
+
+  // Default handler for the window close event, which simply stops the main
+  // game loop.
+  bool onWindowClose(WindowCloseEvent &event);
 };
 
 // Defined by the driver as an entry point into the engine.

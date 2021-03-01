@@ -16,6 +16,9 @@
 //
 //===----------------------------------------------------------------------===//
 #include <Trundle/Core/log.h>
+#include <Trundle/Events/keyEvent.h>
+#include <Trundle/Events/mouseEvent.h>
+#include <Trundle/Events/windowEvent.h>
 #include <Trundle/Platform/Windows/window.h>
 
 namespace Trundle {
@@ -72,13 +75,112 @@ void WindowsWindow::init(const WindowProperties& properties) {
                             nullptr, nullptr);
 
   glfwSetWindowUserPointer(window, &data);
+
+  // Set callbacks from glfw.
+  // TODO: Convert raw pointers to smart pointers.
+  //       Add modifiers to events.
+  glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode,
+                                int action, int mods) {
+    void* userPointer = glfwGetWindowUserPointer(window);
+    WindowData* data = (WindowData*)userPointer;
+
+    Event* event;
+    switch (action) {
+    case GLFW_PRESS:
+      event = new KeyPressEvent(key, false);
+      break;
+
+    case GLFW_REPEAT:
+      event = new KeyPressEvent(key, true);
+      break;
+
+    case GLFW_RELEASE:
+      event = new KeyReleaseEvent(key);
+      break;
+
+    default:
+      assert(0 && "Unreachable");
+    }
+
+    data->callback(*event);
+    delete event;
+  });
+
+  glfwSetCursorPosCallback(window, [](GLFWwindow* window, double x, double y) {
+    void* userPointer = glfwGetWindowUserPointer(window);
+    WindowData* data = (WindowData*)userPointer;
+
+    Event* event = new MouseMoveEvent(x, y);
+    data->callback(*event);
+    delete event;
+  });
+
+  glfwSetMouseButtonCallback(
+      window, [](GLFWwindow* window, int button, int action, int mod) {
+        void* userPointer = glfwGetWindowUserPointer(window);
+        WindowData* data = (WindowData*)userPointer;
+
+        Event* event;
+
+        switch (action) {
+        case GLFW_PRESS:
+          event = new MousePressEvent(button);
+          break;
+
+        case GLFW_RELEASE:
+          event = new MouseReleaseEvent(button);
+          break;
+
+        default:
+          assert(0 && "Unreachable");
+        };
+
+        data->callback(*event);
+        delete event;
+      });
+
+  glfwSetWindowSizeCallback(
+      window, [](GLFWwindow* window, int width, int height) {
+        void* userPointer = glfwGetWindowUserPointer(window);
+        WindowData* data = (WindowData*)userPointer;
+
+        data->width = width;
+        data->height = height;
+
+        Event* event = new WindowResizeEvent(width, height);
+        data->callback(*event);
+        delete event;
+      });
+
+  glfwSetWindowCloseCallback(window, [](GLFWwindow* window) {
+    void* userPointer = glfwGetWindowUserPointer(window);
+    WindowData* data = (WindowData*)userPointer;
+
+    Event* event = new WindowCloseEvent();
+    data->callback(*event);
+    delete event;
+  });
 }
 
 void WindowsWindow::shutdown() { glfwDestroyWindow(window); }
 
 void WindowsWindow::onUpdate() {
   // Check for events.
+  //Log::Warn("Hello");
   glfwPollEvents();
+  glfwSwapBuffers(window);
+}
+
+uint32_t WindowsWindow::getWidth() { 
+  return data.width; 
+}
+
+uint32_t WindowsWindow::getHeight() { 
+  return data.height; 
+}
+
+void WindowsWindow::setEventCallback(const EventCallback& callback) {
+  data.callback = callback;
 }
 
 void WindowsWindow::setVSync(bool enable) {
