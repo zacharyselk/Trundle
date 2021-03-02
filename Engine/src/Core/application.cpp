@@ -17,6 +17,7 @@
 //===----------------------------------------------------------------------===//
 #include <Trundle/Core/application.h>
 #include <Trundle/Core/log.h>
+#include <Trundle/Events/windowEvent.h>
 
 namespace Trundle {
 
@@ -29,6 +30,7 @@ Application::Application(bool runHeadless)
   // Create a new window object.
   if (!headless) {
     window = Ref<Window>(Window::create());
+    window->setEventCallback(std::bind(&Application::onEvent, this, std::placeholders::_1));
   }
 }
 
@@ -36,8 +38,24 @@ Application::~Application() {}
 
 void Application::run() {
   while (running) {
-
+    window->onUpdate();
   }
+}
+
+void Application::onEvent(Event &event) {
+  EventDispatch dispatcher(event);
+  dispatcher.dispatch<WindowCloseEvent>(
+    [this](WindowCloseEvent &e)->bool { return onWindowClose(e); });
+
+  if(!event.handled) {
+    Log::Info(event.toString());
+  }
+}
+
+bool Application::onWindowClose(WindowCloseEvent &event) {
+  running = false;
+  event.handled = true;
+  return true;
 }
 
 } // namespace Trundle

@@ -28,15 +28,17 @@
 #include <Trundle/Core/util.h>
 
 #if !defined(TRUNDLE_LOGGING_LEVEL)
-#define TRUNDLE_LOGGING_LEVEL 3
+#define TRUNDLE_LOGGING_LEVEL 4
 #endif
 
 namespace Trundle {
 namespace Log {
 namespace details {
 
+//===-- LogLevel ----------------------------------------------------------===//
 /// @brief The levels that a logged message can be so that the log may be
 ///        filtered as nessisary.
+//===----------------------------------------------------------------------===//
 enum LogLevel {
   None=0,
   Critical=1,
@@ -49,8 +51,10 @@ enum LogLevel {
 
 } // namespace details
 
+//===-- Color -------------------------------------------------------------===//
 /// @brief Escape codes for some simple colors to change the color of text in
 ///        the terminal.
+//===----------------------------------------------------------------------===//
 namespace Color {
 const std::string red("\033[0;31m");
 const std::string orange("\033[0;33m");

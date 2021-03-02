@@ -25,7 +25,7 @@
 
 namespace Trundle {
 
-//===----------------------------------------------------------------------===//
+//===-- CommandLineArgs ---------------------------------------------------===//
 /// @brief A structure to pass around all recognized command line arguments.
 //===----------------------------------------------------------------------===//
 struct CommandLineArgs {

@@ -26,7 +26,7 @@
 
 namespace Trundle {
 
-//===----------------------------------------------------------------------===//
+//===-- MacOSWindow -------------------------------------------------------===//
 /// @brief A representation of a window from MacOS.
 ///
 /// An object that is used to interface with a window from the operating
@@ -52,13 +52,21 @@ public:
   ///
   /// Simple getter for the window width.
   /// @return The width of the window.
-  uint32_t getWidth() override final { return data.width; }
+  uint32_t getWidth() override final;
 
   /// @brief Returns the height of the window.
   ///
   /// Simple getter for the window height.
   /// @return The height of the window.
-  uint32_t getHeight() override final { return data.height; }
+  uint32_t getHeight() override final;
+
+  /// @brief Sets a callback to handle @ref Event\ s that occure.
+  ///
+  /// This function alls callbacks to be used which in turn allows for events
+  /// to be handled without the need for polling.
+  /// @param[in] callback The callback function for which will be used on
+  ///                     events handled by the window.
+  virtual void setEventCallback(const EventCallback& callback);
 
   /// @brief Setter for v-sync.
   ///
@@ -93,12 +101,16 @@ private:
     std::string title;
     uint32_t width, height;
     bool vSync;
+
+    EventCallback callback;
   };
 
   // The window's user pointer
   WindowData data;
   // A raw pointer to the windows
   GLFWwindow* window;
+  // The event handler callback.
+  EventCallback callback;
 };
 
 } // namespace Trundle

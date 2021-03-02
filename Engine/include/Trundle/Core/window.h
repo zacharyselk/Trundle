@@ -23,10 +23,11 @@
 #pragma once
 
 #include <Trundle/common.h>
+#include <Trundle/Events/event.h>
 
 namespace Trundle {
 
-//==-----------------------------------------------------------------------===//
+//==-- WindowProperties ---------------------------------------------------===//
 /// @brief A collection of properties that describe a window.
 ///
 /// A struct used to pass around and configure the properties of a window.
@@ -52,7 +53,7 @@ struct WindowProperties {
       : title(str), width(w), height(h) {}
 };
 
-//===----------------------------------------------------------------------===//
+//===-- Window ------------------------------------------------------------===//
 /// @brief A representation of a window from the OS.
 ///
 /// An object that is used to interface with a window from the operating
@@ -60,6 +61,9 @@ struct WindowProperties {
 //===----------------------------------------------------------------------===//
 class Window {
 public:
+  /// @brief An alias for function callback for events.
+  using EventCallback = std::function<void(Event&)>;
+
   /// @brief Default virtual destructor.
   virtual ~Window() {}
 
@@ -80,6 +84,14 @@ public:
   /// Simple getter for the window height.
   /// @return The height of the window.
   virtual uint32_t getHeight() = 0;
+
+  /// @brief Sets a callback to handle @ref Event\ s that occure.
+  ///
+  /// This function alls callbacks to be used which in turn allows for events
+  /// to be handled without the need for polling.
+  /// @param[in] callback The callback function for which will be used on
+  ///                     events handled by the window.
+  virtual void setEventCallback(const EventCallback& callback) = 0;
 
   /// @brief Setter for v-sync.
   ///
