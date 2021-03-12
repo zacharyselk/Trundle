@@ -1,2 +1,2 @@
-add_subdirectory(driver)
-add_subdirectory(unit)
+add_subdirectory(Regression)
+add_subdirectory(Unit)

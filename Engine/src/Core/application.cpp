@@ -30,7 +30,7 @@ Application::Application(bool runHeadless)
   // Create a new window object.
   if (!headless) {
     window = Ref<Window>(Window::create());
-    window->setEventCallback(std::bind(&Application::onEvent, this, std::placeholders::_1));
+    window->setEventCallback([this](Event &e){ onEvent(e); });
   }
 }
 
@@ -38,7 +38,35 @@ Application::~Application() {}
 
 void Application::run() {
   while (running) {
+    for (auto layer : layerStack) {
+      layer->onUpdate();
+    }
+
+    if (!headless) {
+      window->onUpdate();
+    }
+  }
+}
+
+void Application::run(Ref<Event> event) {
+  // End early if the application is no longer running.
+  if (!running) {
+    return;
+  }
+
+  onEvent(*event);
+  for (auto layer : layerStack) {
+    layer->onUpdate();
+  }
+
+  if (!headless) {
     window->onUpdate();
+  }
+}
+
+void Application::run(std::vector<Ref<Event>> events) {
+  for (auto event : events) {
+    run(event);
   }
 }
 
@@ -46,6 +74,14 @@ void Application::onEvent(Event &event) {
   EventDispatch dispatcher(event);
   dispatcher.dispatch<WindowCloseEvent>(
     [this](WindowCloseEvent &e)->bool { return onWindowClose(e); });
+
+  for (auto it = layerStack.end(); it != layerStack.begin();) {
+    --it;
+    (*it)->onEvent(event);
+    if (event.handled) {
+      break;
+    }
+  }
 
   if(!event.handled) {
     Log::Info(event.toString());
@@ -56,6 +92,22 @@ bool Application::onWindowClose(WindowCloseEvent &event) {
   running = false;
   event.handled = true;
   return true;
+}
+
+void Application::pushLayer(Ref<Layer> layer) {
+  layerStack.pushLayer(layer);
+}
+
+void Application::pushOverlay(Ref<Layer> overlay) {
+  layerStack.pushOverlay(overlay);
+}
+
+void Application::popLayer(Ref<Layer> layer) {
+  layerStack.popLayer(layer);
+}
+
+void Application::popOverlay(Ref<Layer> overlay) {
+  layerStack.popOverlay(overlay);
 }
 
 } // namespace Trundle

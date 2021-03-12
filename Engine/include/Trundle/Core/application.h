@@ -22,6 +22,7 @@
 //===----------------------------------------------------------------------===//
 #pragma once
 
+#include <Trundle/Core/layerStack.h>
 #include <Trundle/Core/pointer.h>
 #include <Trundle/Core/util.h>
 #include <Trundle/Core/window.h>
@@ -55,11 +56,51 @@ public:
   /// phase and a rendering phase.
   void run();
 
+  /// @brief Used for testing the main game loop of the Engine.
+  ///
+  /// Runs the game loop with a list of external (atrificial) events passed to
+  /// it. This function will loop over the list of events and handle one event
+  /// per frame.
+  /// @param[in,out] events The events to run in the game loop. As a side 
+  ///                       effect the event that was handled can be checked 
+  ///                       with the handled flag in @ref Event .
+  void run(Ref<Event> event);
+
+  /// @brief Used for testing the main game loop of the Engine.
+  ///
+  /// Runs the game loop with a list of external (atrificial) events passed to
+  /// it. This function will loop over the list of events and handle one event
+  /// per frame.
+  /// @param[in,out] events The list of events to run in the game loop. As a
+  ///                       side effect each event that was handled can be
+  ///                       checked with the handled flag in @ref Event .
+  void run(std::vector<Ref<Event>> events);
+
   /// @brief Default event callback.
   ///
   /// Default event handler that dispatches the events to appropriot functions.
   /// @param[in,out] event The event to handle.
   void onEvent(Event &event);
+
+  /// @brief Adds a new @ref Layer to the application.
+  ///
+  /// @param[in] layer The layer to add.
+  void pushLayer(Ref<Layer> layer);
+
+  /// @brief Adds a new @ref Layer to the application as an overlay layer.
+  ///
+  /// @param[in] layer The overlay layer to add.
+  void pushOverlay(Ref<Layer> overlay);
+
+  /// @brief Removes a @ref Layer from the application.
+  ///
+  /// @param[in] layer The layer to remove.
+  void popLayer(Ref<Layer> layer);
+
+  /// @brief Removes a @ref Layer from the application as an overlay layer.
+  ///
+  /// @param[in] layer The overlay layer to remove.
+  void popOverlay(Ref<Layer> overlay);
 
   /// @brief A getter for the singleton instance of the @ref Application.
   ///
@@ -71,10 +112,16 @@ public:
   // Returns a pointer to the window.
   inline Ref<Window> getWindow() { return window; }
 
-private:
+protected:
+  // The singleton instance of the application.
   static Application* instance;
+  // A handle to the window object.
   Ref<Window> window;
+  // A stack of layers in the application.
+  LayerStack layerStack;
+  // A flag that indicates whether or not the application is running.
   bool running{true};
+  // A flag that indicates whether or not the application should run headlessly
   bool headless{false};
 
   // Default handler for the window close event, which simply stops the main

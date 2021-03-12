@@ -2,6 +2,8 @@
 set(core_include_files
   application.h
   gateway.h
+  layer.h
+  layerStack.h
   log.h
   util.h
   window.h

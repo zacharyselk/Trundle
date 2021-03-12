@@ -1,7 +1,7 @@
 add_executable(
     unitTest
     main.cpp
-    sanity.cpp
+    gtest.cpp
 )
 
 target_link_libraries(

@@ -66,7 +66,7 @@ public:
   /// to be handled without the need for polling.
   /// @param[in] callback The callback function for which will be used on
   ///                     events handled by the window.
-  virtual void setEventCallback(const EventCallback& callback);
+  virtual void setEventCallback(const EventCallback& callback) override final;
 
   /// @brief Setter for v-sync.
   ///
@@ -77,8 +77,8 @@ public:
   /// @brief Getter for v-sync.
   ///
   /// Gets the current status of v-sync for the window.
-  /// @return True if v-sync is enabled, false otherwise.verride final;
-  bool isVSync() const;
+  /// @return True if v-sync is enabled, false otherwise.
+  bool isVSync() const override final;
 
   /// @brief Getter for the raw window handler.
   ///

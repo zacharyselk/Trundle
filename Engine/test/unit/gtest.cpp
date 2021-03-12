@@ -5,11 +5,11 @@ void fail() {
     ASSERT_TRUE(false) << "Expected failure";
 }
 
-TEST(sanity, gtest) {
+TEST(gtest, sane) {
     ASSERT_TRUE(true);
     ASSERT_FALSE(false);
 }
 
-TEST(sanity, insane) {
+TEST(gtest, insane) {
     EXPECT_FATAL_FAILURE(ASSERT_TRUE(false), "Expected");
 }
