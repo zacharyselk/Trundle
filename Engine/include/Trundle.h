@@ -27,4 +27,4 @@
 #include <Trundle/Events/event.h>
 #include <Trundle/Events/keyEvent.h>
 #include <Trundle/Events/mouseEvent.h>
-#include <trundle/Events/windowEvent.h>
+#include <Trundle/Events/windowEvent.h>
