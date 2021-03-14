@@ -23,3 +23,8 @@
 
 #include <Trundle/Core/gateway.h>
 #include <Trundle/Core/log.h>
+#include <Trundle/Core/pointer.h>
+#include <Trundle/Events/event.h>
+#include <Trundle/Events/keyEvent.h>
+#include <Trundle/Events/mouseEvent.h>
+#include <Trundle/Events/windowEvent.h>
