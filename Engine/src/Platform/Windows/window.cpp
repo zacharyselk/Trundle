@@ -79,12 +79,12 @@ void WindowsWindow::init(const WindowProperties& properties) {
   // Set callbacks from glfw.
   // TODO: Convert raw pointers to smart pointers.
   //       Add modifiers to events.
-  glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode,
-                                int action, int mods) {
+  glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int /*scancode*/,
+                                int action, int /*mods*/) {
     void* userPointer = glfwGetWindowUserPointer(window);
     WindowData* data = (WindowData*)userPointer;
 
-    Event* event;
+    Event* event = nullptr;
     switch (action) {
     case GLFW_PRESS:
       event = new KeyPressEvent(key, false);
@@ -116,12 +116,11 @@ void WindowsWindow::init(const WindowProperties& properties) {
   });
 
   glfwSetMouseButtonCallback(
-      window, [](GLFWwindow* window, int button, int action, int mod) {
+      window, [](GLFWwindow* window, int button, int action, int /*mod*/) {
         void* userPointer = glfwGetWindowUserPointer(window);
         WindowData* data = (WindowData*)userPointer;
 
-        Event* event;
-
+        Event* event = nullptr;
         switch (action) {
         case GLFW_PRESS:
           event = new MousePressEvent(button);
@@ -179,8 +178,8 @@ uint32_t WindowsWindow::getHeight() {
   return data.height; 
 }
 
-void WindowsWindow::setEventCallback(const EventCallback& callback) {
-  data.callback = callback;
+void WindowsWindow::setEventCallback(const EventCallback& cb) {
+  data.callback = cb;
 }
 
 void WindowsWindow::setVSync(bool enable) {

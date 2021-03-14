@@ -142,4 +142,4 @@ protected:
 /// @return A pointer to the created @ref Application.
 Application* CreateApplication(int* argc, char** argv, char** envp);
 
-}; // namespace Trundle
+} // namespace Trundle

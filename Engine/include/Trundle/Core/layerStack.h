@@ -70,13 +70,13 @@ public:
   ///
   /// Allows for looping through the stack.
   /// @return An iterator that points to the begining of the stack.
-  std::vector<Ref<Layer>>::iterator begin();
+  std::vector<Ref<Layer>>::reverse_iterator begin();
 
   /// @brief Returns an iterator to the end ofthe stack.
   ///
   /// Allows for looping through the stack.
   /// @returns An iterator that points to the end of the stack.
-  std::vector<Ref<Layer>>::iterator end();
+  std::vector<Ref<Layer>>::reverse_iterator end();
 
   /// @breif Returns the size of the stack.
   ///

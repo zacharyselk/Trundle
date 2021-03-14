@@ -34,9 +34,9 @@
 
 // TODO: Remove this.
 #if defined(RUN_HEADLESS)
-extern bool HEADLESS = true;
+bool HEADLESS = true;
 #else
-extern bool HEADLESS = false;
+bool HEADLESS = false;
 #endif
 #endif
 
@@ -53,15 +53,17 @@ extern bool HEADLESS = false;
 extern Trundle::Application* Trundle::CreateApplication(int* argc, char** argv,
                                                         char** argp);
 
-// Running on Windows will eventually be done through winMain() rather than
-// main().
-#if defined(_WIN32)
-
-int main(int argc, char** argv, char** envp) {
 #if defined(TESTING_BUILD)
+int main(int argc, char** argv) {
   ::testing::InitGoogleTest(&argc, argv); 
   return RUN_ALL_TESTS();
-#else
+}
+
+// Running on Windows will eventually be done through winMain() rather than
+// main().
+#elif defined(_WIN32)
+
+int main(int argc, char** argv, char** envp) {
   Trundle::Log::Debug("Starting Engine\n");
   Trundle::Application* app = Trundle::CreateApplication(&argc, argv, envp);
   app->run();
@@ -69,16 +71,11 @@ int main(int argc, char** argv, char** envp) {
   Trundle::Log::Debug("Application Closed\n");
 
   return 0;
-#endif
 }
 
 #else
 
 int main(int argc, char** argv, char** envp) {
-#if defined(TESTING_BUILD)
-  ::testing::InitGoogleTest(&argc, argv); 
-  return RUN_ALL_TESTS();
-#else
   Trundle::Log::Debug("Starting the Engine");
   Trundle::Application* app = Trundle::CreateApplication(&argc, argv, envp);
   app->run();
@@ -86,7 +83,5 @@ int main(int argc, char** argv, char** envp) {
   Trundle::Log::Debug("Application Closed");
 
   return 0;
-#endif
 }
-
 #endif

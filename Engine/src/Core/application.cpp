@@ -75,8 +75,7 @@ void Application::onEvent(Event &event) {
   dispatcher.dispatch<WindowCloseEvent>(
     [this](WindowCloseEvent &e)->bool { return onWindowClose(e); });
 
-  for (auto it = layerStack.end(); it != layerStack.begin();) {
-    --it;
+  for (auto it = layerStack.begin(); it != layerStack.end(); ++it) {
     (*it)->onEvent(event);
     if (event.handled) {
       break;
