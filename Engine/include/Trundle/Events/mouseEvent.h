@@ -87,7 +87,7 @@ public:
   /// Returns a string containing the key code of the button on the mouse that
   /// was pressed.
   /// @return A string describing this event.
-  std::string toString() const override final;
+  virtual std::string toString() const override final;
 };
 
 //===-- MouseReleaseEvent -------------------------------------------------===//
@@ -127,7 +127,7 @@ public:
   /// Returns a string containing the key code of the button on the mouse that
   /// was released.
   /// @return A string describing this event.
-  std::string toString() const override final;
+  virtual std::string toString() const override final;
 };
 
 //===-- MouseMoveEvent ----------------------------------------------------===//
@@ -167,7 +167,12 @@ public:
   ///
   /// Returns a string containing the position where the mouse has moved to.
   /// @return A string describing this event.
-  std::string toString() const override final;
+  virtual std::string toString() const override final;
+
+  /// @brief Gets the x and y coordinates of the mouse.
+  ///
+  /// @return A tuple containing the x and y coordinates.
+  std::tuple<double, double> getPosition() const;
 
 private:
   // Storage for the x and y coordinates of the mouse.

@@ -18,6 +18,7 @@
 #include <Trundle/Core/application.h>
 #include <Trundle/Core/log.h>
 #include <Trundle/Events/windowEvent.h>
+#include <Trundle/Util/input.h>
 
 namespace Trundle {
 
@@ -70,20 +71,71 @@ void Application::run(std::vector<Ref<Event>> events) {
   }
 }
 
+bool Application::onKeyPress(KeyPressEvent& event) {
+  // Convert the OpenGL keycode to a Trundle keycode then register it as being
+  // pressed.
+  Input::setKeyDown(GLToTrundle(event.getKeyCode()));
+  return true;
+}
+
+bool Application::onKeyRelease(KeyReleaseEvent& event) {
+  // Convert the OpenGL keycode to a Trundle keycode then register it as being
+  // released.
+  Input::setKeyUp(GLToTrundle(event.getKeyCode()));
+  return true;
+}
+
+bool Application::onMousePress(MousePressEvent& event) {
+  // Register the mouse press.
+  Input::setMouseButtonDown(event.getMouseCode());
+  return true;
+}
+
+bool Application::onMouseRelease(MouseReleaseEvent& event) {
+  // Register the mouse release.
+  Input::setMouseButtonUp(event.getMouseCode());
+  return true;
+}
+
+bool Application::onMouseMove(MouseMoveEvent& event) {
+  // Register the mouse move.
+  auto [x, y] = event.getPosition();
+  Input::setMousePosition(x, y);
+  return true;
+}
+
 void Application::onEvent(Event &event) {
   EventDispatch dispatcher(event);
   dispatcher.dispatch<WindowCloseEvent>(
-    [this](WindowCloseEvent &e)->bool { return onWindowClose(e); });
+    [this](WindowCloseEvent &e)->bool { return onWindowClose(e); }
+  );
+  dispatcher.dispatch<KeyPressEvent>(
+    [this](KeyPressEvent &e)->bool { return onKeyPress(e); }
+  );
+  dispatcher.dispatch<KeyReleaseEvent>(
+    [this](KeyReleaseEvent &e)->bool { return onKeyRelease(e); }
+  );
+  dispatcher.dispatch<MousePressEvent>(
+    [this](MousePressEvent &e)->bool { return onMousePress(e); }
+  );
+  dispatcher.dispatch<MouseReleaseEvent>(
+    [this](MouseReleaseEvent &e)->bool { return onMouseRelease(e); }
+  );
+  dispatcher.dispatch<MouseMoveEvent>(
+    [this](MouseMoveEvent &e)->bool { return onMouseMove(e); }
+  );
 
-  for (auto it = layerStack.begin(); it != layerStack.end(); ++it) {
-    (*it)->onEvent(event);
-    if (event.handled) {
-      break;
+  if (!event.handled) {
+    for (auto it = layerStack.begin(); it != layerStack.end(); ++it) {
+      (*it)->onEvent(event);
+      if (event.handled) {
+        break;
+      }
     }
-  }
 
-  if(!event.handled) {
-    Log::Info(event.toString());
+    if(!event.handled) {
+      Log::Info(event.toString());
+    }
   }
 }
 

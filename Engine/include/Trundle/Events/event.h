@@ -111,7 +111,13 @@ public:
   /// @param[in,out] e The event to dispatch on.
   EventDispatch(Event& e);
 
-  /// @brief TODO
+  /// @brief Attempts to dispatch the event with the givent labmda.
+  ///
+  /// When given a labmda and event type this function will check if event has
+  /// the same type as the given event type and if it does it will pass the
+  /// event to the given labmda function.
+  /// @param[in] func The callback function to handle events.
+  /// @return true if this function handled the event, false otherwise.
   template <typename T> 
   bool dispatch(eventFunction<T> func)  {
   if (event.getEventType() == T::getStaticType()) {

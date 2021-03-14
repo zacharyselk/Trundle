@@ -25,6 +25,9 @@
 namespace Trundle {
 
 std::array<bool, 325> Input::keysDown{};
+std::array<bool, 3> Input::mouseButtonsDown{};
+double Input::mouseX = 0;
+double Input::mouseY = 0;
 
 bool Input::isKeyPressed(KeyCode keycode) {
   Application* app = Application::get();
@@ -42,11 +45,39 @@ void Input::setKeyUp(KeyCode keycode) {
   keysDown[static_cast<int>(keycode)] = false;
 }
 
+void Input::setMouseButtonDown(int buttonNum) {
+  assert(buttonNum == 0 || buttonNum == 1 || buttonNum == 2 
+         && "Not a mouse button");
+  mouseButtonsDown[buttonNum] = true;
+}
+
+void Input::setMouseButtonUp(int buttonNum) {
+  assert(buttonNum == 0 || buttonNum == 1 || buttonNum == 2 
+         && "Not a mouse button");
+  mouseButtonsDown[buttonNum] = false;
+}
+
+void Input::setMousePosition(double x, double y) {
+  assert(x >= 0 && y >= 0 && "Invalid mouse position");
+  mouseX = x;
+  mouseY = y;
+}
+
+void Input::setMousePositionX(double x) {
+  assert(x >= 0 && "Invalid mouse position");
+  mouseX = x;
+}
+
+void Input::setMousePositionY(double y) {
+  assert(y >= 0 && "Invalid mouse position");
+  mouseY = y;
+}
+
 // TODO: Add some sort of keyup handling
 void Input::handleKeysDown(std::function<void(KeyCode)> func) {
   for (size_t i = 0; i < keysDown.size(); ++i) {
     if (keysDown[i]) {
-      if (!isKeyPressed(static_cast<KeyCode>(i))) {
+      if (!isKeyDown(static_cast<KeyCode>(i))) {
         keysDown[i] = false;
         continue;
       } else {
@@ -62,6 +93,30 @@ bool Input::isKeyDown(KeyCode keycode) {
 
 bool Input::isKeyUp(KeyCode keycode) {
   return !keysDown[static_cast<int>(keycode)];
+}
+
+bool Input::isMouseButtonDown(int buttonNum) {
+  assert(buttonNum == 0 || buttonNum == 1 || buttonNum == 2 
+         && "Not a mouse button");
+  return mouseButtonsDown[buttonNum];
+}
+
+bool Input::isMouseButtonUp(int buttonNum) {
+  assert(buttonNum == 0 || buttonNum == 1 || buttonNum == 2 
+         && "Not a mouse button");
+  return !mouseButtonsDown[buttonNum];
+}
+
+std::tuple<double, double> Input::getMousePosition() {
+  return {mouseX, mouseY};
+}
+
+double Input::getMousePositionX() {
+  return mouseX;
+}
+
+double Input::getMousePositionY() {
+  return mouseY;
 }
 
 } // namespace Trundle

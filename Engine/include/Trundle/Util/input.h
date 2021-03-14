@@ -516,6 +516,8 @@ inline KeyCode GLToTrundle(int keycode) {
   default:
     assert(0 && "Error: Unhandled GLFW case");
   }
+
+  return KeyCode::None;
 }
 
 } // namespace Trundle

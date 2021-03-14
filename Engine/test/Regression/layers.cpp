@@ -101,7 +101,7 @@ TEST_F(Layers, OnUpdate) {
 TEST_F(Layers, OnEvent) {
   auto layer = std::make_shared<LayerA>();
   auto overlay = std::make_shared<LayerA>();
-  auto event = std::make_shared<Trundle::MouseMoveEvent>(1,1);
+  auto event = std::make_shared<Trundle::WindowResizeEvent>(1,1);
 
   pushLayer(layer);
   run(event);
