@@ -101,6 +101,10 @@ std::string MouseMoveEvent::toString() const {
   ss << "Recieved MouseMoveEvent at position (" << x << ", " << y << ")";
   return ss.str();
 }
+
+std::tuple<double, double> MouseMoveEvent::getPosition() const {
+  return {x, y};
+}
 //===----------------------------------------------------------------------===//
 
 } // namespace Trundle

@@ -25,13 +25,13 @@ LayerStack::LayerStack()
 LayerStack::~LayerStack() {}
 
 void LayerStack::pushLayer(Ref<Layer> layer) {
-  layers.emplace(layers.begin() + it, layer);
+  layers.insert(layers.begin() + it, layer);
   ++it;
   layer->onAttach();
 }
 
 void LayerStack::pushOverlay(Ref<Layer> overlay) {
-  layers.emplace_back(overlay);
+  layers.push_back(overlay);
   overlay->onAttach();
 }
 
@@ -52,12 +52,12 @@ void LayerStack::popOverlay(Ref<Layer> overlay) {
   }
 }
 
-std::vector<Ref<Layer>>::iterator LayerStack::begin() {
-  return layers.begin();
+std::vector<Ref<Layer>>::reverse_iterator LayerStack::begin() {
+  return layers.rbegin();
 }
 
-std::vector<Ref<Layer>>::iterator LayerStack::end() {
-  return layers.end();
+std::vector<Ref<Layer>>::reverse_iterator LayerStack::end() {
+  return layers.rend();
 }
 
 size_t LayerStack::size() {

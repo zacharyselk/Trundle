@@ -24,6 +24,9 @@
 #include <memory>
 #include <iostream>
 
+// Hard coding keycode.
+int GLFW_KEY_A = 65;
+
 class Events : public Trundle::Application, public testing::Test {
 public:
   Events()
@@ -37,33 +40,33 @@ protected:
 };
 
 //===-- Key Events -----------------------------------------------------===//
-TEST_F(Events, DISABLED_KeyPressEvent) {
-  auto event = std::make_shared<Trundle::KeyPressEvent>(1, 0);
+TEST_F(Events, KeyPressEvent) {
+  auto event = std::make_shared<Trundle::KeyPressEvent>(GLFW_KEY_A, 0);
   run(event);
   ASSERT_TRUE(event->handled) << "KeyPressEvent was not handled";  
 }
 
-TEST_F(Events, DISABLED_KeyReleaseEvent) {
-  auto event = std::make_shared<Trundle::KeyReleaseEvent>(1);
+TEST_F(Events, KeyReleaseEvent) {
+  auto event = std::make_shared<Trundle::KeyReleaseEvent>(GLFW_KEY_A);
   run(event);
   ASSERT_TRUE(event->handled) << "KeyReleaseEvent was not handled";
 }
 //===----------------------------------------------------------------------===//
 
 //===-- Mouse Events -----------------------------------------------------===//
-TEST_F(Events, DISABLED_MousePressEvent) {
+TEST_F(Events, MousePressEvent) {
   auto event = std::make_shared<Trundle::MousePressEvent>(1);
   run(event);
   ASSERT_TRUE(event->handled) << "MousePressEvent was not handled";  
 }
 
-TEST_F(Events, DISABLED_MouseReleaseEvent) {
+TEST_F(Events, MouseReleaseEvent) {
   auto event = std::make_shared<Trundle::MouseReleaseEvent>(1);
   run(event);
   ASSERT_TRUE(event->handled) << "MouseReleaseEvent was not handled";
 }
 
-TEST_F(Events, DISABLED_MouseMoveEvent) {
+TEST_F(Events, MouseMoveEvent) {
   auto event = std::make_shared<Trundle::MouseMoveEvent>(10, 10);
   run(event);
   ASSERT_TRUE(event->handled) << "MouseMoveEvent was not handled";

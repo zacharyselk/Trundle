@@ -1,16 +1,3 @@
-add_executable(
-    unitTest
-    main.cpp
-    gtest.cpp
-)
+add_unit_test(unitTest gtest.cpp)
 
-target_link_libraries(
-    unitTest
-    gtest_main
-)
-
-gtest_add_tests(
-    unitTest
-    ""
-    AUTO
-)
+add_subdirectory(Trundle)

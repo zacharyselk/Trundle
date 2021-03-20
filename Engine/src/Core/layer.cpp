@@ -30,7 +30,7 @@ void Layer::onDetach() {}
 
 void Layer::onUpdate() {}
 
-void Layer::onEvent(Event& event) {}
+void Layer::onEvent(Event&) {}
 
 const std::string& Layer::getName() {
     return name;

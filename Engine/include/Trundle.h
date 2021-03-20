@@ -22,6 +22,7 @@
 #pragma once
 
 #include <Trundle/Core/gateway.h>
+#include <Trundle/Core/keyCode.h>
 #include <Trundle/Core/log.h>
 #include <Trundle/Core/pointer.h>
 #include <Trundle/Events/event.h>

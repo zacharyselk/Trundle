@@ -79,8 +79,8 @@ void LinuxWindow::init(const WindowProperties& properties) {
   // Set callbacks from glfw.
   // TODO: Convert raw pointers to smart pointers.
   //       Add modifiers to events.
-  glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode,
-                                int action, int mods) {
+  glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int /*scancode*/,
+                                int action, int /*mods*/) {
     void* userPointer = glfwGetWindowUserPointer(window);
     WindowData* data = (WindowData*)userPointer;
 
@@ -116,7 +116,7 @@ void LinuxWindow::init(const WindowProperties& properties) {
   });
 
   glfwSetMouseButtonCallback(
-      window, [](GLFWwindow* window, int button, int action, int mod) {
+      window, [](GLFWwindow* window, int button, int action, int /*mod*/) {
         void* userPointer = glfwGetWindowUserPointer(window);
         WindowData* data = (WindowData*)userPointer;
 

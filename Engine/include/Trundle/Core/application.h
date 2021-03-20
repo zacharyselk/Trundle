@@ -22,11 +22,15 @@
 //===----------------------------------------------------------------------===//
 #pragma once
 
+#include <Trundle/Core/input.h>
+#include <Trundle/Core/keyCode.h>
 #include <Trundle/Core/layerStack.h>
 #include <Trundle/Core/pointer.h>
 #include <Trundle/Core/util.h>
 #include <Trundle/Core/window.h>
 #include <Trundle/Events/event.h>
+#include <Trundle/Events/keyEvent.h>
+#include <Trundle/Events/mouseEvent.h>
 #include <Trundle/Events/windowEvent.h>
 #include <Trundle/common.h>
 
@@ -75,6 +79,46 @@ public:
   ///                       side effect each event that was handled can be
   ///                       checked with the handled flag in @ref Event .
   void run(std::vector<Ref<Event>> events);
+
+  /// @brief Callback function that handles the @ref KeyPressEvent.
+  ///
+  /// Whenever a @ref KeyPressEvent is encountered this function is called to
+  /// attempt to handle it.
+  /// @param[in,out] event The event to handle.
+  /// @return true if the event was handled and false otherwise.
+  bool onKeyPress(KeyPressEvent& event);
+
+  /// @brief Callback function that handles the @ref KeyReleaseEvent.
+  ///
+  /// Whenever a @ref KeyReleaseEvent is encountered this function is called to
+  /// attempt to handle it.
+  /// @param[in,out] event The event to handle.
+  /// @return true if the event was handled and false otherwise.
+  bool onKeyRelease(KeyReleaseEvent& event);
+
+  /// @brief Callback function that handles the @ref MousePressEvent.
+  ///
+  /// Whenever a @ref MousePressEvent is encountered this function is called
+  /// to attempt to handle it.
+  /// @param[in,out] event The event to handle.
+  /// @return true if the event was handled and false otherwise.
+  bool onMousePress(MousePressEvent& event);
+
+  /// @brief Callback function that handles the @ref MouseReleaseEvent.
+  ///
+  /// Whenever a @ref MouseReleaseEvent is encountered this function is called
+  /// to attempt to handle it.
+  /// @param[in,out] event The event to handle.
+  /// @return true if the event was handled and false otherwise.
+  bool onMouseRelease(MouseReleaseEvent& event);
+
+  /// @brief Callback function that handles the @ref MouseMoveEvent.
+  ///
+  /// Whenever a @ref MouseMoveEvent is encountered this function is called
+  /// to attempt to handle it.
+  /// @param[in,out] event The event to handle.
+  /// @return true if the event was handled and false otherwise.
+  bool onMouseMove(MouseMoveEvent& event);
 
   /// @brief Default event callback.
   ///
@@ -142,4 +186,4 @@ protected:
 /// @return A pointer to the created @ref Application.
 Application* CreateApplication(int* argc, char** argv, char** envp);
 
-}; // namespace Trundle
+} // namespace Trundle
