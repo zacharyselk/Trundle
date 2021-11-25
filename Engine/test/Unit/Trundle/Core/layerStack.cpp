@@ -15,22 +15,20 @@
 // limitations under the License.
 //
 //===----------------------------------------------------------------------===//
-#include <gtest/gtest.h>
 #include <Trundle/Core/layerStack.h>
+#include <gtest/gtest.h>
 
 TEST(LayerStack, DefaultConstructor) {
   Trundle::LayerStack stack;
   stack.size();
-  EXPECT_EQ(0u, stack.size())
-    << "Stack should be empty when initalized";
+  EXPECT_EQ(0u, stack.size()) << "Stack should be empty when initalized";
 }
 
 TEST(LayerStack, PushLayer) {
   Trundle::LayerStack stack;
   auto layer = std::make_shared<Trundle::Layer>();
   stack.pushLayer(layer);
-  EXPECT_EQ(1u, stack.size())
-    << "Stack should contain exactly 1 layer";
+  EXPECT_EQ(1u, stack.size()) << "Stack should contain exactly 1 layer";
   EXPECT_EQ(layer, *stack.begin());
 }
 
@@ -39,16 +37,14 @@ TEST(LayerStack, PopLayer) {
   auto layer = std::make_shared<Trundle::Layer>();
   stack.pushLayer(layer);
   stack.popLayer(layer);
-  EXPECT_EQ(0u, stack.size())
-    << "Stack should contain no layers after pop";
+  EXPECT_EQ(0u, stack.size()) << "Stack should contain no layers after pop";
 }
 
 TEST(LayerStack, PushOverlay) {
   Trundle::LayerStack stack;
   auto overlay = std::make_shared<Trundle::Layer>();
   stack.pushOverlay(overlay);
-  EXPECT_EQ(1u, stack.size())
-    << "Stach should have exactly 1 layer";
+  EXPECT_EQ(1u, stack.size()) << "Stach should have exactly 1 layer";
 }
 
 TEST(LayerStack, PopOverlay) {
@@ -56,8 +52,7 @@ TEST(LayerStack, PopOverlay) {
   auto overlay = std::make_shared<Trundle::Layer>();
   stack.pushOverlay(overlay);
   stack.popOverlay(overlay);
-  EXPECT_EQ(0u, stack.size())
-    << "Stack should contain no layers after pop";
+  EXPECT_EQ(0u, stack.size()) << "Stack should contain no layers after pop";
 }
 
 TEST(LayerStack, PopNonExistingLayer) {
@@ -67,7 +62,7 @@ TEST(LayerStack, PopNonExistingLayer) {
   stack.pushLayer(layer1);
   stack.popLayer(layer2);
   EXPECT_EQ(1u, stack.size())
-    << "Invalid pop should not have removed any layers";
+      << "Invalid pop should not have removed any layers";
 }
 
 TEST(LayerStack, PopNonExistingOverlay) {
@@ -77,7 +72,7 @@ TEST(LayerStack, PopNonExistingOverlay) {
   stack.pushOverlay(overlay1);
   stack.popOverlay(overlay2);
   EXPECT_EQ(1u, stack.size())
-    << "Invalid pop should not have removed any layers";
+      << "Invalid pop should not have removed any layers";
 }
 
 TEST(LayerStack, Begin) {
@@ -87,11 +82,11 @@ TEST(LayerStack, Begin) {
   stack.pushLayer(layer2);
   stack.pushLayer(layer1);
   EXPECT_EQ(layer1.get(), stack.begin()->get())
-    << "Top of the stack is not correct";
+      << "Top of the stack is not correct";
   EXPECT_NE(layer2.get(), stack.begin()->get())
-    << "Layers are in the wrong order";
-  EXPECT_EQ(layer2.get(), (stack.begin()+1)->get())
-    << "Bottom of the stack is not correct";
+      << "Layers are in the wrong order";
+  EXPECT_EQ(layer2.get(), (stack.begin() + 1)->get())
+      << "Bottom of the stack is not correct";
 }
 
 TEST(LayerStack, End) {
@@ -100,10 +95,8 @@ TEST(LayerStack, End) {
   auto layer2 = std::make_shared<Trundle::Layer>();
   stack.pushLayer(layer2);
   stack.pushLayer(layer1);
-  EXPECT_EQ(layer2, *(stack.end()-1))
-    << "Bottom of the stack is not correct";
-  EXPECT_EQ(layer1, *(stack.end()-2))
-    << "Top of the stack is not correct";
+  EXPECT_EQ(layer2, *(stack.end() - 1)) << "Bottom of the stack is not correct";
+  EXPECT_EQ(layer1, *(stack.end() - 2)) << "Top of the stack is not correct";
 }
 
 TEST(LayerStack, LoopThroughLayers) {
@@ -112,16 +105,17 @@ TEST(LayerStack, LoopThroughLayers) {
   auto layer2 = std::make_shared<Trundle::Layer>();
   size_t count = 0;
   ASSERT_EQ(stack.begin(), stack.end())
-    << "begin iterator and end iterator should be equal in an empty stack";
+      << "begin iterator and end iterator should be equal in an empty stack";
   stack.pushLayer(layer1);
   stack.pushLayer(layer2);
   ASSERT_NE(stack.begin(), stack.end())
-    << "begin iterator and end iterator should not be equal in a non-empty stack";
-  ASSERT_EQ(stack.begin()+2, stack.end())
-    << "begin iterator and end iterator should have a distance of 2";
-  for (auto it = stack.begin(); it != stack.end(); ++it, ++count);
-  EXPECT_EQ(2u, count)
-    << "Iterators did not iterate over all the elements";
+      << "begin iterator and end iterator should not be equal in a non-empty "
+         "stack";
+  ASSERT_EQ(stack.begin() + 2, stack.end())
+      << "begin iterator and end iterator should have a distance of 2";
+  for (auto it = stack.begin(); it != stack.end(); ++it, ++count)
+    ;
+  EXPECT_EQ(2u, count) << "Iterators did not iterate over all the elements";
 }
 
 TEST(LayerStack, LayerOrdering) {
@@ -139,27 +133,27 @@ TEST(LayerStack, LayerOrdering) {
   stack.pushOverlay(overlay2);
   stack.pushOverlay(overlay3);
   EXPECT_EQ(overlay3, *stack.begin())
-    << "Incorrect first element from the begining";
-  EXPECT_EQ(overlay2, *(stack.begin()+1))
-    << "Incorrect second element from the begining";
-  EXPECT_EQ(overlay1, *(stack.begin()+2))
-    << "Incorrect third element from the begining";
-  EXPECT_EQ(layer3, *(stack.begin()+3))
-    << "Incorrect fourth element from the begining";
-  EXPECT_EQ(layer2, *(stack.begin()+4))
-    << "Incorrect fifth element from the begining";
-  EXPECT_EQ(layer1, *(stack.begin()+5))
-    << "Incorrect sixth element from the begining";
-  EXPECT_EQ(layer1, *(stack.end()-1))
-    << "Incorrect first element from the end";
-  EXPECT_EQ(layer2, *(stack.end()-2))
-    << "Incorrect second element from the end";
-  EXPECT_EQ(layer3, *(stack.end()-3))
-    << "Incorrect third element from the end";
-  EXPECT_EQ(overlay1, *(stack.end()-4))
-    << "Incorrect fourth element from the end";
-  EXPECT_EQ(overlay2, *(stack.end()-5))
-    << "Incorrect fifth element from the end";
-  EXPECT_EQ(overlay3, *(stack.end()-6))
-    << "Incorrect sixth element from the end";
+      << "Incorrect first element from the begining";
+  EXPECT_EQ(overlay2, *(stack.begin() + 1))
+      << "Incorrect second element from the begining";
+  EXPECT_EQ(overlay1, *(stack.begin() + 2))
+      << "Incorrect third element from the begining";
+  EXPECT_EQ(layer3, *(stack.begin() + 3))
+      << "Incorrect fourth element from the begining";
+  EXPECT_EQ(layer2, *(stack.begin() + 4))
+      << "Incorrect fifth element from the begining";
+  EXPECT_EQ(layer1, *(stack.begin() + 5))
+      << "Incorrect sixth element from the begining";
+  EXPECT_EQ(layer1, *(stack.end() - 1))
+      << "Incorrect first element from the end";
+  EXPECT_EQ(layer2, *(stack.end() - 2))
+      << "Incorrect second element from the end";
+  EXPECT_EQ(layer3, *(stack.end() - 3))
+      << "Incorrect third element from the end";
+  EXPECT_EQ(overlay1, *(stack.end() - 4))
+      << "Incorrect fourth element from the end";
+  EXPECT_EQ(overlay2, *(stack.end() - 5))
+      << "Incorrect fifth element from the end";
+  EXPECT_EQ(overlay3, *(stack.end() - 6))
+      << "Incorrect sixth element from the end";
 }

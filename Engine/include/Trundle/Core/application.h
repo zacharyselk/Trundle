@@ -48,7 +48,7 @@ public:
   ///
   /// @param[in] runHeadless Sets whether or not the application should be run
   ///                        headlessly.
-  Application(bool runHeadless=false);
+  Application(bool runHeadless = false);
 
   /// @brief Default destructor.
   ~Application();
@@ -65,8 +65,8 @@ public:
   /// Runs the game loop with a list of external (atrificial) events passed to
   /// it. This function will loop over the list of events and handle one event
   /// per frame.
-  /// @param[in,out] events The events to run in the game loop. As a side 
-  ///                       effect the event that was handled can be checked 
+  /// @param[in,out] events The events to run in the game loop. As a side
+  ///                       effect the event that was handled can be checked
   ///                       with the handled flag in @ref Event .
   void run(Ref<Event> event);
 
@@ -124,7 +124,7 @@ public:
   ///
   /// Default event handler that dispatches the events to appropriot functions.
   /// @param[in,out] event The event to handle.
-  void onEvent(Event &event);
+  void onEvent(Event& event);
 
   /// @brief Adds a new @ref Layer to the application.
   ///
@@ -170,11 +170,11 @@ protected:
 
   // Default handler for the window close event, which simply stops the main
   // game loop.
-  bool onWindowClose(WindowCloseEvent &event);
+  bool onWindowClose(WindowCloseEvent& event);
 };
 
 // Defined by the driver as an entry point into the engine.
-/// @brief External function that describes how to initalize the 
+/// @brief External function that describes how to initalize the
 ///        @ref Application.
 ///
 /// This function is used as a stub so that the user can dictate how the

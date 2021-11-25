@@ -46,14 +46,14 @@ void Input::setKeyUp(KeyCode keycode) {
 }
 
 void Input::setMouseButtonDown(int buttonNum) {
-  assert(buttonNum == 0 || buttonNum == 1 || buttonNum == 2 
-         && "Not a mouse button");
+  assert(buttonNum == 0 || buttonNum == 1 ||
+         (buttonNum == 2 && "Not a mouse button"));
   mouseButtonsDown[buttonNum] = true;
 }
 
 void Input::setMouseButtonUp(int buttonNum) {
-  assert(buttonNum == 0 || buttonNum == 1 || buttonNum == 2 
-         && "Not a mouse button");
+  assert(buttonNum == 0 || buttonNum == 1 ||
+         (buttonNum == 2 && "Not a mouse button"));
   mouseButtonsDown[buttonNum] = false;
 }
 
@@ -96,14 +96,14 @@ bool Input::isKeyUp(KeyCode keycode) {
 }
 
 bool Input::isMouseButtonDown(int buttonNum) {
-  assert(buttonNum == 0 || buttonNum == 1 || buttonNum == 2 
-         && "Not a mouse button");
+  assert(buttonNum == 0 || buttonNum == 1 ||
+         (buttonNum == 2 && "Not a mouse button"));
   return mouseButtonsDown[buttonNum];
 }
 
 bool Input::isMouseButtonUp(int buttonNum) {
-  assert(buttonNum == 0 || buttonNum == 1 || buttonNum == 2 
-         && "Not a mouse button");
+  assert(buttonNum == 0 || buttonNum == 1 ||
+         (buttonNum == 2 && "Not a mouse button"));
   return !mouseButtonsDown[buttonNum];
 }
 
@@ -111,12 +111,8 @@ std::tuple<double, double> Input::getMousePosition() {
   return {mouseX, mouseY};
 }
 
-double Input::getMousePositionX() {
-  return mouseX;
-}
+double Input::getMousePositionX() { return mouseX; }
 
-double Input::getMousePositionY() {
-  return mouseY;
-}
+double Input::getMousePositionY() { return mouseY; }
 
 } // namespace Trundle

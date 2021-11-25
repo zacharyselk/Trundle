@@ -1,4 +1,5 @@
-//===-- windowEvent.cpp ----------------------------------------------------===//
+//===-- windowEvent.cpp
+//----------------------------------------------------===//
 //
 // Copyright 2021 Zachary Selk
 //
@@ -19,48 +20,35 @@
 
 namespace Trundle {
 
-//===-- WindowCloseEvent ---------------------------------------------------===//
+//===-- WindowCloseEvent
+//---------------------------------------------------===//
 WindowCloseEvent::WindowCloseEvent() {}
 
-EventType WindowCloseEvent::getStaticType() { 
-  return EventType::WindowClose;
-}
+EventType WindowCloseEvent::getStaticType() { return EventType::WindowClose; }
 
-EventType WindowCloseEvent::getEventType() const { 
-  return getStaticType();
-}
+EventType WindowCloseEvent::getEventType() const { return getStaticType(); }
 
-const char* WindowCloseEvent::getName() const { 
-  return "WindowClose";
-}
+const char* WindowCloseEvent::getName() const { return "WindowClose"; }
 
 std::string WindowCloseEvent::toString() const {
   return std::string("Recieved WindowCloseEvent");
 }
 //===----------------------------------------------------------------------===//
 
+//===-- WindowResizeEvent
+//---------------------------------------------------===//
+WindowResizeEvent::WindowResizeEvent(int w, int h) : width(w), height(h) {}
 
-//===-- WindowResizeEvent ---------------------------------------------------===//
-WindowResizeEvent::WindowResizeEvent(int w, int h)
-: width(w), height(h) {}
+EventType WindowResizeEvent::getStaticType() { return EventType::WindowResize; }
 
-EventType WindowResizeEvent::getStaticType() { 
-  return EventType::WindowResize;
-}
+EventType WindowResizeEvent::getEventType() const { return getStaticType(); }
 
-EventType WindowResizeEvent::getEventType() const { 
-  return getStaticType();
-}
-
-const char* WindowResizeEvent::getName() const { 
-  return "WindowResize";
-}
+const char* WindowResizeEvent::getName() const { return "WindowResize"; }
 
 std::string WindowResizeEvent::toString() const {
   // TODO: Replace with something better than a stringstream.
   std::stringstream ss;
-  ss << "Recieved WindowResizeEvent with dimensions " << width << "x"
-     << height;
+  ss << "Recieved WindowResizeEvent with dimensions " << width << "x" << height;
   return ss.str();
 }
 //===----------------------------------------------------------------------===//

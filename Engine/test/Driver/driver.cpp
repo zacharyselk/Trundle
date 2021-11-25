@@ -20,8 +20,8 @@
 //
 //===----------------------------------------------------------------------===//
 #include <Trundle.h>
-#include <memory>
 #include <iostream>
+#include <memory>
 
 class LayerA : public Trundle::Layer {
 public:
@@ -30,8 +30,9 @@ public:
 
 class Application : public Trundle::Application {
 public:
-  Application()
-   : Trundle::Application() { pushLayer(std::make_shared<LayerA>()); }
+  Application() : Trundle::Application() {
+    pushLayer(std::make_shared<LayerA>());
+  }
 
   ~Application() {}
 };

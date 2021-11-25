@@ -24,8 +24,8 @@
 //===----------------------------------------------------------------------===//
 #pragma once
 
-#include <Trundle/common.h>
 #include <Trundle/Core/util.h>
+#include <Trundle/common.h>
 
 #if !defined(TRUNDLE_LOGGING_LEVEL)
 #define TRUNDLE_LOGGING_LEVEL 4
@@ -40,13 +40,13 @@ namespace details {
 ///        filtered as nessisary.
 //===----------------------------------------------------------------------===//
 enum LogLevel {
-  None=0,
-  Critical=1,
-  Error=2,
-  Warn=3,
-  Info=4,
-  Debug=5,
-  Trace=6
+  None = 0,
+  Critical = 1,
+  Error = 2,
+  Warn = 3,
+  Info = 4,
+  Debug = 5,
+  Trace = 6
 };
 
 } // namespace details
@@ -108,7 +108,7 @@ template <typename T> void Debug(const T& msg) {
 /// @brief Logs an info message to the terminal.
 ///
 /// An info message provides information that about the current state of the
-/// Engine and settings that the Engine sets and is only output when the 
+/// Engine and settings that the Engine sets and is only output when the
 /// @ref LoggingLevel is set to "Info", "Debug", or "Trace".
 /// @param[in] msg The message to be output.
 template <typename T> void Info(const T& msg) {
@@ -121,7 +121,7 @@ template <typename T> void Info(const T& msg) {
 /// @brief Logs a warning message to the terminal.
 ///
 /// A warning message provides information that a non-terminating issue has
-/// occured and is only output when the @ref LoggingLevel is set to "Warn", 
+/// occured and is only output when the @ref LoggingLevel is set to "Warn",
 /// "Info", "Debug", or "Trace".
 /// @param[in] msg The message to be output.
 template <typename T> void Warn(const T& msg) {
@@ -134,7 +134,7 @@ template <typename T> void Warn(const T& msg) {
 /// @brief Logs an error message to the terminal.
 ///
 /// An error message provides information that a recoverable or partially
-/// recoverable issue has occured and is only output when the @ref LoggingLevel 
+/// recoverable issue has occured and is only output when the @ref LoggingLevel
 /// is set to "Error", "Info", "Warn", or "Trace".
 /// @param[in] msg The message to be output.
 template <typename T> void Error(const T& msg) {
@@ -146,7 +146,7 @@ template <typename T> void Error(const T& msg) {
 
 /// @brief Logs a critical message to the terminal.
 ///
-/// A critical message provides information that a non recoverable issue has 
+/// A critical message provides information that a non recoverable issue has
 /// occured and is only output when the @ref LoggingLevel is set to "Critical",
 /// "Error", "Info", "Warn", or "Trace".
 /// @param[in] msg The message to be output.

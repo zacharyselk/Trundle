@@ -20,30 +20,20 @@
 namespace Trundle {
 
 //===-- KeyEvent ----------------------------------------------------------===//
-KeyEvent::KeyEvent(int keyCode) 
-: keyCode(keyCode) {}
+KeyEvent::KeyEvent(int keyCode) : keyCode(keyCode) {}
 
-int KeyEvent::getKeyCode() const { 
-  return keyCode; 
-}
+int KeyEvent::getKeyCode() const { return keyCode; }
 //===----------------------------------------------------------------------===//
-
 
 //===-- KeyPressEvent -----------------------------------------------------===//
 KeyPressEvent::KeyPressEvent(int keyCode, bool repeatEvent)
-: KeyEvent(keyCode), repeatEvent(repeatEvent) {}
+    : KeyEvent(keyCode), repeatEvent(repeatEvent) {}
 
-EventType KeyPressEvent::getStaticType() { 
-  return EventType::KeyPress;
-}
+EventType KeyPressEvent::getStaticType() { return EventType::KeyPress; }
 
-EventType KeyPressEvent::getEventType() const { 
-  return getStaticType();
-}
+EventType KeyPressEvent::getEventType() const { return getStaticType(); }
 
-const char* KeyPressEvent::getName() const { 
-  return "KeyPress";
-}
+const char* KeyPressEvent::getName() const { return "KeyPress"; }
 
 std::string KeyPressEvent::toString() const {
   // TODO: Replace with something better than a stringstream.
@@ -54,22 +44,14 @@ std::string KeyPressEvent::toString() const {
 }
 //===----------------------------------------------------------------------===//
 
-
 //===-- KeyReleaseEvent ---------------------------------------------------===//
-KeyReleaseEvent::KeyReleaseEvent(int keyCode)
-: KeyEvent(keyCode) {}
+KeyReleaseEvent::KeyReleaseEvent(int keyCode) : KeyEvent(keyCode) {}
 
-EventType KeyReleaseEvent::getStaticType() {
-  return EventType::KeyRelease; 
-}
+EventType KeyReleaseEvent::getStaticType() { return EventType::KeyRelease; }
 
-EventType KeyReleaseEvent::getEventType() const { 
-  return getStaticType();
-}
+EventType KeyReleaseEvent::getEventType() const { return getStaticType(); }
 
-const char* KeyReleaseEvent::getName() const {
-  return "Key Release";
-}
+const char* KeyReleaseEvent::getName() const { return "Key Release"; }
 
 std::string KeyReleaseEvent::toString() const {
   // TODO: Replace with something better than a stringstream.

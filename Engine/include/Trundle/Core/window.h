@@ -22,8 +22,8 @@
 //===----------------------------------------------------------------------===//
 #pragma once
 
-#include <Trundle/common.h>
 #include <Trundle/Events/event.h>
+#include <Trundle/common.h>
 
 namespace Trundle {
 

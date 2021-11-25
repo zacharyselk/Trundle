@@ -166,18 +166,14 @@ void LinuxWindow::shutdown() { glfwDestroyWindow(window); }
 
 void LinuxWindow::onUpdate() {
   // Check for events.
-  //Log::Warn("Hello");
+  // Log::Warn("Hello");
   glfwPollEvents();
   glfwSwapBuffers(window);
 }
 
-uint32_t LinuxWindow::getWidth() { 
-  return data.width; 
-}
+uint32_t LinuxWindow::getWidth() { return data.width; }
 
-uint32_t LinuxWindow::getHeight() { 
-  return data.height; 
-}
+uint32_t LinuxWindow::getHeight() { return data.height; }
 
 void LinuxWindow::setEventCallback(const EventCallback& callback) {
   data.callback = callback;

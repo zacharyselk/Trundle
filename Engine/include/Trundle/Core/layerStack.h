@@ -19,16 +19,16 @@
 /// A simple stack-like data structure that maintains the ordering of when
 /// layers should be handled. The stack is split in two segements; normal
 /// layers in the bottom segement and overlay (UI) layers in the upper
-/// segement. When proccessed iterators will look from the top to the bottom 
+/// segement. When proccessed iterators will look from the top to the bottom
 /// of the stack for ordering (newest to oldest).
 //
 //===----------------------------------------------------------------------===//
 #pragma once
 
-#include <Trundle/common.h>
 #include <Trundle/Core/layer.h>
 #include <Trundle/Core/pointer.h>
 #include <Trundle/Core/util.h>
+#include <Trundle/common.h>
 
 namespace Trundle {
 

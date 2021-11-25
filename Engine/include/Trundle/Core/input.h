@@ -65,7 +65,7 @@ public:
 
   /// @brief Sets a mouse button to be in the *pressed* state.
   ///
-  /// When a @ref MousePressEvent has recieved this function is called to 
+  /// When a @ref MousePressEvent has recieved this function is called to
   /// handle it.
   /// @param[in] buttonNum The button to set to the *pressed* state. buttonNum
   ///                      must be either 0, 1, or 2.
@@ -73,7 +73,7 @@ public:
 
   /// @brief Clears the mouse button to be in the *pressed* state.
   ///
-  /// When a @ref MouseReleaseEvent has recieved this function is called to 
+  /// When a @ref MouseReleaseEvent has recieved this function is called to
   /// handle it.
   /// @param[in] buttonNum The button to set not being *pressed*. buttonNum
   ///                      must be either 0, 1, or 2.
@@ -123,7 +123,7 @@ public:
 
   /// @brief Check to see if a specific mouse button is pressed.
   ///
-  /// Check to see if the button is currently in the *pressed* state which 
+  /// Check to see if the button is currently in the *pressed* state which
   /// remains true until the @ref MouseReleaseEvent has been handled.
   /// @param[in] buttonNum The mouse button to check. buttonNum must be either
   ///                      0, 1, or 2.
@@ -132,7 +132,7 @@ public:
 
   /// @brief Check to see if a specific mouse button is released.
   ///
-  /// Check to see if the button is currently in the *pressed* state which 
+  /// Check to see if the button is currently in the *pressed* state which
   /// remains true until the @ref MouseReleaseEvent has been handled.
   /// @param[in] buttonNum The mouse button to check. buttonNum must be either
   ///                      0, 1, or 2.

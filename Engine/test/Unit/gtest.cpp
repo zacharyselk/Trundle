@@ -15,18 +15,14 @@
 // limitations under the License.
 //
 //===----------------------------------------------------------------------===//
+#include <gtest/gtest-spi.h> // EXPECT_FATAL_FAILURE
 #include <gtest/gtest.h>
-#include <gtest/gtest-spi.h>  // EXPECT_FATAL_FAILURE
 
-void fail() {
-    ASSERT_TRUE(false) << "Expected failure";
-}
+void fail() { ASSERT_TRUE(false) << "Expected failure"; }
 
 TEST(gtest, sane) {
-    ASSERT_TRUE(true);
-    ASSERT_FALSE(false);
+  ASSERT_TRUE(true);
+  ASSERT_FALSE(false);
 }
 
-TEST(gtest, insane) {
-    EXPECT_FATAL_FAILURE(ASSERT_TRUE(false), "Expected");
-}
+TEST(gtest, insane) { EXPECT_FATAL_FAILURE(ASSERT_TRUE(false), "Expected"); }

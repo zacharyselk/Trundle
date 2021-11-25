@@ -4,6 +4,7 @@ project(Trundle C CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(OpenGL_GL_PREFERENCE LEGACY)
 
 include(FetchContent)
 
@@ -23,6 +24,15 @@ if(WIN32)
     # class" warning because the STL does not follow this.
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd\"4251\"")
 
+    # Removes the truncation from double to float warning
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd\"4305\"")
+
+    # Removes nameless struct/union creation from warning
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd\"4201\"")
+
+    # Removes warning for int to float converstion resulting in a loss of data6
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd\"4244\"")
+
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -WX -W4")
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Od")
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2")
@@ -34,7 +44,7 @@ elseif(APPLE)
 
 elseif(UNIX)
   message(DEBUG "Detected Linux as the build environment")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DTRUNDLE_OS_LINUX")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DTRUNDLE_OS_LINUX -lstdc++fs")
 
 else()
   message(FATAL_ERROR "Error: Unknown platform, aborting.")
@@ -73,6 +83,7 @@ set(TRUNDLE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 FetchContent_Declare(
   googletest
   GIT_REPOSITORY https://github.com/google/googletest.git
+  GIT_TAG "main"
 )
 
 FetchContent_Declare(
@@ -99,26 +110,34 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(googletest)
 #FetchContent_MakeAvailable(imgui)
-#FetchContent_MakeAvailable(gl3w)
+FetchContent_MakeAvailable(gl3w)
 FetchContent_MakeAvailable(glfw)
-#FetchContent_MakeAvailable(glm)
+FetchContent_MakeAvailable(glm)
 
 # Build engine as a dynamic library
 add_library(engine SHARED)
+#set_target_properties(engine 
+#  PROPERTIES PUBLIC_HEADER 
+#  #"${CMAKE_CURRENT_SOURCE_DIR}/include/Trundle.h"
+#  #$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/*>
+#)
+#set_target_properties(engine PROPERTIES 
+#  LIBRARY_OUTPUT_DIRECTORY "${TRUNDLE_BUILD_DIR}/lib"
+#)
 set_target_properties(engine PROPERTIES VERSION 1.0.0 SOVERSION 1)
 target_compile_definitions(engine PRIVATE "TRUNDLE_BUILD_LIB")
 target_compile_definitions(engine PRIVATE "TRUNDLE_LOGGING_LEVEL=${LOG_LEVEL}")
 
 FetchContent_GetProperties(gl3w)
+
+# HACK: Tells cmake that gl3w.c will exist at rumtime because it cannot
+#       figure that out from the gl3w fetched content
+add_custom_command(
+  OUTPUT ${gl3w_BINARY_DIR}/src/gl3w.c
+  COMMAND ""
+)
 if (NOT gl3w_POPULATED)
   FetchContent_Populate(gl3w)
-
-  # HACK: Tells cmake that gl3w.c will exist at rumtime because it cannot
-  #       figure that out from the gl3w fetched content
-  add_custom_command(
-    OUTPUT ${gl3w_BINARY_DIR}/src/gl3w.c
-    COMMAND ""
-  )
 
   add_subdirectory(${gl3w_SOURCE_DIR} ${gl3w_BINARY_DIR})
 endif()
@@ -126,6 +145,8 @@ endif()
 
 target_link_libraries(engine PRIVATE glfw)
 target_link_libraries(engine PRIVATE gl3w)
+target_link_libraries(engine PRIVATE glm)
+
 
 # Link OpenGL
 if(WIN32)
@@ -138,6 +159,7 @@ elseif(APPLE)
   target_link_libraries(engine PRIVATE "-framework CoreVideo")
 else()
   find_package(OpenGL REQUIRED)
+  find_package(GLUT REQUIRED)
   target_link_libraries(engine PRIVATE "${OPENGL_LIBRARIES}")
 endif()
 
@@ -156,3 +178,10 @@ if(BUILD_TESTS)
   include(GoogleTest)
   add_subdirectory(test)
 endif()
+
+INSTALL(TARGETS engine
+        LIBRARY DESTINATION "${TRUNDLE_BUILD_DIR}/lib"
+        #PUBLIC_HEADER DESTINATION "${TRUNDLE_BUILD_DIR}/include"
+)
+
+INSTALL(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/" DESTINATION "${TRUNDLE_BUILD_DIR}/include")

@@ -8,3 +8,5 @@ elseif(WIN32)
 else()
   message(FATAL_ERROR "Error: Unknown platform, aborting.")
 endif()
+
+add_subdirectory(OpenGL)

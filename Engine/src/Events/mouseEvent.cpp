@@ -20,30 +20,19 @@
 namespace Trundle {
 
 //===-- MouseButtonEvent --------------------------------------------------===//
-MouseButtonEvent::MouseButtonEvent(int mouseCode)
-: mouseCode(mouseCode) {}
+MouseButtonEvent::MouseButtonEvent(int mouseCode) : mouseCode(mouseCode) {}
 
-int MouseButtonEvent::getMouseCode() const {
-    return mouseCode;
-}
+int MouseButtonEvent::getMouseCode() const { return mouseCode; }
 //===----------------------------------------------------------------------===//
 
-
 //===-- MousePressEvent ---------------------------------------------------===//
-MousePressEvent::MousePressEvent(int mouseCode)
-: MouseButtonEvent(mouseCode) {}
+MousePressEvent::MousePressEvent(int mouseCode) : MouseButtonEvent(mouseCode) {}
 
-EventType MousePressEvent::getStaticType() { 
-  return EventType::MousePress;
-}
+EventType MousePressEvent::getStaticType() { return EventType::MousePress; }
 
-EventType MousePressEvent::getEventType() const { 
-  return getStaticType();
-}
+EventType MousePressEvent::getEventType() const { return getStaticType(); }
 
-const char* MousePressEvent::getName() const { 
-  return "MousePress";
-}
+const char* MousePressEvent::getName() const { return "MousePress"; }
 
 std::string MousePressEvent::toString() const {
   // TODO: Replace with something better than a stringstream.
@@ -53,22 +42,16 @@ std::string MousePressEvent::toString() const {
 }
 //===----------------------------------------------------------------------===//
 
-
-//===-- MouseReleaseEvent ---------------------------------------------------===//
+//===-- MouseReleaseEvent
+//---------------------------------------------------===//
 MouseReleaseEvent::MouseReleaseEvent(int mouseCode)
-: MouseButtonEvent(mouseCode) {}
+    : MouseButtonEvent(mouseCode) {}
 
-EventType MouseReleaseEvent::getStaticType() { 
-  return EventType::MouseRelease;
-}
+EventType MouseReleaseEvent::getStaticType() { return EventType::MouseRelease; }
 
-EventType MouseReleaseEvent::getEventType() const { 
-  return getStaticType();
-}
+EventType MouseReleaseEvent::getEventType() const { return getStaticType(); }
 
-const char* MouseReleaseEvent::getName() const { 
-  return "MouseRelease";
-}
+const char* MouseReleaseEvent::getName() const { return "MouseRelease"; }
 
 std::string MouseReleaseEvent::toString() const {
   // TODO: Replace with something better than a stringstream.
@@ -78,22 +61,14 @@ std::string MouseReleaseEvent::toString() const {
 }
 //===----------------------------------------------------------------------===//
 
-
 //===-- MouseMoveEvent ----------------------------------------------------===//
-MouseMoveEvent::MouseMoveEvent(double x, double y)
-: x(x), y(y) {}
+MouseMoveEvent::MouseMoveEvent(double x, double y) : x(x), y(y) {}
 
-EventType MouseMoveEvent::getStaticType() { 
-  return EventType::MouseMove;
-}
+EventType MouseMoveEvent::getStaticType() { return EventType::MouseMove; }
 
-EventType MouseMoveEvent::getEventType() const { 
-  return getStaticType();
-}
+EventType MouseMoveEvent::getEventType() const { return getStaticType(); }
 
-const char* MouseMoveEvent::getName() const { 
-  return "MouseMove";
-}
+const char* MouseMoveEvent::getName() const { return "MouseMove"; }
 
 std::string MouseMoveEvent::toString() const {
   // TODO: Replace with something better than a stringstream.

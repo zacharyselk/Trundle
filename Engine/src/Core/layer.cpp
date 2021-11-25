@@ -19,8 +19,7 @@
 
 namespace Trundle {
 
-Layer::Layer(const std::string& name)
-  : name(name) {}
+Layer::Layer(const std::string& name) : name(name) {}
 
 Layer::~Layer() {}
 
@@ -32,8 +31,6 @@ void Layer::onUpdate() {}
 
 void Layer::onEvent(Event&) {}
 
-const std::string& Layer::getName() {
-    return name;
-}
+const std::string& Layer::getName() { return name; }
 
 } // namespace Trundle

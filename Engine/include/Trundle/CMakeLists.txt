@@ -4,4 +4,5 @@ target_precompile_headers(engine PRIVATE
 add_subdirectory(Core)
 add_subdirectory(Events)
 add_subdirectory(Platform)
+add_subdirectory(Renderer)
 add_subdirectory(Util)

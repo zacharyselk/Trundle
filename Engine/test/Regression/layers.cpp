@@ -21,8 +21,8 @@
 //===----------------------------------------------------------------------===//
 #include <Trundle.h>
 #include <gtest/gtest.h>
-#include <memory>
 #include <iostream>
+#include <memory>
 
 class LayerA : public Trundle::Layer {
 public:
@@ -31,9 +31,7 @@ public:
   virtual void onAttach() override { onAttachCalled = true; }
   virtual void onDetach() override { onDetachCalled = true; }
   virtual void onUpdate() override { onUpdateCalled = true; }
-  virtual void onEvent(Trundle::Event&) override { 
-    onEventCalled = true;
-  }
+  virtual void onEvent(Trundle::Event&) override { onEventCalled = true; }
 
   bool onAttachCalled{false};
   bool onDetachCalled{false};
@@ -43,8 +41,7 @@ public:
 
 class Layers : public Trundle::Application, public testing::Test {
 public:
-  Layers()
-   : Trundle::Application(HEADLESS) {}
+  Layers() : Trundle::Application(HEADLESS) {}
 
   ~Layers() {}
 
@@ -58,11 +55,10 @@ TEST_F(Layers, OnAttach) {
   auto overlay = std::make_shared<LayerA>();
 
   pushLayer(layer);
-  EXPECT_TRUE(layer->onAttachCalled) 
-    << "onAttach() was not called for layer";
+  EXPECT_TRUE(layer->onAttachCalled) << "onAttach() was not called for layer";
   pushOverlay(overlay);
-  EXPECT_TRUE(overlay->onAttachCalled) 
-    << "onAttach() was not called for overlay";
+  EXPECT_TRUE(overlay->onAttachCalled)
+      << "onAttach() was not called for overlay";
 }
 
 TEST_F(Layers, OnDetach) {
@@ -71,54 +67,48 @@ TEST_F(Layers, OnDetach) {
 
   pushLayer(layer);
   popLayer(layer);
-  EXPECT_TRUE(layer->onDetachCalled) 
-    << "onDetach() was not called for layer";
+  EXPECT_TRUE(layer->onDetachCalled) << "onDetach() was not called for layer";
   pushOverlay(overlay);
   popOverlay(overlay);
-  EXPECT_TRUE(overlay->onDetachCalled) 
-    << "onDetach() was not called for overlay";
+  EXPECT_TRUE(overlay->onDetachCalled)
+      << "onDetach() was not called for overlay";
 }
 
 TEST_F(Layers, OnUpdate) {
   auto layer = std::make_shared<LayerA>();
   auto overlay = std::make_shared<LayerA>();
-  auto event = std::make_shared<Trundle::MouseMoveEvent>(1,1);
+  auto event = std::make_shared<Trundle::MouseMoveEvent>(1, 1);
 
   pushLayer(layer);
   run(event);
-  EXPECT_TRUE(layer->onUpdateCalled) 
-    << "onUpdate() was not called for layer";
+  EXPECT_TRUE(layer->onUpdateCalled) << "onUpdate() was not called for layer";
   popLayer(layer);
-  
 
   pushOverlay(overlay);
   run(event);
-  EXPECT_TRUE(overlay->onUpdateCalled) 
-    << "onUpdate() was not called for overlay";
+  EXPECT_TRUE(overlay->onUpdateCalled)
+      << "onUpdate() was not called for overlay";
   popOverlay(overlay);
 }
 
 TEST_F(Layers, OnEvent) {
   auto layer = std::make_shared<LayerA>();
   auto overlay = std::make_shared<LayerA>();
-  auto event = std::make_shared<Trundle::WindowResizeEvent>(1,1);
+  auto event = std::make_shared<Trundle::WindowResizeEvent>(1, 1);
 
   pushLayer(layer);
   run(event);
-  EXPECT_TRUE(layer->onEventCalled) 
-    << "onEvent() was not called for layer";
+  EXPECT_TRUE(layer->onEventCalled) << "onEvent() was not called for layer";
   popLayer(layer);
-  
 
   pushOverlay(overlay);
   run(event);
-  EXPECT_TRUE(overlay->onEventCalled) 
-    << "onEvent() was not called for overlay";
+  EXPECT_TRUE(overlay->onEventCalled) << "onEvent() was not called for overlay";
   popOverlay(overlay);
 }
 
 TEST_F(Layers, GetName) {
   auto layer = std::make_shared<LayerA>();
   EXPECT_EQ(std::string("LayerA"), layer->getName())
-    << "Layer name was miss labeled";
+      << "Layer name was miss labeled";
 }

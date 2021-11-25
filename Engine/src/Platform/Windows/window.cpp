@@ -74,6 +74,12 @@ void WindowsWindow::init(const WindowProperties& properties) {
   window = glfwCreateWindow(data.width, data.height, data.title.c_str(),
                             nullptr, nullptr);
 
+  // Temp
+  glfwMakeContextCurrent(window);
+  if (gl3wInit()) {
+    Log::Error("failed to initialize OpenGL\n");
+  }
+
   glfwSetWindowUserPointer(window, &data);
 
   // Set callbacks from glfw.
@@ -165,18 +171,14 @@ void WindowsWindow::shutdown() { glfwDestroyWindow(window); }
 
 void WindowsWindow::onUpdate() {
   // Check for events.
-  //Log::Warn("Hello");
+  // Log::Warn("Hello");
   glfwPollEvents();
   glfwSwapBuffers(window);
 }
 
-uint32_t WindowsWindow::getWidth() { 
-  return data.width; 
-}
+uint32_t WindowsWindow::getWidth() { return data.width; }
 
-uint32_t WindowsWindow::getHeight() { 
-  return data.height; 
-}
+uint32_t WindowsWindow::getHeight() { return data.height; }
 
 void WindowsWindow::setEventCallback(const EventCallback& cb) {
   data.callback = cb;

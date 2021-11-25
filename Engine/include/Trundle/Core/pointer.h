@@ -32,8 +32,7 @@ namespace Trundle {
 /// Allows for multiple refrences to a particualr peice of data which is
 /// destroyed after all refrences are destroyed.
 //===----------------------------------------------------------------------===//
-template <typename T>
-using Ref = std::shared_ptr<T>;
+template <typename T> using Ref = std::shared_ptr<T>;
 
 //===-- Own ---------------------------------------------------------------===//
 /// @brief A owning pointer to a peice of data.
@@ -41,8 +40,7 @@ using Ref = std::shared_ptr<T>;
 /// The owning pointer is the only pointer that may point to a piece of data.
 /// When the owning pointer is destroyed the data is also destroyed.
 //===----------------------------------------------------------------------===//
-template <typename T>
-using Own = std::unique_ptr<T>;
+template <typename T> using Own = std::unique_ptr<T>;
 
 //===-- View --------------------------------------------------------------===//
 /// @brief A pointer that can view the data of a refrence pointer.
@@ -51,7 +49,6 @@ using Own = std::unique_ptr<T>;
 /// modify it. Viewing pointers become invalidated when the data they
 /// referencing is destoryed.
 //===----------------------------------------------------------------------===//
-template <typename T>
-using View = std::weak_ptr<const T>;
+template <typename T> using View = std::weak_ptr<const T>;
 
 } // namespace Trundle

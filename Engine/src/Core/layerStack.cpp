@@ -19,8 +19,7 @@
 
 namespace Trundle {
 
-LayerStack::LayerStack() 
-  : layers{}, it{0} {}
+LayerStack::LayerStack() : layers{}, it{0} {}
 
 LayerStack::~LayerStack() {}
 
@@ -60,8 +59,6 @@ std::vector<Ref<Layer>>::reverse_iterator LayerStack::end() {
   return layers.rend();
 }
 
-size_t LayerStack::size() {
-  return layers.size();
-}
+size_t LayerStack::size() { return layers.size(); }
 
 } // namespace Trundle

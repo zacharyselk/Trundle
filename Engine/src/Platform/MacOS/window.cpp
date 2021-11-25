@@ -166,18 +166,14 @@ void MacOSWindow::shutdown() { glfwDestroyWindow(window); }
 
 void MacOSWindow::onUpdate() {
   // Check for events.
-  //Log::Warn("Hello");
+  // Log::Warn("Hello");
   glfwPollEvents();
   glfwSwapBuffers(window);
 }
 
-uint32_t MacOSWindow::getWidth() { 
-  return data.width; 
-}
+uint32_t MacOSWindow::getWidth() { return data.width; }
 
-uint32_t MacOSWindow::getHeight() { 
-  return data.height; 
-}
+uint32_t MacOSWindow::getHeight() { return data.height; }
 
 void MacOSWindow::setEventCallback(const EventCallback& callback) {
   data.callback = callback;

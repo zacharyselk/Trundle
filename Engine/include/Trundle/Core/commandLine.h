@@ -29,20 +29,20 @@ namespace Trundle {
 /// @brief A structure to pass around all recognized command line arguments.
 //===----------------------------------------------------------------------===//
 struct CommandLineArgs {
-    bool headless{false};
+  bool headless{false};
 };
 
 /// @brief Parses the raw command line arguments into a @ref CommandLineArgs.
 CommandLineArgs parseCommandLine(int* argc, char** argv, char** envp) {
-    CommandLineArgs args;
-    for (size_t i = 1; i < *argc; ++i) {
-        if (strcmp(argv[i], "--headless") == 0) {
-            args.headless = true;
-            Log::Info("Running in headless mode");
-        }
+  CommandLineArgs args;
+  for (size_t i = 1; i < *argc; ++i) {
+    if (strcmp(argv[i], "--headless") == 0) {
+      args.headless = true;
+      Log::Info("Running in headless mode");
     }
+  }
 
-    return args;
+  return args;
 }
 
 } // namespace Trundle

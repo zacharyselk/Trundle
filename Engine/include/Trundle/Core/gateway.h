@@ -42,7 +42,7 @@ bool HEADLESS = false;
 
 /// @brief An external hook that allows the application code to be run by the
 ///        Engine.
-/// 
+///
 /// CreateApplication must be defined by the application driver in order for any
 /// user code to be hooked into the Engine.
 /// @param[in] argc The standard argc that is passed to main.
@@ -55,7 +55,7 @@ extern Trundle::Application* Trundle::CreateApplication(int* argc, char** argv,
 
 #if defined(TESTING_BUILD)
 int main(int argc, char** argv) {
-  ::testing::InitGoogleTest(&argc, argv); 
+  ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }
 

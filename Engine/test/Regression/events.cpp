@@ -21,16 +21,15 @@
 //===----------------------------------------------------------------------===//
 #include <Trundle.h>
 #include <gtest/gtest.h>
-#include <memory>
 #include <iostream>
+#include <memory>
 
 // Hard coding keycode.
 int GLFW_KEY_A = 65;
 
 class Events : public Trundle::Application, public testing::Test {
 public:
-  Events()
-   : Trundle::Application(HEADLESS) {}
+  Events() : Trundle::Application(HEADLESS) {}
 
   ~Events() {}
 
@@ -43,7 +42,7 @@ protected:
 TEST_F(Events, KeyPressEvent) {
   auto event = std::make_shared<Trundle::KeyPressEvent>(GLFW_KEY_A, 0);
   run(event);
-  ASSERT_TRUE(event->handled) << "KeyPressEvent was not handled";  
+  ASSERT_TRUE(event->handled) << "KeyPressEvent was not handled";
 }
 
 TEST_F(Events, KeyReleaseEvent) {
@@ -57,7 +56,7 @@ TEST_F(Events, KeyReleaseEvent) {
 TEST_F(Events, MousePressEvent) {
   auto event = std::make_shared<Trundle::MousePressEvent>(1);
   run(event);
-  ASSERT_TRUE(event->handled) << "MousePressEvent was not handled";  
+  ASSERT_TRUE(event->handled) << "MousePressEvent was not handled";
 }
 
 TEST_F(Events, MouseReleaseEvent) {
@@ -77,7 +76,7 @@ TEST_F(Events, MouseMoveEvent) {
 TEST_F(Events, WindowCloseEvent) {
   auto event = std::make_shared<Trundle::WindowCloseEvent>();
   run(event);
-  ASSERT_TRUE(event->handled) << "WindowCloseEvent was not handled";  
+  ASSERT_TRUE(event->handled) << "WindowCloseEvent was not handled";
 }
 
 TEST_F(Events, DISABLED_WindowResizeEvent) {

@@ -28,7 +28,6 @@ public:
   virtual bool execute() = 0;
 
 private:
-
 };
 
 } // namespace Trundle

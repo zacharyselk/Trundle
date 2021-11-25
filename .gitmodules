@@ -1,0 +1,3 @@
+[submodule "Engine/include/lib"]
+	path = Engine/include/lib
+	url = https://github.com/zacharyselk/lib.git

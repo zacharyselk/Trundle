@@ -118,15 +118,14 @@ public:
   /// event to the given labmda function.
   /// @param[in] func The callback function to handle events.
   /// @return true if this function handled the event, false otherwise.
-  template <typename T> 
-  bool dispatch(eventFunction<T> func)  {
-  if (event.getEventType() == T::getStaticType()) {
-    event.handled = func(*(T*)&event);
-    return true;
-  } else {
-    return false;
+  template <typename T> bool dispatch(eventFunction<T> func) {
+    if (event.getEventType() == T::getStaticType()) {
+      event.handled = func(*(T*)&event);
+      return true;
+    } else {
+      return false;
+    }
   }
-}
 
 private:
   Event& event;

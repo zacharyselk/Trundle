@@ -46,7 +46,7 @@ protected:
   ///                      with this event.
   MouseButtonEvent(int mouseCode);
 
-  /// Storage for the key code of the mouse button involved with the event. 
+  /// Storage for the key code of the mouse button involved with the event.
   int mouseCode{-1};
 };
 
@@ -70,14 +70,14 @@ public:
 
   /// @brief A virtual function to retrieve the @ref EventType of this event.
   ///
-  /// This function allows owners of an @ref Event pointer to retrieve the 
+  /// This function allows owners of an @ref Event pointer to retrieve the
   /// @ref EventType of it.
   /// @return The type of event this object represents.
   virtual EventType getEventType() const override final;
 
   /// @brief A virtual function that returns the name of this @ref Event.
   ///
-  /// This function allows owners of an @ref Event pointer to retrieve the 
+  /// This function allows owners of an @ref Event pointer to retrieve the
   /// name of the event.
   /// @return The event name.
   virtual const char* getName() const override final;
@@ -110,14 +110,14 @@ public:
 
   /// @brief A virtual function to retrieve the @ref EventType of this event.
   ///
-  /// This function allows owners of an @ref Event pointer to retrieve the 
+  /// This function allows owners of an @ref Event pointer to retrieve the
   /// @ref EventType of it.
   /// @return The type of event this object represents.
   virtual EventType getEventType() const override final;
 
   /// @brief A virtual function that returns the name of this @ref Event.
   ///
-  /// This function allows owners of an @ref Event pointer to retrieve the 
+  /// This function allows owners of an @ref Event pointer to retrieve the
   /// name of the event.
   /// @return The event name.
   virtual const char* getName() const override final;
@@ -151,14 +151,14 @@ public:
 
   /// @brief A virtual function to retrieve the @ref EventType of this event.
   ///
-  /// This function allows owners of an @ref Event pointer to retrieve the 
+  /// This function allows owners of an @ref Event pointer to retrieve the
   /// @ref EventType of it.
   /// @return The type of event this object represents.
   virtual EventType getEventType() const override final;
 
   /// @brief A virtual function that returns the name of this @ref Event.
   ///
-  /// This function allows owners of an @ref Event pointer to retrieve the 
+  /// This function allows owners of an @ref Event pointer to retrieve the
   /// name of the event.
   /// @return The event name.
   virtual const char* getName() const override final;

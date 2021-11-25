@@ -22,9 +22,9 @@
 //===----------------------------------------------------------------------===//
 #pragma once
 
-#include <Trundle/common.h>
 #include <Trundle/Core/util.h>
 #include <Trundle/Events/event.h>
+#include <Trundle/common.h>
 
 namespace Trundle {
 
@@ -47,7 +47,7 @@ public:
 
   /// @brief Function called when the layer is added to the scene.
   virtual void onAttach();
-  
+
   /// @brief Function called when the layer is removed from the scene.
   virtual void onDetach();
 
@@ -61,7 +61,7 @@ public:
   /// been handled.
   /// @param[in,out] event The event to be handled.
   virtual void onEvent(Event& event);
-  
+
   /// @brief A getter function for the layer name.
   ///
   /// @return The name of the layer.

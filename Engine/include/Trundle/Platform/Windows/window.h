@@ -21,8 +21,12 @@
 //===----------------------------------------------------------------------===//
 #pragma once
 
-#include <Trundle/Core/window.h>
+// Temp
+#include <GL/gl3w.h>
 #include <GLFW/glfw3.h>
+
+#include <GLFW/glfw3.h>
+#include <Trundle/Core/window.h>
 
 namespace Trundle {
 

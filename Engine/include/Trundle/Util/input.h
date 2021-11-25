@@ -22,6 +22,7 @@
 #pragma once
 
 #include <Trundle/Core/keyCode.h>
+#include <Trundle/Core/log.h>
 #include <Trundle/Core/util.h>
 
 #include <GL/gl3w.h>
@@ -514,6 +515,7 @@ inline KeyCode GLToTrundle(int keycode) {
   case GLFW_KEY_RIGHT:
     return KeyCode::Right;
   default:
+    Log::Critical("Unhandled key id: " + std::to_string(keycode));
     assert(0 && "Error: Unhandled GLFW case");
   }
 
